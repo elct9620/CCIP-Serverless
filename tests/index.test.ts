@@ -1,21 +1,13 @@
-import { unstable_dev } from 'wrangler';
-import type { UnstableDevWorker } from 'wrangler';
+import { HttpServer } from './utils/worker';
 import { describe, expect, it, beforeAll, afterAll } from 'vitest';
 
 describe('GET /', () => {
-	let worker: UnstableDevWorker;
-
-	beforeAll(async () => {
-		worker = await unstable_dev('src/index.ts', { experimental: { disableExperimentalWarning: true }});
-	});
-
-	afterAll(async () => {
-		await worker.stop();
-	});
+	let server: HttpServer = new HttpServer();
+	beforeAll(() => server.beforeAll());
 
 	it('should return 200 response', async () => {
 		const req = new Request('http://example.com', { method: 'GET' });
-		const resp = await worker.fetch(req.url);
+		const resp = await server.fetch(req.url);
 		expect(resp.status).toBe(200);
 
 		const text = await resp.text();
