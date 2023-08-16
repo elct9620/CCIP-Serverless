@@ -6,7 +6,7 @@ describe('GET /', () => {
 	beforeAll(() => server.beforeAll());
 
 	it('should return 200 response', async () => {
-		const req = new Request('http://example.com', { method: 'GET' });
+		const req = new Request('https://ccip.opass.app', { method: 'GET' });
 		const resp = await server.fetch(req.url);
 		expect(resp.status).toBe(200);
 
