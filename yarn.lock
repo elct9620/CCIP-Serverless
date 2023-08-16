@@ -882,6 +882,11 @@ istanbul-reports@^3.1.5:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
+itty-router@^4.0.17:
+  version "4.0.17"
+  resolved "https://registry.yarnpkg.com/itty-router/-/itty-router-4.0.17.tgz#5d9853107552ef165251f28568936c70a2fb87fb"
+  integrity sha512-Fu/GO3MFX6Hwd+QF1/BFjoFpPQKh2Bu4DtBdse5kECcUwldNBrZqgwq0IariLrP67iADGlzkHIlOWwJ8F4SJ4A==
+
 jsonc-parser@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/jsonc-parser/-/jsonc-parser-3.2.0.tgz#31ff3f4c2b9793f89c67212627c51c6394f88e76"
