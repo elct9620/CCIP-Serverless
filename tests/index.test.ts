@@ -2,7 +2,7 @@ import { unstable_dev } from 'wrangler';
 import type { UnstableDevWorker } from 'wrangler';
 import { describe, expect, it, beforeAll, afterAll } from 'vitest';
 
-describe('Worker', () => {
+describe('GET /', () => {
 	let worker: UnstableDevWorker;
 
 	beforeAll(async () => {
@@ -14,11 +14,11 @@ describe('Worker', () => {
 	});
 
 	it('should return 200 response', async () => {
-		const req = new Request('https://example.com', { method: 'GET' });
+		const req = new Request('http://example.com', { method: 'GET' });
 		const resp = await worker.fetch(req.url);
 		expect(resp.status).toBe(200);
 
 		const text = await resp.text();
-		expect(text).toBe('request method: GET');
+		expect(text).toBe('CCIP Serverless');
 	});
 });
