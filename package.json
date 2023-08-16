@@ -5,7 +5,8 @@
 	"scripts": {
 		"deploy": "wrangler deploy src/index.ts",
 		"dev": "wrangler dev src/index.ts",
-		"test": "vitest run --no-threads"
+		"test": "vitest run --no-threads",
+		"test:ui": "vitest --ui --no-threads"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.x",
