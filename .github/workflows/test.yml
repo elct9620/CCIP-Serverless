@@ -6,21 +6,31 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  NODE_VERSION: 18.x
+
 jobs:
-  build:
+  tsc:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "yarn"
+      - name: Setup
+        run: yarn install --frozen-lockfile
+      - name: TypeScript Check
+        run: yarn tsc
+  vitest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
           cache: "yarn"
       - name: Setup
         run: yarn install --frozen-lockfile
