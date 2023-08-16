@@ -2,18 +2,20 @@ import { IRequest } from 'itty-router'
 import { json, error } from './helper'
 import { AttendeeInfo } from '../usecase'
 
+export type LandingRequest = {
+	attendeeInfo: AttendeeInfo
+} & IRequest
+
 export type LandingResponse = {
 	nickname: string
 }
 
-export function Landing(usecase: AttendeeInfo) {
-	return async ({ query }: IRequest) => {
-		if (!query.token) {
-			return error(400, 'invalid token')
-		}
-
-		const info = await usecase.GetAttendee(query.token as string)
-
-		return json<LandingResponse>({nickname: info.nickname})
+export const Landing =  async ({ attendeeInfo, query }: LandingRequest) => {
+	if (!query.token) {
+		return error(400, 'invalid token')
 	}
+
+	const info = await attendeeInfo.GetAttendee(query.token as string)
+
+	return json<LandingResponse>({nickname: info.nickname})
 }
