@@ -17,7 +17,7 @@ router
 	.all('*', () => error(404))
 
 export default {
-	fetch: (request: Request, ...args) =>
+	fetch: (request: Request, ...args: any[]) =>
 		router.handle(request, ...args)
 			.then(json)
 			.catch(error)
