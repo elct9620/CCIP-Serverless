@@ -18,7 +18,7 @@ router
 
 		return json({ message: 'ok' })
 	})
-	.post<IRequest, CF>('/attendees', Api.CreateAttendee)
+	.post<IRequest, CF>('/attendees', Api.createAttendeeHandler)
 	.all('*', () => error(404))
 
 export default {

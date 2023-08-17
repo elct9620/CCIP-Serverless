@@ -1,4 +1,5 @@
 import { getWorker, getTestableWorker } from './utils/worker'
+import { createAttendee } from './mockApi'
 import { describe, expect, it, beforeAll, afterAll } from 'vitest'
 import type { ApiError, LandingResponse } from '../src/api'
 
@@ -7,11 +8,7 @@ const NOT_REGISTER_TOKEN = '79fd7131-f46e-4335-8d0c-ac1fa551288b'
 
 describe('GET /landing', () => {
 	beforeAll(async () => {
-		await getTestableWorker().fetch('https://testability.opass.app/attendees', {
-			method: 'POST',
-			headers: { 'content-type': 'application/json' },
-			body: JSON.stringify({ token: REGISTERED_TOKEN, user_id: 'Aotoki' }),
-		})
+		await createAttendee(getTestableWorker(), { token: REGISTERED_TOKEN, user_id: 'Aotoki' })
 	})
 
 	afterAll(async () => {
