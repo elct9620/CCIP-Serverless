@@ -1,5 +1,5 @@
 import { getWorker, getTestableWorker } from './utils/worker'
-import { createAttendee } from './mockApi'
+import { createAttendee, reset } from './mockApi'
 import { describe, expect, it, beforeAll, afterAll } from 'vitest'
 import type { ApiError, LandingResponse } from '../src/api'
 
@@ -12,7 +12,7 @@ describe('GET /landing', () => {
 	})
 
 	afterAll(async () => {
-		await getTestableWorker().fetch('https://testability.opass.app/reset', { method: 'POST' })
+		await reset(getTestableWorker())
 	})
 
 	it('can get nickname if token exists', async () => {

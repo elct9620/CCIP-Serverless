@@ -12,12 +12,7 @@ const router = Router()
 
 router
 	.all('*', withParams)
-	.post<IRequest, CF>('/reset', async (req, { DB }) => {
-		await DB.prepare(`DELETE FROM attendees`).run()
-		await DB.prepare(`VACUUM`).run()
-
-		return json({ message: 'ok' })
-	})
+	.post<IRequest, CF>('/reset', Api.resetHandler)
 	.post<IRequest, CF>('/attendees', Api.createAttendeeHandler)
 	.all('*', () => error(404))
 
