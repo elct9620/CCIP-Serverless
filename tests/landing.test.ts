@@ -35,7 +35,7 @@ describe('GET /landing', () => {
 		expect(resp.status).toBe(400)
 
 		const json = await resp.json()
-		expect(json).toMatchObject<ApiError>({ message: 'invalid token' })
+		expect(json).toMatchObject<ApiError>({ message: 'token required' })
 	})
 
 	it('will get invalid token if token not exists', async () => {

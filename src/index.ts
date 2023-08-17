@@ -1,4 +1,4 @@
-import { error, json, Router, withParams, IRequest } from 'itty-router'
+import { json, Router, withParams, IRequest } from 'itty-router'
 import { D1Database, ExecutionContext } from '@cloudflare/workers-types'
 import * as API from './api'
 import * as UseCase from './usecase'
@@ -26,12 +26,12 @@ router
 	// CCIP API
 	.get('/landing', API.Landing)
 	// Default
-	.all('*', () => error(404))
+	.all('*', () => API.error(404))
 
 export default {
 	fetch: (request: Request, ...args: any[]) =>
 		router
 			.handle(request, ...args)
 			.then(json)
-			.catch(error),
+			.catch(API.error),
 }
