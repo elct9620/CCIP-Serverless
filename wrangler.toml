@@ -1,9 +1,22 @@
-name = "" # todo
+name = "ccip-serverless"
 main = "./src/index.ts"
 compatibility_date = "2023-08-15"
+
+[vars]
+CCIP_ENV = "production"
 
 [[ d1_databases ]]
 binding = "DB"
 database_name = "ccip"
 database_id = "ccip"
 preview_database_id = "ccip-local"
+
+[env.test]
+[env.test.vars]
+CCIP_ENV = "test"
+
+[[env.test.d1_databases]]
+binding = "DB"
+database_name = "ccip-test"
+database_id = "ccip-test"
+preview_database_id = "ccip-test-local"
