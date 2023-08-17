@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "yarn"
+          cache: 'yarn'
       - name: Setup
         run: yarn install --frozen-lockfile
       - name: TypeScript Check
@@ -31,7 +31,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "yarn"
+          cache: 'yarn'
       - name: Setup
         run: yarn install --frozen-lockfile
       - name: Vitest

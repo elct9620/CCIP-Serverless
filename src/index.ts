@@ -23,14 +23,15 @@ router
 	.all('*', withParams)
 	.all<IRequest, CF>('*', withUsecases)
 	.get<IRequest, CF>('/', () => new Response('CCIP Serverless'))
-	 // CCIP API
+	// CCIP API
 	.get('/landing', API.Landing)
-	 // Default
+	// Default
 	.all('*', () => error(404))
 
 export default {
 	fetch: (request: Request, ...args: any[]) =>
-		router.handle(request, ...args)
+		router
+			.handle(request, ...args)
 			.then(json)
-			.catch(error)
-};
+			.catch(error),
+}

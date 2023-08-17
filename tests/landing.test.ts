@@ -10,7 +10,7 @@ describe('GET /landing', () => {
 		await getTestableWorker().fetch('https://testability.opass.app/attendees', {
 			method: 'POST',
 			headers: { 'content-type': 'application/json' },
-			body: JSON.stringify({ token: REGISTERED_TOKEN, user_id: 'Aotoki' })
+			body: JSON.stringify({ token: REGISTERED_TOKEN, user_id: 'Aotoki' }),
 		})
 	})
 
@@ -19,7 +19,9 @@ describe('GET /landing', () => {
 	})
 
 	it('can get nickname if token exists', async () => {
-		const req = new Request(`https://ccip.opass.app/landing?token=${REGISTERED_TOKEN}`, { method: 'GET' })
+		const req = new Request(`https://ccip.opass.app/landing?token=${REGISTERED_TOKEN}`, {
+			method: 'GET',
+		})
 		const resp = await getWorker().fetch(req.url)
 		expect(resp.status).toBe(200)
 
@@ -37,7 +39,9 @@ describe('GET /landing', () => {
 	})
 
 	it('will get invalid token if token not exists', async () => {
-		const req = new Request(`https://ccip.opass.app/landing?token=${NOT_REGISTER_TOKEN}`, { method: 'GET' })
+		const req = new Request(`https://ccip.opass.app/landing?token=${NOT_REGISTER_TOKEN}`, {
+			method: 'GET',
+		})
 		const resp = await getWorker().fetch(req.url)
 		expect(resp.status).toBe(400)
 

@@ -10,7 +10,7 @@ export type LandingResponse = {
 	nickname: string
 }
 
-export const Landing =  async ({ attendeeInfo, query }: LandingRequest) => {
+export const Landing = async ({ attendeeInfo, query }: LandingRequest) => {
 	if (!query.token) {
 		return error(400, 'invalid token')
 	}
@@ -20,5 +20,5 @@ export const Landing =  async ({ attendeeInfo, query }: LandingRequest) => {
 		return error(400, 'invalid token')
 	}
 
-	return json<LandingResponse>({nickname: info.nickname})
+	return json<LandingResponse>({ nickname: info.nickname })
 }

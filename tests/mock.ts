@@ -23,7 +23,8 @@ router
 
 export default {
 	fetch: (request: Request, ...args: any[]) =>
-		router.handle(request, ...args)
+		router
+			.handle(request, ...args)
 			.then(json)
-			.catch(error)
-};
+			.catch(error),
+}
