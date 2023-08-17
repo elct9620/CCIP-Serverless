@@ -16,6 +16,9 @@ export const Landing =  async ({ attendeeInfo, query }: LandingRequest) => {
 	}
 
 	const info = await attendeeInfo.GetAttendee(query.token as string)
+	if (!info) {
+		return error(400, 'invalid token')
+	}
 
 	return json<LandingResponse>({nickname: info.nickname})
 }

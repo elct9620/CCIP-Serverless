@@ -11,8 +11,12 @@ export class AttendeeInfo {
 		this.attendeeRepository = attendeeRepository;
 	}
 
-	public async GetAttendee(token: string): Promise<AttendeeReply> {
+	public async GetAttendee(token: string): Promise<AttendeeReply | null> {
 		const attendee = await this.attendeeRepository.FindByToken(token);
+
+		if (!attendee) {
+			return null
+		}
 
 		return {
 			nickname: attendee.userId
