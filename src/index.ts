@@ -24,7 +24,7 @@ router
 	.all<IRequest, CF>('*', withUsecases)
 	.get<IRequest, CF>('/', () => new Response('CCIP Serverless'))
 	// CCIP API
-	.get('/landing', API.Landing)
+	.get('/landing', API.landing)
 	// Default
 	.all('*', () => API.error(404))
 

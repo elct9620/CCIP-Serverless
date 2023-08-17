@@ -13,7 +13,7 @@ export class D1AttendeeRepository {
 		this.db = db
 	}
 
-	async FindByToken(token: string): Promise<Attendee | null> {
+	async findByToken(token: string): Promise<Attendee | null> {
 		const stmt = this.db.prepare('SELECT * FROM attendees WHERE token = ?')
 		const result = await stmt.bind(token).first<AttendeeSchema>()
 

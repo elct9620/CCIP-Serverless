@@ -11,8 +11,8 @@ export class AttendeeInfo {
 		this.attendeeRepository = attendeeRepository
 	}
 
-	public async GetAttendee(token: string): Promise<AttendeeReply | null> {
-		const attendee = await this.attendeeRepository.FindByToken(token)
+	public async getAttendee(token: string): Promise<AttendeeReply | null> {
+		const attendee = await this.attendeeRepository.findByToken(token)
 
 		if (!attendee) {
 			return null

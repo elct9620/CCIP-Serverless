@@ -10,12 +10,12 @@ export type LandingResponse = {
 	nickname: string
 }
 
-export const Landing = async ({ attendeeInfo, query }: LandingRequest) => {
+export const landing = async ({ attendeeInfo, query }: LandingRequest) => {
 	if (!query.token) {
 		throw new StatusError(400, 'token required')
 	}
 
-	const info = await attendeeInfo.GetAttendee(query.token as string)
+	const info = await attendeeInfo.getAttendee(query.token as string)
 	if (!info) {
 		throw new StatusError(400, 'invalid token')
 	}
