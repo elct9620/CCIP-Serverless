@@ -3,7 +3,7 @@ import { WorkerWorld } from './world'
 import { expect } from 'expect'
 
 When('I make a GET request to {string}', async function (this: WorkerWorld, path: string) {
-	this.apiResponse = await this.api.fetch(`https://ccip.opass.io${path}`, { method: 'GET' })
+	this.apiResponse = await this.api.fetch(`https://ccip.opass.app${path}`, { method: 'GET' })
 })
 
 Then('the response status should be {int}', function (statusCode) {
