@@ -22,7 +22,11 @@ const router = Router()
 router
 	.all('*', withParams)
 	.all<IRequest, CF>('*', withUsecases)
-	.get<IRequest, CF>('/', () => new Response('CCIP Serverless'))
+	.get<IRequest, CF>('/', () =>
+		json({
+			version: '0.1.0',
+		})
+	)
 	// CCIP API
 	.get('/landing', API.landing)
 	// Default
