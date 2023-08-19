@@ -34,7 +34,7 @@ jobs:
           cache: 'yarn'
       - name: Setup
         run: yarn install --frozen-lockfile
-      - name: Vitest
+      - name: Cucumber
         run: yarn e2e:test
   vitest:
     runs-on: ubuntu-latest
