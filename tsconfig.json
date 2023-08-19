@@ -6,7 +6,8 @@
 		"lib": ["esnext"],
 		"strict": true,
 		"moduleResolution": "node",
+		"skipLibCheck": true,
 		"types": ["@cloudflare/workers-types"]
 	},
-	"exclude": ["node_modules", "dist", "tests", "features"]
+	"exclude": ["node_modules", "dist", "features"]
 }
