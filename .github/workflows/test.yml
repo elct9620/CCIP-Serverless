@@ -23,6 +23,19 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: TypeScript Check
         run: yarn tsc
+  cucumber:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+      - name: Setup
+        run: yarn install --frozen-lockfile
+      - name: Vitest
+        run: yarn e2e:test
   vitest:
     runs-on: ubuntu-latest
     steps:
@@ -35,4 +48,4 @@ jobs:
       - name: Setup
         run: yarn install --frozen-lockfile
       - name: Vitest
-        run: yarn test --coverage
+        run: yarn unit:test --coverage
