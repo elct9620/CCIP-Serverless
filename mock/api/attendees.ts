@@ -18,11 +18,3 @@ export async function createAttendeeHandler(req: IRequest, { DB }: Env) {
 
 	return json(info)
 }
-
-export async function createAttendee(worker: UnstableDevWorker, payload: CreateAttendeePayload) {
-	await worker.fetch('https://testability.opass.app/attendees', {
-		method: 'POST',
-		headers: { 'content-type': 'application/json' },
-		body: JSON.stringify(payload),
-	})
-}

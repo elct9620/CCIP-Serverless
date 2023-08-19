@@ -12,7 +12,3 @@ export async function resetHandler(req: IRequest, { DB }: Env) {
 
 	return json({ message: 'ok' })
 }
-
-export async function reset(worker: UnstableDevWorker) {
-	await worker.fetch('https://testability.opass.app/reset', { method: 'POST' })
-}

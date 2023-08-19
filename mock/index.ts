@@ -1,6 +1,6 @@
 import { error, json, Router, withParams, IRequest } from 'itty-router'
 import { D1Database, ExecutionContext } from '@cloudflare/workers-types'
-import * as Api from './mockApi'
+import * as Api from './api'
 
 type Env = {
 	DB: D1Database

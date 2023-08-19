@@ -17,7 +17,7 @@ BeforeAll(async () => {
 		env: 'test',
 		experimental: { disableExperimentalWarning: true },
 	})
-	mockWorker = await unstable_dev('tests/mock.ts', {
+	mockWorker = await unstable_dev('mock/index.ts', {
 		env: 'test',
 		experimental: { disableExperimentalWarning: true },
 	})
