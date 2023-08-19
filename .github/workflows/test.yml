@@ -48,4 +48,4 @@ jobs:
       - name: Setup
         run: yarn install --frozen-lockfile
       - name: Vitest
-        run: yarn unit:test --coverage
+        run: yarn unit:test --coverage --passWithNoTests
