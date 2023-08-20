@@ -29,6 +29,7 @@ router
 	)
 	// CCIP API
 	.get('/landing', API.landing)
+	.get('/status', API.status)
 	// Default
 	.all('*', () => API.error(404))
 
