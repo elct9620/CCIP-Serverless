@@ -1,5 +1,5 @@
 import { type D1Database } from '@cloudflare/workers-types'
-import { Ruleset } from '../entity'
+import { Ruleset, Scenario } from '../entity'
 
 type RulesetSchema = {
 	event_id: string
@@ -29,10 +29,24 @@ export class D1RulesetRepository {
 			scenarios = {}
 		}
 
-		return new Ruleset({
+		const ruleset = new Ruleset({
 			eventId: result.event_id,
 			name: result.name,
-			scenarios,
 		})
+
+		for (const scenarioId in scenarios) {
+			const scenario = buildScenario(scenarioId, scenarios[scenarioId])
+			ruleset.addScenario(scenario)
+		}
+
+		return ruleset
 	}
+}
+
+function buildScenario(id: string, data: Record<string, any>): Scenario {
+	return new Scenario({
+		id,
+		order: data.order,
+		displayText: data.display_text,
+	})
 }

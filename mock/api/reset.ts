@@ -8,6 +8,7 @@ type Env = {
 
 export async function resetHandler(req: IRequest, { DB }: Env) {
 	await DB.prepare(`DELETE FROM attendees`).run()
+	await DB.prepare(`DELETE FROM rulesets`).run()
 	await DB.prepare(`VACUUM`).run()
 
 	return json({ message: 'ok' })

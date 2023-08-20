@@ -39,7 +39,19 @@ export const status = async ({ attendeeInfo, query }: StatusRequest) => {
 		user_id: info.displayName,
 		first_use: datetimeToUnix(info.firstUsedAt),
 		role: info.role,
-		scenario: info.scenario,
+		scenario: formatScenario(info.scenario),
 		attr: info.metadata ?? {},
 	})
+}
+
+function formatScenario(scenario: Record<string, any>) {
+	const result: Record<string, any> = {}
+	for (const key in scenario) {
+		const value = scenario[key]
+		result[key] = {
+			order: value.order,
+			display_text: value.displayText,
+		}
+	}
+	return result
 }
