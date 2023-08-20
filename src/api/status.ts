@@ -39,7 +39,7 @@ export const status = async ({ attendeeInfo, query }: StatusRequest) => {
 		user_id: info.displayName,
 		first_use: datetimeToUnix(info.firstUsedAt),
 		role: info.role,
-		scenario: {},
+		scenario: info.scenario,
 		attr: info.metadata ?? {},
 	})
 }
