@@ -2,7 +2,7 @@ import { AttendeeRepository } from './repository'
 
 export interface AttendeeReply {
 	nickname: string
-	firstUsedAt: Date
+	firstUsedAt: Date | null
 }
 
 export class AttendeeInfo {
@@ -21,7 +21,7 @@ export class AttendeeInfo {
 
 		return {
 			nickname: attendee.userId,
-			firstUsedAt: new Date(1692489600),
+			firstUsedAt: attendee.firstUsedAt,
 		}
 	}
 }

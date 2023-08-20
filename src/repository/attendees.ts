@@ -1,9 +1,10 @@
-import type { D1Database } from '@cloudflare/workers-types'
+import { console, type D1Database } from '@cloudflare/workers-types'
 import { Attendee } from '../entity'
 
 type AttendeeSchema = {
 	token: string
 	user_id: string
+	first_used_at?: string
 }
 
 export class D1AttendeeRepository {
@@ -21,6 +22,10 @@ export class D1AttendeeRepository {
 			return null
 		}
 
-		return new Attendee(token, result.user_id)
+		return new Attendee({
+			token: result.token,
+			userId: result.user_id,
+			firstUsedAt: result.first_used_at ? new Date(result.first_used_at) : undefined,
+		})
 	}
 }

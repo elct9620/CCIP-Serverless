@@ -6,7 +6,7 @@ When('I make a GET request to {string}', async function (this: WorkerWorld, path
 	this.apiResponse = await this.api.fetch(`https://ccip.opass.app${path}`, { method: 'GET' })
 })
 
-Then('the response status should be {int}', function (statusCode) {
+Then('the response status should be {int}', async function (statusCode) {
 	expect(this.apiResponse?.status).toEqual(statusCode)
 })
 

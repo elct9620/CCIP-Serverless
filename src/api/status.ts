@@ -8,7 +8,15 @@ export type StatusRequest = {
 
 export type StatusResponse = {
 	user_id: string
-	first_use: number
+	first_use: number | null
+}
+
+const datetimeToUnix = (datetime: Date | null): number | null => {
+	if (!datetime) {
+		return null
+	}
+
+	return datetime.getTime() / 1000
 }
 
 export const status = async ({ attendeeInfo, query }: StatusRequest) => {
@@ -23,6 +31,6 @@ export const status = async ({ attendeeInfo, query }: StatusRequest) => {
 
 	return json<StatusResponse>({
 		user_id: info.nickname,
-		first_use: info.firstUsedAt.getTime(),
+		first_use: datetimeToUnix(info.firstUsedAt),
 	})
 }
