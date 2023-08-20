@@ -27,3 +27,17 @@ Feature: Status
 				"role": "audience"
 			}
 			"""
+	Scenario: When attendee is staff then role is staff
+		Given there have some attendees
+			| token                                | display_name | role  | first_used_at             |
+			| f185f505-d8c0-43ce-9e7b-bb9e8909072d | Aotoki       | staff | 2023-08-20 00:00:00 GMT+0 |
+		When I make a GET request to "/status?token=f185f505-d8c0-43ce-9e7b-bb9e8909072d"
+		Then the response status should be 200
+		And the response json should be:
+			"""
+			{
+				"user_id": "Aotoki",
+				"first_use": 1692489600,
+				"role": "staff"
+			}
+			"""

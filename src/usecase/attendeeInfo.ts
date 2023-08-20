@@ -28,7 +28,7 @@ export class AttendeeInfo {
 		return {
 			displayName: attendee.displayName,
 			firstUsedAt: attendee.firstUsedAt,
-			role: 'audience',
+			role: attendee.role,
 		}
 	}
 }

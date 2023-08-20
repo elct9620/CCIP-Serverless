@@ -9,15 +9,16 @@ type Env = {
 export type CreateAttendeePayload = {
 	token: string
 	display_name: string
+	role?: string
 	first_used_at?: string
 }
 
 export async function createAttendeeHandler(req: IRequest, { DB }: Env) {
-	const { token, display_name, first_used_at } = (await req.json()) as CreateAttendeePayload
+	const { token, display_name, role, first_used_at } = (await req.json()) as CreateAttendeePayload
 	const stmt = await DB.prepare(
-		`INSERT INTO attendees (token, display_name, first_used_at) VALUES (?, ?, ?)`
+		`INSERT INTO attendees (token, display_name, role, first_used_at) VALUES (?, ?, ?, ?)`
 	)
-	const info = await stmt.bind(token, display_name, first_used_at ?? null).run()
+	const info = await stmt.bind(token, display_name, role ?? 'audience', first_used_at ?? null).run()
 
 	return json(info)
 }
