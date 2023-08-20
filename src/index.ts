@@ -12,7 +12,8 @@ type CF = [env: Env, context: ExecutionContext]
 
 const withUsecases = (request: IRequest, env: Env, context: ExecutionContext) => {
 	const attendeeRepository = new Repository.D1AttendeeRepository(env.DB)
-	const attendeeInfo = new UseCase.AttendeeInfo(attendeeRepository)
+	const rulesetRepository = new Repository.D1RulesetRepository(env.DB)
+	const attendeeInfo = new UseCase.AttendeeInfo(attendeeRepository, rulesetRepository)
 
 	request.attendeeInfo = attendeeInfo
 }

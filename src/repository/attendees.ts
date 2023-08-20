@@ -1,4 +1,4 @@
-import { console, type D1Database } from '@cloudflare/workers-types'
+import { type D1Database } from '@cloudflare/workers-types'
 import { Attendee, AttendeeRole } from '../entity'
 
 type AttendeeSchema = {
@@ -11,7 +11,7 @@ type AttendeeSchema = {
 }
 
 export class D1AttendeeRepository {
-	private db: D1Database
+	private readonly db: D1Database
 
 	constructor(db: D1Database) {
 		this.db = db
