@@ -51,5 +51,6 @@ function buildScenario(id: string, data: Record<string, any>): Scenario {
 		showCondition: data.show_condition,
 		locked: data.locked,
 		lockReason: data.lock_reason,
+		unlockCondition: data.unlock_condition,
 	})
 }

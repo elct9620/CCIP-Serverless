@@ -16,7 +16,11 @@ export function buildAttendeeScenario(attendee: Attendee, ruleset: Ruleset): Rec
 			continue
 		}
 
-		const disableReason = scenario.isLocked ? scenario.lockReason : null
+		let disableReason = scenario.isLocked ? scenario.lockReason : null
+		const isUnlocked = isAttendeeMatchCondition(attendee, scenario.unlockCondition, false)
+		if (isUnlocked) {
+			disableReason = null
+		}
 
 		scenarios[scenarioId] = {
 			order: scenario.order,
@@ -30,10 +34,11 @@ export function buildAttendeeScenario(attendee: Attendee, ruleset: Ruleset): Rec
 
 const isAttendeeMatchCondition = (
 	attendee: Attendee,
-	condition: ValueMatchCondition | null
+	condition: ValueMatchCondition | null,
+	defaultValue: boolean = true
 ): boolean => {
 	if (!condition) {
-		return true
+		return defaultValue
 	}
 
 	return attendee.getMetadata(condition.key) === condition.value
