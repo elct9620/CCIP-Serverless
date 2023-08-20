@@ -23,6 +23,7 @@ Feature: Status
 			"""
 			{
 				"user_id": "Aotoki",
-				"first_use": 1692489600
+				"first_use": 1692489600,
+				"role": "audience"
 			}
 			"""

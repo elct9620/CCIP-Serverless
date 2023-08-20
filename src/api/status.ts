@@ -9,6 +9,7 @@ export type StatusRequest = {
 export type StatusResponse = {
 	user_id: string
 	first_use: number | null
+	role: string
 }
 
 const datetimeToUnix = (datetime: Date | null): number | null => {
@@ -33,5 +34,6 @@ export const status = async ({ attendeeInfo, query }: StatusRequest) => {
 	return json<StatusResponse>({
 		user_id: info.displayName,
 		first_use: datetimeToUnix(info.firstUsedAt),
+		role: info.role,
 	})
 }
