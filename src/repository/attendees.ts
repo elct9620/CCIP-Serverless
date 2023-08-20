@@ -7,6 +7,7 @@ type AttendeeSchema = {
 	display_name: string
 	role: string
 	first_used_at?: string
+	metadata?: string
 }
 
 export class D1AttendeeRepository {
@@ -24,12 +25,20 @@ export class D1AttendeeRepository {
 			return null
 		}
 
+		let metadata: Record<string, any>
+		try {
+			metadata = result.metadata ? JSON.parse(result.metadata) : {}
+		} catch (e) {
+			metadata = {}
+		}
+
 		return new Attendee({
 			token: result.token,
 			eventId: result.event_id,
 			displayName: result.display_name,
 			role: result.role === 'staff' ? AttendeeRole.Staff : AttendeeRole.Audience,
 			firstUsedAt: result.first_used_at ? new Date(result.first_used_at) : undefined,
+			metadata: metadata,
 		})
 	}
 

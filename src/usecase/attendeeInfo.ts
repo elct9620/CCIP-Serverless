@@ -5,6 +5,7 @@ export interface AttendeeReply {
 	displayName: string
 	firstUsedAt: Date | null
 	role: string
+	metadata: Record<string, any>
 }
 
 export class AttendeeInfo {
@@ -31,6 +32,7 @@ export class AttendeeInfo {
 			displayName: attendee.displayName,
 			firstUsedAt: attendee.firstUsedAt,
 			role: attendee.role,
+			metadata: attendee.metadata,
 		}
 	}
 }

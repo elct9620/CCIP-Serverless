@@ -4,6 +4,7 @@ type AttendeeAttributes = {
 	displayName: string
 	firstUsedAt?: Date
 	role: AttendeeRole
+	metadata: Record<string, any>
 }
 
 export enum AttendeeRole {
@@ -17,6 +18,7 @@ export class Attendee {
 	public readonly displayName: string
 	public readonly role: AttendeeRole = AttendeeRole.Audience
 
+	private _metadata: Record<string, any> = {}
 	private _firstUsedAt: Date | null = null
 
 	constructor(attributes: AttendeeAttributes) {
@@ -24,11 +26,16 @@ export class Attendee {
 		this.eventId = attributes.eventId
 		this.displayName = attributes.displayName
 		this.role = attributes.role
+		this._metadata = attributes.metadata
 		this._firstUsedAt = attributes.firstUsedAt ?? null
 	}
 
 	get firstUsedAt(): Date | null {
 		return this._firstUsedAt
+	}
+
+	get metadata(): Record<string, any> {
+		return this._metadata
 	}
 
 	touch(): void {
