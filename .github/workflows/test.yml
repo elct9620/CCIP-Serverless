@@ -8,6 +8,7 @@ on:
 
 env:
   NODE_VERSION: 18.x
+  CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
 
 jobs:
   tsc:
