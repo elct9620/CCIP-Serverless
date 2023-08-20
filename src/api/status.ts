@@ -11,6 +11,7 @@ export type StatusResponse = {
 	user_id: string
 	first_use: number | null
 	role: string
+	scenario: Record<string, any>
 	attr: Record<string, any>
 }
 
@@ -38,6 +39,7 @@ export const status = async ({ attendeeInfo, query }: StatusRequest) => {
 		user_id: info.displayName,
 		first_use: datetimeToUnix(info.firstUsedAt),
 		role: info.role,
+		scenario: {},
 		attr: info.metadata ?? {},
 	})
 }

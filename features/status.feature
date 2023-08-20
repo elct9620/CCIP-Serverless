@@ -26,6 +26,7 @@ Feature: Status
 				"user_id": "Aotoki",
 				"first_use": 1692489600,
 				"role": "audience",
+				"scenario": {},
 				"attr": {}
 			}
 			"""
@@ -42,6 +43,7 @@ Feature: Status
 				"user_id": "Aotoki",
 				"first_use": 1692489600,
 				"role": "staff",
+				"scenario": {},
 				"attr": {}
 			}
 			"""
@@ -58,6 +60,7 @@ Feature: Status
 				"user_id": "Aotoki",
 				"first_use": 1692489600,
 				"role": "staff",
+				"scenario": {},
 				"attr": {
 					"title": "文創組組長"
 				}
