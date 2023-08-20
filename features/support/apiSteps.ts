@@ -15,3 +15,12 @@ Then('the response json should be:', async function (this: WorkerWorld, expected
 	const actualJson = await this.apiResponse?.json()
 	expect(actualJson).toMatchObject(expectedJson)
 })
+
+Then(
+	'the response json should have property {string} is not null',
+	async function (this: WorkerWorld, property) {
+		const actualJson = await this.apiResponse?.json()
+		expect(actualJson).toHaveProperty(property)
+		expect(actualJson[property]).not.toBeNull()
+	}
+)

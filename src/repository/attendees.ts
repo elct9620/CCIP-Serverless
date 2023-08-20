@@ -28,4 +28,9 @@ export class D1AttendeeRepository {
 			firstUsedAt: result.first_used_at ? new Date(result.first_used_at) : undefined,
 		})
 	}
+
+	async save(attendee: Attendee): Promise<void> {
+		const stmt = this.db.prepare('UPDATE attendees SET first_used_at = ? WHERE token = ?')
+		await stmt.bind(attendee.firstUsedAt?.toISOString(), attendee.token).run()
+	}
 }
