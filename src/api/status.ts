@@ -7,6 +7,7 @@ export type StatusRequest = {
 } & IRequest
 
 export type StatusResponse = {
+	event_id: string
 	user_id: string
 	first_use: number | null
 	role: string
@@ -32,6 +33,7 @@ export const status = async ({ attendeeInfo, query }: StatusRequest) => {
 	}
 
 	return json<StatusResponse>({
+		event_id: info.eventId,
 		user_id: info.displayName,
 		first_use: datetimeToUnix(info.firstUsedAt),
 		role: info.role,

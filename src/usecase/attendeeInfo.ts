@@ -1,6 +1,7 @@
 import { AttendeeRepository } from './repository'
 
 export interface AttendeeReply {
+	eventId: string
 	displayName: string
 	firstUsedAt: Date | null
 	role: string
@@ -26,6 +27,7 @@ export class AttendeeInfo {
 		}
 
 		return {
+			eventId: attendee.eventId,
 			displayName: attendee.displayName,
 			firstUsedAt: attendee.firstUsedAt,
 			role: attendee.role,

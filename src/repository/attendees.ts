@@ -3,6 +3,7 @@ import { Attendee, AttendeeRole } from '../entity'
 
 type AttendeeSchema = {
 	token: string
+	event_id: string
 	display_name: string
 	role: string
 	first_used_at?: string
@@ -25,6 +26,7 @@ export class D1AttendeeRepository {
 
 		return new Attendee({
 			token: result.token,
+			eventId: result.event_id,
 			displayName: result.display_name,
 			role: result.role === 'staff' ? AttendeeRole.Staff : AttendeeRole.Audience,
 			firstUsedAt: result.first_used_at ? new Date(result.first_used_at) : undefined,

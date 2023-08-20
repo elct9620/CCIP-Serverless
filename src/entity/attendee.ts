@@ -1,5 +1,6 @@
 type AttendeeAttributes = {
 	token: string
+	eventId: string
 	displayName: string
 	firstUsedAt?: Date
 	role: AttendeeRole
@@ -12,6 +13,7 @@ export enum AttendeeRole {
 
 export class Attendee {
 	public readonly token: string
+	public readonly eventId: string
 	public readonly displayName: string
 	public readonly role: AttendeeRole = AttendeeRole.Audience
 
@@ -19,6 +21,7 @@ export class Attendee {
 
 	constructor(attributes: AttendeeAttributes) {
 		this.token = attributes.token
+		this.eventId = attributes.eventId
 		this.displayName = attributes.displayName
 		this.role = attributes.role
 		this._firstUsedAt = attributes.firstUsedAt ?? null
