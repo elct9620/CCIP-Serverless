@@ -5,31 +5,28 @@ type ValueMatchCondition = {
 	value: string
 }
 
-export function buildAttendeeScenario(attendee: Attendee, ruleset: Ruleset): Record<string, any> {
-	let scenarios: Record<string, any> = {}
+export function unlockScenarios(attendee: Attendee, ruleset?: Ruleset | null): void {
+	if (!ruleset) {
+		return
+	}
 
 	for (const scenarioId in ruleset.scenarios) {
 		const scenario = ruleset.scenarios[scenarioId]
-
-		const skipForAttendee = !isAttendeeMatchCondition(attendee, scenario.showCondition)
-		if (skipForAttendee) {
-			continue
-		}
-
-		let disableReason = scenario.isLocked ? scenario.lockReason : null
-		const isUnlocked = isAttendeeMatchCondition(attendee, scenario.unlockCondition, false)
-		if (isUnlocked) {
-			disableReason = null
-		}
-
-		scenarios[scenarioId] = {
-			order: scenario.order,
-			displayText: scenario.displayText,
-			disableReason,
+		const isUnlockable = isAttendeeMatchCondition(attendee, scenario.unlockCondition, false)
+		if (scenario.isLocked && isUnlockable) {
+			scenario.unlock()
 		}
 	}
+}
 
-	return scenarios
+export function filterVisibleScenarios(attendee: Attendee, ruleset?: Ruleset | null): Scenario[] {
+	if (!ruleset) {
+		return []
+	}
+
+	return Object.values(ruleset.scenarios).filter(scenario => {
+		return isAttendeeMatchCondition(attendee, scenario.showCondition)
+	})
 }
 
 const isAttendeeMatchCondition = (

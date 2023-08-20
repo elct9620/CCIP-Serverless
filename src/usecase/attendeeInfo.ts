@@ -1,5 +1,6 @@
 import { AttendeeRepository, RulesetRepository } from './repository'
-import { buildAttendeeScenario } from '../service'
+import { filterVisibleScenarios, unlockScenarios } from '../service'
+import { Scenario } from '../entity'
 
 export type AttendeeScenario = {
 	order: number
@@ -31,11 +32,9 @@ export class AttendeeInfo {
 			return null
 		}
 
-		let scenario: Record<string, any> = {}
+		let scenarios: Scenario[] = []
 		const ruleset = await this.rulesetRepository.findByEventId(attendee.eventId, attendee.role)
-		if (ruleset) {
-			scenario = buildAttendeeScenario(attendee, ruleset)
-		}
+		unlockScenarios(attendee, ruleset)
 
 		if (touch) {
 			attendee.touch()
@@ -48,7 +47,21 @@ export class AttendeeInfo {
 			firstUsedAt: attendee.firstUsedAt,
 			role: attendee.role,
 			metadata: attendee.metadata,
-			scenario,
+			scenario: buildAttendeeScenario(filterVisibleScenarios(attendee, ruleset)),
 		}
 	}
+}
+
+function buildAttendeeScenario(scenarios: Scenario[]): Record<string, any> {
+	let result: Record<string, any> = {}
+
+	for (const scenario of scenarios) {
+		result[scenario.id] = {
+			order: scenario.order,
+			displayText: scenario.displayText,
+			disableReason: scenario.isLocked ? scenario.lockReason : null,
+		}
+	}
+
+	return result
 }

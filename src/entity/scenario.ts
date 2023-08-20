@@ -59,6 +59,10 @@ export class Scenario {
 		return this._locked
 	}
 
+	unlock(): void {
+		this._locked = false
+	}
+
 	get lockReason(): string {
 		return this._lockReason || 'Locked'
 	}
