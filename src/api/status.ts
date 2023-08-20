@@ -1,6 +1,6 @@
 import { IRequest, StatusError } from 'itty-router'
 import { json, error } from './helper'
-import { AttendeeInfo } from '../usecase'
+import { AttendeeInfo, AttendeeScenario } from '../usecase'
 
 export type StatusRequest = {
 	attendeeInfo: AttendeeInfo
@@ -44,13 +44,14 @@ export const status = async ({ attendeeInfo, query }: StatusRequest) => {
 	})
 }
 
-function formatScenario(scenario: Record<string, any>) {
+function formatScenario(scenario: Record<string, AttendeeScenario>) {
 	const result: Record<string, any> = {}
 	for (const key in scenario) {
 		const value = scenario[key]
 		result[key] = {
 			order: value.order,
 			display_text: value.displayText,
+			disabled: value.disableReason,
 		}
 	}
 	return result

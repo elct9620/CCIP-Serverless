@@ -15,6 +15,8 @@ export type ScenarioAttribute = {
 	order?: number
 	displayText?: LocalizedText
 	showCondition?: ValueMatchCondition
+	locked?: boolean
+	lockReason?: string
 }
 
 export class Scenario {
@@ -24,11 +26,16 @@ export class Scenario {
 	private _displayText: LocalizedText = {}
 	private _showCondition?: ValueMatchCondition
 
+	private _locked: boolean = false
+	private _lockReason?: string
+
 	constructor(attribute: ScenarioAttribute) {
 		this.id = attribute.id
 		this.order = attribute.order || 0
 		this._displayText = attribute.displayText ?? {}
 		this._showCondition = attribute.showCondition
+		this._locked = attribute.locked ?? false
+		this._lockReason = attribute.lockReason
 	}
 
 	get displayText(): LocalizedText {
@@ -41,5 +48,13 @@ export class Scenario {
 		}
 
 		return { ...this._showCondition }
+	}
+
+	get isLocked(): boolean {
+		return this._locked
+	}
+
+	get lockReason(): string {
+		return this._lockReason || 'Locked'
 	}
 }

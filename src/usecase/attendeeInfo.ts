@@ -1,12 +1,18 @@
 import { AttendeeRepository, RulesetRepository } from './repository'
 import { buildAttendeeScenario } from '../service'
 
-export interface AttendeeReply {
+export type AttendeeScenario = {
+	order: number
+	displayText: Record<string, string>
+	disableReason: string | null
+}
+
+export type AttendeeReply = {
 	eventId: string
 	displayName: string
 	firstUsedAt: Date | null
 	role: string
-	scenario: Record<string, any>
+	scenario: Record<string, AttendeeScenario>
 	metadata: Record<string, any>
 }
 

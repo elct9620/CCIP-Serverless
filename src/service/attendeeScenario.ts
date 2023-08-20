@@ -16,9 +16,12 @@ export function buildAttendeeScenario(attendee: Attendee, ruleset: Ruleset): Rec
 			continue
 		}
 
+		const disableReason = scenario.isLocked ? scenario.lockReason : null
+
 		scenarios[scenarioId] = {
 			order: scenario.order,
 			displayText: scenario.displayText,
+			disableReason,
 		}
 	}
 
