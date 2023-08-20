@@ -38,6 +38,10 @@ export class Attendee {
 		return { ...this._metadata }
 	}
 
+	getMetadata(key: string): any {
+		return this._metadata[key]
+	}
+
 	touch(): void {
 		if (!this._firstUsedAt) {
 			this._firstUsedAt = new Date()

@@ -48,5 +48,6 @@ function buildScenario(id: string, data: Record<string, any>): Scenario {
 		id,
 		order: data.order,
 		displayText: data.display_text,
+		showCondition: data.show_condition,
 	})
 }

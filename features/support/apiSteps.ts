@@ -13,7 +13,7 @@ Then('the response status should be {int}', async function (statusCode) {
 Then('the response json should be:', async function (this: WorkerWorld, expectedJsonString) {
 	const expectedJson = JSON.parse(expectedJsonString)
 	const actualJson = await this.apiResponse?.json()
-	expect(actualJson).toMatchObject(expectedJson)
+	expect(actualJson).toEqual(expectedJson)
 })
 
 Then(
