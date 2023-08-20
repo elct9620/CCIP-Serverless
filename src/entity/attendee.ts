@@ -35,7 +35,7 @@ export class Attendee {
 	}
 
 	get metadata(): Record<string, any> {
-		return this._metadata
+		return { ...this._metadata }
 	}
 
 	touch(): void {
