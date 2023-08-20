@@ -24,7 +24,8 @@ export const status = async ({ attendeeInfo, query }: StatusRequest) => {
 		throw new StatusError(400, 'token required')
 	}
 
-	const info = await attendeeInfo.getAttendee(query.token as string, true)
+	const isStaffQuery = query.StaffQuery === 'true'
+	const info = await attendeeInfo.getAttendee(query.token as string, !isStaffQuery)
 	if (!info) {
 		throw new StatusError(400, 'invalid token')
 	}
