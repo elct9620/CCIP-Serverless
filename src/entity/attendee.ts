@@ -1,18 +1,18 @@
 type AttendeeAttributes = {
 	token: string
-	userId: string
+	displayName: string
 	firstUsedAt?: Date
 }
 
 export class Attendee {
 	public readonly token: string
-	public readonly userId: string
+	public readonly displayName: string
 
 	private _firstUsedAt: Date | null = null
 
 	constructor(attributes: AttendeeAttributes) {
 		this.token = attributes.token
-		this.userId = attributes.userId
+		this.displayName = attributes.displayName
 		this._firstUsedAt = attributes.firstUsedAt ?? null
 	}
 

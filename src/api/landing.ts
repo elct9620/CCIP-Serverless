@@ -20,5 +20,5 @@ export const landing = async ({ attendeeInfo, query }: LandingRequest) => {
 		throw new StatusError(400, 'invalid token')
 	}
 
-	return json<LandingResponse>({ nickname: info.nickname })
+	return json<LandingResponse>({ nickname: info.displayName })
 }

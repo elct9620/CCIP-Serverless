@@ -31,7 +31,7 @@ export const status = async ({ attendeeInfo, query }: StatusRequest) => {
 	}
 
 	return json<StatusResponse>({
-		user_id: info.nickname,
+		user_id: info.displayName,
 		first_use: datetimeToUnix(info.firstUsedAt),
 	})
 }
