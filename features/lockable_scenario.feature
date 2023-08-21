@@ -109,8 +109,7 @@ Feature: Lockable Scenario
 					}
 				},
 				"attr": {
-					"個人贊助": "Y",
-					"_checkin": "Y"
+					"個人贊助": "Y"
 				}
 			}
 			"""

@@ -35,7 +35,15 @@ export class Attendee {
 	}
 
 	get metadata(): Record<string, any> {
-		return { ...this._metadata }
+		const publicMetadata: Record<string, any> = {}
+		for (const key in this._metadata) {
+			if (key.startsWith('_')) {
+				continue
+			}
+			publicMetadata[key] = this._metadata[key]
+		}
+
+		return publicMetadata
 	}
 
 	getMetadata(key: string): any {
