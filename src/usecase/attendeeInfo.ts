@@ -1,6 +1,6 @@
 import { AttendeeRepository, RulesetRepository } from './repository'
 import { filterVisibleScenarios, unlockScenarios } from '../service'
-import { Scenario } from '../entity'
+import { Scenario } from '../model'
 
 export type AttendeeScenario = {
 	order: number

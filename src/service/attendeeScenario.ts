@@ -1,4 +1,4 @@
-import { Attendee, Ruleset, Scenario } from '../entity'
+import { Attendee, Ruleset, Scenario } from '../model'
 
 type ValueMatchCondition = {
 	key: string
