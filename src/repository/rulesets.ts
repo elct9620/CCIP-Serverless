@@ -1,10 +1,26 @@
 import { type D1Database } from '@cloudflare/workers-types'
-import { Ruleset, Scenario } from '../model'
+import { Ruleset, Scenario, ScenarioConditionType, Condition } from '../model'
 
 type RulesetSchema = {
 	event_id: string
 	name: string
 	scenarios: string
+}
+
+type ConditionSchema = {
+	type: string
+	args: any[]
+	reason?: string
+}
+
+type ScenarioSchema = {
+	order: number
+	display_text: string
+	show_condition: string
+	locked: boolean
+	lock_reason: string
+	unlock_condition: string
+	conditions: Record<string, ConditionSchema[]>
 }
 
 export class D1RulesetRepository {
@@ -22,7 +38,7 @@ export class D1RulesetRepository {
 			return null
 		}
 
-		let scenarios: Record<string, any>
+		let scenarios: Record<string, ScenarioSchema>
 		try {
 			scenarios = JSON.parse(result.scenarios)
 		} catch (e) {
@@ -44,7 +60,7 @@ export class D1RulesetRepository {
 }
 
 function buildScenario(data: Record<string, any>): Scenario {
-	return new Scenario({
+	const scenario = new Scenario({
 		order: data.order,
 		displayText: data.display_text,
 		showCondition: data.show_condition,
@@ -52,4 +68,15 @@ function buildScenario(data: Record<string, any>): Scenario {
 		lockReason: data.lock_reason,
 		unlockCondition: data.unlock_condition,
 	})
+
+	for (const conditionType in data.conditions) {
+		for (const condition of data.conditions[conditionType]) {
+			scenario.addCondition(
+				conditionType as ScenarioConditionType,
+				new Condition(condition.type, condition.args, condition.reason)
+			)
+		}
+	}
+
+	return scenario
 }

@@ -1,4 +1,4 @@
-import { Attendee, Ruleset, Scenario } from '../model'
+import { Attendee, ConditionType, Ruleset, Scenario, ScenarioConditionType } from '../model'
 
 type ValueMatchCondition = {
 	key: string
@@ -18,11 +18,23 @@ export function unlockScenarios(attendee: Attendee, ruleset: Ruleset): void {
 export function hideScenarios(attendee: Attendee, ruleset: Ruleset) {
 	for (const scenarioId in ruleset.scenarios) {
 		const scenario = ruleset.scenarios[scenarioId]
-		const isVisible = isAttendeeMatchCondition(attendee, scenario.showCondition)
+		const conditions = scenario.conditionsOf(ScenarioConditionType.Visible)
+		const isVisible = conditions.reduce((acc, condition) => {
+			if (condition.type != ConditionType.AttendeeAttribute) {
+				return acc
+			}
+
+			return acc && isAttendeeAttributeMatchCondition(attendee, ...condition.args)
+		}, true)
+
 		if (!isVisible) {
 			scenario.hide()
 		}
 	}
+}
+
+const isAttendeeAttributeMatchCondition = (attendee: Attendee, ...args: any[]): boolean => {
+	return attendee.getMetadata(args[0] as string) === (args[1] as string)
 }
 
 const isAttendeeMatchCondition = (

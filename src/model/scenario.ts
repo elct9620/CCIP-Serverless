@@ -1,6 +1,13 @@
+import { Condition } from './condition'
+
 export enum ScenarioLocale {
 	zhTW = 'zh-TW',
 	enUS = 'en-US',
+}
+
+export enum ScenarioConditionType {
+	Visible = 'show',
+	Unlock = 'unlock',
 }
 
 export type LocalizedText = Partial<Record<ScenarioLocale, string>>
@@ -19,8 +26,12 @@ export type ScenarioAttribute = {
 	unlockCondition?: ValueMatchCondition
 }
 
+type ScenarioConditionMap = Record<ScenarioConditionType, Condition[]>
+
 export class Scenario {
 	public readonly order: number
+
+	private conditions: Partial<ScenarioConditionMap> = {}
 
 	private _displayText: LocalizedText = {}
 	private _visible: boolean = true
@@ -39,6 +50,18 @@ export class Scenario {
 		this._locked = attribute.locked ?? false
 		this._lockReason = attribute.lockReason
 		this._unlockCondition = attribute.unlockCondition
+	}
+
+	addCondition(type: ScenarioConditionType, condition: Condition): void {
+		if (!this.conditions[type]) {
+			this.conditions[type] = []
+		}
+
+		this.conditions[type]?.push(condition)
+	}
+
+	conditionsOf(type: ScenarioConditionType): Condition[] {
+		return this.conditions[type] ?? []
 	}
 
 	get displayText(): LocalizedText {
