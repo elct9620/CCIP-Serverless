@@ -12,11 +12,6 @@ export enum ScenarioConditionType {
 
 export type LocalizedText = Partial<Record<ScenarioLocale, string>>
 
-type ValueMatchCondition = {
-	key: string
-	value: string
-}
-
 export type ScenarioAttribute = {
 	order?: number
 	displayText?: LocalizedText
@@ -31,11 +26,9 @@ export class Scenario {
 
 	private _displayText: LocalizedText = {}
 	private _visible: boolean = true
-	private _showCondition?: ValueMatchCondition
 
 	private _locked: boolean = false
 	private _lockReason?: string
-	private _unlockCondition?: ValueMatchCondition
 
 	constructor(attribute: ScenarioAttribute) {
 		this.order = attribute.order || 0
