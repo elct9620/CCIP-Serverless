@@ -19,14 +19,24 @@ export function unlockScenarios(attendee: Attendee, ruleset?: Ruleset | null): v
 	}
 }
 
-export function filterVisibleScenarios(attendee: Attendee, ruleset?: Ruleset | null): Scenario[] {
+export function filterVisibleScenarios(
+	attendee: Attendee,
+	ruleset?: Ruleset | null
+): Record<string, Scenario> {
 	if (!ruleset) {
-		return []
+		return {}
 	}
 
-	return Object.values(ruleset.scenarios).filter(scenario => {
-		return isAttendeeMatchCondition(attendee, scenario.showCondition)
-	})
+	const visibleScenarios: Record<string, Scenario> = {}
+	for (const scenarioId in ruleset.scenarios) {
+		const scenario = ruleset.scenarios[scenarioId]
+		const isVisible = isAttendeeMatchCondition(attendee, scenario.showCondition)
+		if (isVisible) {
+			visibleScenarios[scenarioId] = scenario
+		}
+	}
+
+	return visibleScenarios
 }
 
 const isAttendeeMatchCondition = (

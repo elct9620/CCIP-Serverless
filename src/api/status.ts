@@ -51,7 +51,7 @@ function formatScenario(scenario: Record<string, AttendeeScenario>) {
 		result[key] = {
 			order: value.order,
 			display_text: value.displayText,
-			disabled: value.disableReason,
+			disabled: value.locked ? value.lockReason : null,
 		}
 	}
 	return result

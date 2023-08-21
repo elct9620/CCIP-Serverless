@@ -5,7 +5,8 @@ import { Scenario } from '../model'
 export type AttendeeScenario = {
 	order: number
 	displayText: Record<string, string>
-	disableReason: string | null
+	locked: boolean
+	lockReason: string | null
 }
 
 export type AttendeeReply = {
@@ -52,14 +53,16 @@ export class AttendeeInfo {
 	}
 }
 
-function buildAttendeeScenario(scenarios: Scenario[]): Record<string, any> {
+function buildAttendeeScenario(scenarios: Record<string, Scenario>): Record<string, any> {
 	let result: Record<string, any> = {}
 
-	for (const scenario of scenarios) {
-		result[scenario.id] = {
+	for (const scenarioId in scenarios) {
+		const scenario = scenarios[scenarioId]
+		result[scenarioId] = {
 			order: scenario.order,
 			displayText: scenario.displayText,
-			disableReason: scenario.isLocked ? scenario.lockReason : null,
+			locked: scenario.isLocked,
+			lockReason: scenario.lockReason,
 		}
 	}
 

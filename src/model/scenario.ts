@@ -11,7 +11,6 @@ type ValueMatchCondition = {
 }
 
 export type ScenarioAttribute = {
-	id: string
 	order?: number
 	displayText?: LocalizedText
 	showCondition?: ValueMatchCondition
@@ -21,7 +20,6 @@ export type ScenarioAttribute = {
 }
 
 export class Scenario {
-	public readonly id: string
 	public readonly order: number
 
 	private _displayText: LocalizedText = {}
@@ -32,7 +30,6 @@ export class Scenario {
 	private _unlockCondition?: ValueMatchCondition
 
 	constructor(attribute: ScenarioAttribute) {
-		this.id = attribute.id
 		this.order = attribute.order || 0
 
 		this._displayText = attribute.displayText ?? {}

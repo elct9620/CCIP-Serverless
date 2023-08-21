@@ -16,7 +16,7 @@ export class Ruleset {
 		this.scenarios = {}
 	}
 
-	addScenario(scenario: Scenario) {
-		this.scenarios[scenario.id] = scenario
+	addScenario(id: string, scenario: Scenario) {
+		this.scenarios[id] = scenario
 	}
 }

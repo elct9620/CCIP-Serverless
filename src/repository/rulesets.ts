@@ -35,17 +35,16 @@ export class D1RulesetRepository {
 		})
 
 		for (const scenarioId in scenarios) {
-			const scenario = buildScenario(scenarioId, scenarios[scenarioId])
-			ruleset.addScenario(scenario)
+			const scenario = buildScenario(scenarios[scenarioId])
+			ruleset.addScenario(scenarioId, scenario)
 		}
 
 		return ruleset
 	}
 }
 
-function buildScenario(id: string, data: Record<string, any>): Scenario {
+function buildScenario(data: Record<string, any>): Scenario {
 	return new Scenario({
-		id,
 		order: data.order,
 		displayText: data.display_text,
 		showCondition: data.show_condition,
