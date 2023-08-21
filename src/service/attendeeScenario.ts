@@ -1,50 +1,52 @@
-import { Attendee, ConditionType, Ruleset, Scenario, ScenarioConditionType } from '../model'
+import {
+	Attendee,
+	Condition,
+	ConditionType,
+	Ruleset,
+	Scenario,
+	ScenarioConditionType,
+} from '../model'
+import { getConditionHandler } from './conditions'
 
-type ValueMatchCondition = {
-	key: string
-	value: string
-}
-
-export function unlockScenarios(attendee: Attendee, ruleset: Ruleset): void {
+export async function unlockScenarios(attendee: Attendee, ruleset: Ruleset) {
 	for (const scenarioId in ruleset.scenarios) {
 		const scenario = ruleset.scenarios[scenarioId]
-		const isUnlockable = isAttendeeMatchCondition(attendee, scenario.unlockCondition, false)
-		if (scenario.isLocked && isUnlockable) {
+		const conditions = scenario.conditionsOf(ScenarioConditionType.Unlock)
+
+		try {
+			await executeConditions(attendee, conditions)
 			scenario.unlock()
+		} catch (e: any) {
+			scenario.lock((e as Error).message)
 		}
 	}
 }
 
-export function hideScenarios(attendee: Attendee, ruleset: Ruleset) {
+export async function hideScenarios(attendee: Attendee, ruleset: Ruleset) {
 	for (const scenarioId in ruleset.scenarios) {
 		const scenario = ruleset.scenarios[scenarioId]
 		const conditions = scenario.conditionsOf(ScenarioConditionType.Visible)
-		const isVisible = conditions.reduce((acc, condition) => {
-			if (condition.type != ConditionType.AttendeeAttribute) {
-				return acc
-			}
 
-			return acc && isAttendeeAttributeMatchCondition(attendee, ...condition.args)
-		}, true)
-
-		if (!isVisible) {
+		try {
+			await executeConditions(attendee, conditions, true)
+		} catch (e: any) {
 			scenario.hide()
 		}
 	}
 }
 
-const isAttendeeAttributeMatchCondition = (attendee: Attendee, ...args: any[]): boolean => {
-	return attendee.getMetadata(args[0] as string) === (args[1] as string)
-}
-
-const isAttendeeMatchCondition = (
+async function executeConditions(
 	attendee: Attendee,
-	condition: ValueMatchCondition | null,
-	defaultValue: boolean = true
-): boolean => {
-	if (!condition) {
-		return defaultValue
-	}
+	conditions: Condition[],
+	defaultValue: boolean = false
+): Promise<void> {
+	for (const condition of conditions) {
+		const conditionFn = getConditionHandler(condition.type, defaultValue)
 
-	return attendee.getMetadata(condition.key) === condition.value
+		if (conditionFn(attendee, ...condition.args)) {
+			return
+		} else {
+			throw new Error(condition.reason)
+		}
+	}
 }

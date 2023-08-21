@@ -16,10 +16,6 @@ type ConditionSchema = {
 type ScenarioSchema = {
 	order: number
 	display_text: string
-	show_condition: string
-	locked: boolean
-	lock_reason: string
-	unlock_condition: string
 	conditions: Record<string, ConditionSchema[]>
 }
 
@@ -63,10 +59,6 @@ function buildScenario(data: Record<string, any>): Scenario {
 	const scenario = new Scenario({
 		order: data.order,
 		displayText: data.display_text,
-		showCondition: data.show_condition,
-		locked: data.locked,
-		lockReason: data.lock_reason,
-		unlockCondition: data.unlock_condition,
 	})
 
 	for (const conditionType in data.conditions) {

@@ -40,8 +40,8 @@ export class AttendeeInfo {
 
 		const ruleset = await this.rulesetRepository.findByEventId(attendee.eventId, attendee.role)
 		if (ruleset) {
-			hideScenarios(attendee, ruleset)
-			unlockScenarios(attendee, ruleset)
+			await hideScenarios(attendee, ruleset)
+			await unlockScenarios(attendee, ruleset)
 		}
 
 		return {

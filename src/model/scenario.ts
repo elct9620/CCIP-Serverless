@@ -20,10 +20,6 @@ type ValueMatchCondition = {
 export type ScenarioAttribute = {
 	order?: number
 	displayText?: LocalizedText
-	showCondition?: ValueMatchCondition
-	locked?: boolean
-	lockReason?: string
-	unlockCondition?: ValueMatchCondition
 }
 
 type ScenarioConditionMap = Record<ScenarioConditionType, Condition[]>
@@ -43,13 +39,7 @@ export class Scenario {
 
 	constructor(attribute: ScenarioAttribute) {
 		this.order = attribute.order || 0
-
 		this._displayText = attribute.displayText ?? {}
-		this._showCondition = attribute.showCondition
-
-		this._locked = attribute.locked ?? false
-		this._lockReason = attribute.lockReason
-		this._unlockCondition = attribute.unlockCondition
 	}
 
 	addCondition(type: ScenarioConditionType, condition: Condition): void {
@@ -68,14 +58,6 @@ export class Scenario {
 		return { ...this._displayText }
 	}
 
-	get showCondition(): ValueMatchCondition | null {
-		if (!this._showCondition) {
-			return null
-		}
-
-		return { ...this._showCondition }
-	}
-
 	get isVisible(): boolean {
 		return this._visible
 	}
@@ -88,19 +70,16 @@ export class Scenario {
 		return this._locked
 	}
 
-	unlock(): void {
-		this._locked = false
-	}
-
 	get lockReason(): string {
 		return this._lockReason || 'Locked'
 	}
 
-	get unlockCondition(): ValueMatchCondition | null {
-		if (!this._unlockCondition) {
-			return null
-		}
+	lock(reason?: string): void {
+		this._locked = true
+		this._lockReason = reason
+	}
 
-		return { ...this._unlockCondition }
+	unlock(): void {
+		this._locked = false
 	}
 }
