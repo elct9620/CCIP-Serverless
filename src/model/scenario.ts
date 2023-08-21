@@ -23,6 +23,7 @@ export class Scenario {
 	public readonly order: number
 
 	private _displayText: LocalizedText = {}
+	private _visible: boolean = true
 	private _showCondition?: ValueMatchCondition
 
 	private _locked: boolean = false
@@ -50,6 +51,14 @@ export class Scenario {
 		}
 
 		return { ...this._showCondition }
+	}
+
+	get isVisible(): boolean {
+		return this._visible
+	}
+
+	hide(): void {
+		this._visible = false
 	}
 
 	get isLocked(): boolean {

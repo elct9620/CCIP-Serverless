@@ -5,11 +5,7 @@ type ValueMatchCondition = {
 	value: string
 }
 
-export function unlockScenarios(attendee: Attendee, ruleset?: Ruleset | null): void {
-	if (!ruleset) {
-		return
-	}
-
+export function unlockScenarios(attendee: Attendee, ruleset: Ruleset): void {
 	for (const scenarioId in ruleset.scenarios) {
 		const scenario = ruleset.scenarios[scenarioId]
 		const isUnlockable = isAttendeeMatchCondition(attendee, scenario.unlockCondition, false)
@@ -19,24 +15,14 @@ export function unlockScenarios(attendee: Attendee, ruleset?: Ruleset | null): v
 	}
 }
 
-export function filterVisibleScenarios(
-	attendee: Attendee,
-	ruleset?: Ruleset | null
-): Record<string, Scenario> {
-	if (!ruleset) {
-		return {}
-	}
-
-	const visibleScenarios: Record<string, Scenario> = {}
+export function hideScenarios(attendee: Attendee, ruleset: Ruleset) {
 	for (const scenarioId in ruleset.scenarios) {
 		const scenario = ruleset.scenarios[scenarioId]
 		const isVisible = isAttendeeMatchCondition(attendee, scenario.showCondition)
-		if (isVisible) {
-			visibleScenarios[scenarioId] = scenario
+		if (!isVisible) {
+			scenario.hide()
 		}
 	}
-
-	return visibleScenarios
 }
 
 const isAttendeeMatchCondition = (

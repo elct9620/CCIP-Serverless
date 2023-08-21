@@ -19,4 +19,17 @@ export class Ruleset {
 	addScenario(id: string, scenario: Scenario) {
 		this.scenarios[id] = scenario
 	}
+
+	get visibleScenarios(): Record<string, Scenario> {
+		let result: Record<string, Scenario> = {}
+
+		for (const scenarioId in this.scenarios) {
+			const scenario = this.scenarios[scenarioId]
+			if (scenario.isVisible) {
+				result[scenarioId] = scenario
+			}
+		}
+
+		return result
+	}
 }
