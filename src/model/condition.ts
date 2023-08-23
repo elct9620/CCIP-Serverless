@@ -1,8 +1,13 @@
 export enum ConditionType {
+	Empty = 'Empty',
 	AttendeeAttribute = 'AttendeeAttribute',
 }
 
 export class Condition {
+	static empty(): Condition {
+		return new Condition(ConditionType.Empty, [])
+	}
+
 	public readonly type: ConditionType
 	public readonly args: any[]
 	public readonly reason?: string

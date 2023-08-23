@@ -17,7 +17,7 @@ export type ScenarioAttribute = {
 	displayText?: LocalizedText
 }
 
-type ScenarioConditionMap = Record<ScenarioConditionType, Condition[]>
+type ScenarioConditionMap = Record<ScenarioConditionType, Condition>
 
 export class Scenario {
 	public readonly order: number
@@ -35,16 +35,12 @@ export class Scenario {
 		this._displayText = attribute.displayText ?? {}
 	}
 
-	addCondition(type: ScenarioConditionType, condition: Condition): void {
-		if (!this.conditions[type]) {
-			this.conditions[type] = []
-		}
-
-		this.conditions[type]?.push(condition)
+	setCondition(type: ScenarioConditionType, condition: Condition): void {
+		this.conditions[type] = condition
 	}
 
-	conditionsOf(type: ScenarioConditionType): Condition[] {
-		return this.conditions[type] ?? []
+	conditionsOf(type: ScenarioConditionType): Condition {
+		return this.conditions[type] ?? Condition.empty()
 	}
 
 	get displayText(): LocalizedText {

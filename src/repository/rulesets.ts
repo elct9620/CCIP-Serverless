@@ -16,7 +16,7 @@ type ConditionSchema = {
 type ScenarioSchema = {
 	order: number
 	display_text: string
-	conditions: Record<string, ConditionSchema[]>
+	conditions: Record<string, ConditionSchema>
 }
 
 export class D1RulesetRepository {
@@ -62,12 +62,14 @@ function buildScenario(data: Record<string, any>): Scenario {
 	})
 
 	for (const conditionType in data.conditions) {
-		for (const condition of data.conditions[conditionType]) {
-			scenario.addCondition(
-				conditionType as ScenarioConditionType,
-				new Condition(condition.type, condition.args, condition.reason)
+		scenario.setCondition(
+			conditionType as ScenarioConditionType,
+			new Condition(
+				data.conditions[conditionType].type,
+				data.conditions[conditionType].args,
+				data.conditions[conditionType].reason
 			)
-		}
+		)
 	}
 
 	return scenario
