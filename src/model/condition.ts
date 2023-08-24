@@ -1,5 +1,7 @@
 export enum ConditionType {
 	Empty = 'Empty',
+	And = 'And',
+	Or = 'Or',
 	AttendeeAttribute = 'AttendeeAttribute',
 }
 
