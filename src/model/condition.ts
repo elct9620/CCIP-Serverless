@@ -2,7 +2,7 @@ export enum ConditionType {
 	Empty = 'Empty',
 	And = 'And',
 	Or = 'Or',
-	AttendeeAttribute = 'AttendeeAttribute',
+	Attribute = 'Attribute',
 }
 
 export class Condition {

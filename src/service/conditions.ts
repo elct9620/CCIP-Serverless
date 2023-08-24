@@ -24,7 +24,7 @@ const ConditionHandler = {
 
 		return false
 	},
-	[ConditionType.AttendeeAttribute]: (attendee: Attendee, ...args: any[]): boolean => {
+	[ConditionType.Attribute]: (attendee: Attendee, ...args: any[]): boolean => {
 		return attendee.getMetadata(args[0] as string) === (args[1] as string)
 	},
 }

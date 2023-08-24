@@ -52,7 +52,7 @@ Feature: Scenario
               },
               "conditions":{
                  "show":{
-                    "type":"AttendeeAttribute",
+                    "type":"Attribute",
                     "args":[
                        "講師票",
                        "Y"
@@ -68,7 +68,7 @@ Feature: Scenario
               },
               "conditions":{
                  "show": {
-                    "type":"AttendeeAttribute",
+                    "type":"Attribute",
                     "args":[
                        "講師票",
                        "N"

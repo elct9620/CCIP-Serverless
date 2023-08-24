@@ -1,4 +1,4 @@
-type AttendeeAttributes = {
+type Attributes = {
 	token: string
 	eventId: string
 	displayName: string
@@ -21,7 +21,7 @@ export class Attendee {
 	private _metadata: Record<string, any> = {}
 	private _firstUsedAt: Date | null = null
 
-	constructor(attributes: AttendeeAttributes) {
+	constructor(attributes: Attributes) {
 		this.token = attributes.token
 		this.eventId = attributes.eventId
 		this.displayName = attributes.displayName

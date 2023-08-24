@@ -15,7 +15,7 @@ Feature: Lockable Scenario
             "locked":true,
             "conditions": {
                "unlock": {
-                  "type":"AttendeeAttribute",
+                  "type":"Attribute",
                   "args":[
                      "個人贊助",
                      "Y"
@@ -69,7 +69,7 @@ Feature: Lockable Scenario
 							"type":"And",
 							"args":[
 								{
-									"type":"AttendeeAttribute",
+									"type":"Attribute",
 									"args":[
 										"個人贊助",
 										"Y"
@@ -77,7 +77,7 @@ Feature: Lockable Scenario
 									"reason": "For Sponsor Only"
 								},
 								{
-									"type":"AttendeeAttribute",
+									"type":"Attribute",
 									"args":[
 										"_sponsor",
 										"Y"
@@ -133,7 +133,7 @@ Feature: Lockable Scenario
 							"type":"Or",
 							"args":[
 								{
-									"type":"AttendeeAttribute",
+									"type":"Attribute",
 									"args":[
 										"個人贊助",
 										"Y"
@@ -141,7 +141,7 @@ Feature: Lockable Scenario
 									"reason": "For Sponsor Only"
 								},
 								{
-									"type":"AttendeeAttribute",
+									"type":"Attribute",
 									"args":[
 										"_sponsor",
 										"Y"
