@@ -1,6 +1,6 @@
 import { AttendeeRepository, RulesetRepository } from './repository'
 import { hideScenarios, unlockScenarios } from '../service'
-import { Scenario } from '../model'
+import { Attendee, Ruleset, Scenario } from '../model'
 
 export type AttendeeScenario = {
 	order: number
@@ -39,10 +39,7 @@ export class AttendeeInfo {
 		}
 
 		const ruleset = await this.rulesetRepository.findByEventId(attendee.eventId, attendee.role)
-		if (ruleset) {
-			await hideScenarios(attendee, ruleset)
-			await unlockScenarios(attendee, ruleset)
-		}
+		await runRuleset(attendee, ruleset)
 
 		return {
 			eventId: attendee.eventId,
@@ -53,6 +50,34 @@ export class AttendeeInfo {
 			scenario: buildAttendeeScenario(ruleset?.visibleScenarios || {}),
 		}
 	}
+
+	public async useScenario(token: string, scenarioId: string): Promise<AttendeeReply | null> {
+		const attendee = await this.attendeeRepository.findByToken(token)
+		if (!attendee) {
+			return null
+		}
+
+		const ruleset = await this.rulesetRepository.findByEventId(attendee.eventId, attendee.role)
+		await runRuleset(attendee, ruleset)
+
+		return {
+			eventId: attendee.eventId,
+			displayName: attendee.displayName,
+			firstUsedAt: attendee.firstUsedAt,
+			role: attendee.role,
+			metadata: attendee.metadata,
+			scenario: buildAttendeeScenario(ruleset?.visibleScenarios || {}),
+		}
+	}
+}
+
+async function runRuleset(attendee: Attendee, ruleset: Ruleset | null) {
+	if (!ruleset) {
+		return
+	}
+
+	await hideScenarios(attendee, ruleset)
+	await unlockScenarios(attendee, ruleset)
 }
 
 function buildAttendeeScenario(scenarios: Record<string, Scenario>): Record<string, any> {

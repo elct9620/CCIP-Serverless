@@ -8,6 +8,7 @@ let mockWorker: UnstableDevWorker
 type WorkerResponse = {
 	status: number
 	json(): Promise<any>
+	clone(): WorkerResponse
 }
 
 BeforeAll(async () => {

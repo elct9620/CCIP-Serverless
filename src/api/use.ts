@@ -3,11 +3,12 @@ import { json, error } from './helper'
 import { AttendeeInfo, AttendeeScenario } from '../usecase'
 import { datetimeToUnix } from '../helper'
 
-export type StatusRequest = {
+export type UseRequest = {
 	attendeeInfo: AttendeeInfo
+	scenarioId: string
 } & IRequest
 
-export type StatusResponse = {
+export type UseResponse = {
 	event_id: string
 	user_id: string
 	first_use: number | null
@@ -16,24 +17,23 @@ export type StatusResponse = {
 	attr: Record<string, any>
 }
 
-export const status = async ({ attendeeInfo, query }: StatusRequest) => {
+export const use = async ({ attendeeInfo, scenarioId, query }: UseRequest) => {
 	if (!query.token) {
 		throw new StatusError(400, 'token required')
 	}
 
-	const isStaffQuery = query.StaffQuery === 'true'
-	const info = await attendeeInfo.getAttendee(query.token as string, !isStaffQuery)
-	if (!info) {
+	const res = await attendeeInfo.useScenario(query.token as string, scenarioId)
+	if (!res) {
 		throw new StatusError(400, 'invalid token')
 	}
 
-	return json<StatusResponse>({
-		event_id: info.eventId,
-		user_id: info.displayName,
-		first_use: datetimeToUnix(info.firstUsedAt),
-		role: info.role,
-		scenario: formatScenario(info.scenario),
-		attr: info.metadata ?? {},
+	return json<UseResponse>({
+		event_id: res.eventId,
+		user_id: res.displayName,
+		first_use: datetimeToUnix(res.firstUsedAt),
+		role: res.role,
+		scenario: formatScenario(res.scenario),
+		attr: res.metadata ?? {},
 	})
 }
 
@@ -43,6 +43,7 @@ function formatScenario(scenario: Record<string, AttendeeScenario>) {
 		const value = scenario[key]
 		result[key] = {
 			order: value.order,
+			used: 0,
 			display_text: value.displayText,
 			disabled: value.locked ? value.lockReason : null,
 		}
