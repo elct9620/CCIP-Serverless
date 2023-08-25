@@ -14,8 +14,12 @@ const withUsecases = (request: IRequest, env: Env, context: ExecutionContext) =>
 	const attendeeRepository = new Repository.D1AttendeeRepository(env.DB)
 	const rulesetRepository = new Repository.D1RulesetRepository(env.DB)
 	const attendeeInfo = new UseCase.AttendeeInfo(attendeeRepository, rulesetRepository)
+	const attendeeAccess = new UseCase.AttendeeAccess(attendeeRepository, rulesetRepository)
 
-	request.attendeeInfo = attendeeInfo
+	Object.assign(request, {
+		attendeeInfo,
+		attendeeAccess,
+	})
 }
 
 const router = Router()
