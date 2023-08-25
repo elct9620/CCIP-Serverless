@@ -48,6 +48,7 @@ function formatScenario(scenario: Record<string, any>) {
 			order: value.order,
 			display_text: value.displayText,
 			disabled: value.locked ? value.lockReason : null,
+			attr: value.metadata,
 		}
 	}
 	return result

@@ -7,6 +7,7 @@ type ScenarioInfo = {
 	displayText: Record<string, string>
 	locked: boolean
 	lockReason: string
+	metadata: Record<string, any>
 }
 
 type AttendeeScenario = Record<string, ScenarioInfo>
@@ -70,6 +71,7 @@ function buildAttendeeScenario(scenarios: Record<string, Scenario>): Record<stri
 			displayText: scenario.displayText,
 			locked: scenario.isLocked,
 			lockReason: scenario.lockReason,
+			metadata: scenario.metadata,
 		}
 	}
 

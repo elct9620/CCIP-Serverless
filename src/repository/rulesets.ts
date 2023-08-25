@@ -1,5 +1,5 @@
 import { type D1Database } from '@cloudflare/workers-types'
-import { Ruleset, Scenario, ScenarioConditionType, Condition } from '../model'
+import { Ruleset, Scenario, ScenarioConditionType, Condition, ConditionType } from '../model'
 
 type RulesetSchema = {
 	event_id: string
@@ -13,10 +13,15 @@ type ConditionSchema = {
 	reason?: string
 }
 
+type MetadataSchema = {
+	key: string
+}
+
 type ScenarioSchema = {
 	order: number
-	display_text: string
+	display_text: Record<string, string>
 	conditions: Record<string, ConditionSchema>
+	metadata: Record<string, MetadataSchema>
 }
 
 export class D1RulesetRepository {
@@ -55,17 +60,18 @@ export class D1RulesetRepository {
 	}
 }
 
-function buildScenario(data: Record<string, any>): Scenario {
+function buildScenario(data: ScenarioSchema): Scenario {
 	const scenario = new Scenario({
 		order: data.order,
 		displayText: data.display_text,
+		metadataDefinition: data.metadata,
 	})
 
 	for (const conditionType in data.conditions) {
 		scenario.setCondition(
 			conditionType as ScenarioConditionType,
 			new Condition(
-				data.conditions[conditionType].type,
+				data.conditions[conditionType].type as ConditionType,
 				data.conditions[conditionType].args,
 				data.conditions[conditionType].reason
 			)

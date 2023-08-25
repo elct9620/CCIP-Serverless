@@ -4,25 +4,32 @@ export enum ScenarioLocale {
 	zhTW = 'zh-TW',
 	enUS = 'en-US',
 }
+export type LocalizedText = Partial<Record<ScenarioLocale, string>>
 
 export enum ScenarioConditionType {
 	Visible = 'show',
 	Unlock = 'unlock',
 }
+type ScenarioConditionMap = Record<ScenarioConditionType, Condition>
 
-export type LocalizedText = Partial<Record<ScenarioLocale, string>>
+type MetadataTemplate = {
+	key: string
+}
+type MetadataDefinition = Record<string, MetadataTemplate>
 
 export type ScenarioAttribute = {
 	order?: number
 	displayText?: LocalizedText
+	metadataDefinition?: MetadataDefinition
 }
-
-type ScenarioConditionMap = Record<ScenarioConditionType, Condition>
 
 export class Scenario {
 	public readonly order: number
 
 	private conditions: Partial<ScenarioConditionMap> = {}
+
+	public readonly metadataDefinition: MetadataDefinition = {}
+	private _metadata: Record<string, any> = {}
 
 	private _displayText: LocalizedText = {}
 	private _visible: boolean = true
@@ -33,6 +40,7 @@ export class Scenario {
 	constructor(attribute: ScenarioAttribute) {
 		this.order = attribute.order || 0
 		this._displayText = attribute.displayText ?? {}
+		this.metadataDefinition = attribute.metadataDefinition ?? {}
 	}
 
 	setCondition(type: ScenarioConditionType, condition: Condition): void {
@@ -70,5 +78,13 @@ export class Scenario {
 
 	unlock(): void {
 		this._locked = false
+	}
+
+	get metadata(): Record<string, any> {
+		return { ...this._metadata }
+	}
+
+	setMetadata(key: string, value: any): void {
+		this._metadata[key] = value
 	}
 }
