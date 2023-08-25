@@ -1,5 +1,5 @@
 import { AttendeeRepository, RulesetRepository } from './repository'
-import { hideScenarios, unlockScenarios } from '../service'
+import { runRuleset } from '../service'
 import { Attendee, Ruleset, Scenario } from '../model'
 
 export type AttendeeScenario = {
@@ -69,15 +69,6 @@ export class AttendeeInfo {
 			scenario: buildAttendeeScenario(ruleset?.visibleScenarios || {}),
 		}
 	}
-}
-
-async function runRuleset(attendee: Attendee, ruleset: Ruleset | null) {
-	if (!ruleset) {
-		return
-	}
-
-	await hideScenarios(attendee, ruleset)
-	await unlockScenarios(attendee, ruleset)
 }
 
 function buildAttendeeScenario(scenarios: Record<string, Scenario>): Record<string, any> {

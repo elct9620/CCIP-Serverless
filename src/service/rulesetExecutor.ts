@@ -8,6 +8,15 @@ import {
 } from '../model'
 import { executeCondition } from './conditions'
 
+export async function runRuleset(attendee: Attendee, ruleset: Ruleset | null) {
+	if (!ruleset) {
+		return
+	}
+
+	await hideScenarios(attendee, ruleset)
+	await unlockScenarios(attendee, ruleset)
+}
+
 export async function unlockScenarios(attendee: Attendee, ruleset: Ruleset) {
 	for (const scenarioId in ruleset.scenarios) {
 		const scenario = ruleset.scenarios[scenarioId]
