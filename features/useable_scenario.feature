@@ -8,6 +8,10 @@ Feature: Useable Scenario
       {
          "checkin":{
             "order":0,
+            "available_time": {
+              "start": "2023-08-26 00:00:00 GMT+0",
+              "end": "2023-09-26 00:00:00 GMT+0"
+            },
             "display_text":{
                "en-US":"Check-in",
                "zh-TW":"報到"
@@ -30,6 +34,10 @@ Feature: Useable Scenario
 			{
 				 "vipkit":{
 						"order":0,
+            "available_time": {
+              "start": "2023-08-26 00:00:00 GMT+0",
+              "end": "2023-09-26 00:00:00 GMT+0"
+            },
 						"display_text":{
 							 "en-US":"Special Kit",
 							 "zh-TW":"獨家紀念品"
@@ -49,6 +57,6 @@ Feature: Useable Scenario
 		And the response json should be:
 			"""
 			{
-				"message": "invalid scenario_id"
+				"message": "invalid scenario"
 			}
 			"""

@@ -17,7 +17,13 @@ type MetadataTemplate = {
 }
 type MetadataDefinition = Record<string, MetadataTemplate>
 
+type AvailableTime = {
+	start: Date
+	end: Date
+}
+
 export type ScenarioAttribute = {
+	availableTime: AvailableTime
 	order?: number
 	displayText?: LocalizedText
 	metadataDefinition?: MetadataDefinition
@@ -25,6 +31,7 @@ export type ScenarioAttribute = {
 
 export class Scenario {
 	public readonly order: number
+	public readonly availableTime: AvailableTime
 
 	private conditions: Partial<ScenarioConditionMap> = {}
 
@@ -39,6 +46,7 @@ export class Scenario {
 
 	constructor(attribute: ScenarioAttribute) {
 		this.order = attribute.order || 0
+		this.availableTime = attribute.availableTime
 		this._displayText = attribute.displayText ?? {}
 		this.metadataDefinition = attribute.metadataDefinition ?? {}
 	}
@@ -86,5 +94,9 @@ export class Scenario {
 
 	setMetadata(key: string, value: any): void {
 		this._metadata[key] = value
+	}
+
+	isAvailableAt(datetime: Date): boolean {
+		return datetime >= this.availableTime.start && datetime < this.availableTime.end
 	}
 }

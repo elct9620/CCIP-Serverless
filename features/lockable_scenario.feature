@@ -8,6 +8,10 @@ Feature: Lockable Scenario
       {
          "vipkit":{
             "order":0,
+            "available_time": {
+              "start": "2023-08-26 00:00:00 GMT+0",
+              "end": "2023-09-26 00:00:00 GMT+0"
+            },
             "display_text":{
                "en-US":"Special Gift",
                "zh-TW":"獨家紀念品"
@@ -60,6 +64,10 @@ Feature: Lockable Scenario
 			{
 				"vipkit":{
 					"order":0,
+          "available_time": {
+            "start": "2023-08-26 00:00:00 GMT+0",
+            "end": "2023-09-26 00:00:00 GMT+0"
+          },
 					"display_text":{
 						"en-US":"Special Gift",
 						"zh-TW":"獨家紀念品"
@@ -125,6 +133,10 @@ Feature: Lockable Scenario
 			{
 				"vipkit":{
 					"order":0,
+          "available_time": {
+            "start": "2023-08-26 00:00:00 GMT+0",
+            "end": "2023-09-26 00:00:00 GMT+0"
+          },
 					"display_text":{
 						"en-US":"Special Gift",
 						"zh-TW":"獨家紀念品"

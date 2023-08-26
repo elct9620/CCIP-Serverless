@@ -3,9 +3,12 @@ import { D1Database, ExecutionContext } from '@cloudflare/workers-types'
 import * as API from './api'
 import * as UseCase from './usecase'
 import * as Repository from './repository'
+import { setFixedDatetime } from './helper'
 
 type Env = {
 	DB: D1Database
+	// E2E testability
+	MOCK_DATE?: string
 }
 
 type CF = [env: Env, context: ExecutionContext]
@@ -22,11 +25,18 @@ const withUsecases = (request: IRequest, env: Env, context: ExecutionContext) =>
 	})
 }
 
+const withTestability = (request: IRequest, env: Env, context: ExecutionContext) => {
+	if (env.MOCK_DATE) {
+		setFixedDatetime(new Date(env.MOCK_DATE))
+	}
+}
+
 const router = Router()
 
 router
 	.all('*', withParams)
 	.all<IRequest, CF>('*', withUsecases)
+	.all<IRequest, CF>('*', withTestability)
 	.get<IRequest, CF>('/', () =>
 		json({
 			version: '0.1.0',

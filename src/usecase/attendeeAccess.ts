@@ -1,6 +1,7 @@
 import { AttendeeRepository, RulesetRepository } from './repository'
 import { Scenario } from '../model'
 import { runRuleset } from '../service'
+import { getCurrentTime } from '../helper'
 
 type ScenarioInfo = {
 	order: number
@@ -12,6 +13,7 @@ type ScenarioInfo = {
 
 type AttendeeScenario = Record<string, ScenarioInfo>
 
+export class ScenarioNotFoundError extends Error {}
 export class ScenarioNotAvailableError extends Error {}
 
 export class AttendeeAccess {
@@ -53,8 +55,13 @@ export class AttendeeAccess {
 		await runRuleset(attendee, ruleset)
 
 		const visibleScenarios = ruleset.visibleScenarios
-		if (!visibleScenarios[scenarioId]) {
-			throw new ScenarioNotAvailableError('invalid scenario_id')
+		const scenario = visibleScenarios[scenarioId]
+		if (!scenario) {
+			throw new ScenarioNotFoundError('invalid scenario')
+		}
+
+		if (!scenario.isAvailableAt(getCurrentTime())) {
+			throw new ScenarioNotAvailableError('link is expired or not available yet')
 		}
 
 		return buildAttendeeScenario(visibleScenarios)

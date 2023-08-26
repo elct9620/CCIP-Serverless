@@ -16,6 +16,9 @@ BeforeAll(async () => {
 
 	apiWorker = await unstable_dev('src/index.ts', {
 		env: 'test',
+		vars: {
+			MOCK_DATE: '2023-08-27 00:00:00 GMT+8',
+		},
 		experimental: { disableExperimentalWarning: true },
 	})
 	mockWorker = await unstable_dev('mock/index.ts', {
@@ -32,7 +35,7 @@ AfterAll(async () => {
 export class WorkerWorld extends World {
 	public apiResponse?: WorkerResponse
 
-	constructor(options: any) {
+	constructor(options) {
 		super(options)
 	}
 

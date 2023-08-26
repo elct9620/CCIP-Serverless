@@ -17,8 +17,14 @@ type MetadataSchema = {
 	key: string
 }
 
+type AvailableTimeSchema = {
+	start: string
+	end: string
+}
+
 type ScenarioSchema = {
 	order: number
+	available_time: AvailableTimeSchema
 	display_text: Record<string, string>
 	conditions: Record<string, ConditionSchema>
 	metadata: Record<string, MetadataSchema>
@@ -62,6 +68,10 @@ export class D1RulesetRepository {
 
 function buildScenario(data: ScenarioSchema): Scenario {
 	const scenario = new Scenario({
+		availableTime: {
+			start: new Date(data.available_time.start),
+			end: new Date(data.available_time.end),
+		},
 		order: data.order,
 		displayText: data.display_text,
 		metadataDefinition: data.metadata,

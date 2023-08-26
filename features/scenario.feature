@@ -8,6 +8,10 @@ Feature: Scenario
       {
         "day1checkin": {
           "order": 0,
+          "available_time": {
+            "start": "2023-08-26 00:00:00 GMT+0",
+            "end": "2023-09-26 00:00:00 GMT+0"
+          },
           "display_text": {
             "en-US": "Day 1 Check-in",
             "zh-TW": "第一天報到"
@@ -47,7 +51,11 @@ Feature: Scenario
         {
            "speakerCheckin":{
               "order":0,
-              "display_text":{
+                "available_time": {
+                  "start": "2023-08-26 00:00:00 GMT+0",
+                  "end": "2023-09-26 00:00:00 GMT+0"
+                },
+                "display_text":{
                  "en-US":"Speaker Check-in",
                  "zh-TW":"講師報到"
               },
@@ -63,6 +71,10 @@ Feature: Scenario
            },
            "normalCheckin":{
               "order":1,
+              "available_time": {
+                "start": "2023-08-26 00:00:00 GMT+0",
+                "end": "2023-09-26 00:00:00 GMT+0"
+              },
               "display_text":{
                  "en-US":"Normal Check-in",
                  "zh-TW":"一般報到"
@@ -113,6 +125,10 @@ Feature: Scenario
 				{
 					 "lunch":{
 							"order":0,
+              "available_time": {
+                "start": "2023-08-26 00:00:00 GMT+0",
+                "end": "2023-09-26 00:00:00 GMT+0"
+              },
 							"display_text":{
 								 "en-US":"Lunch",
 								 "zh-TW":"午餐"
