@@ -3,7 +3,7 @@ import { D1Database, ExecutionContext } from '@cloudflare/workers-types'
 import * as API from './route'
 import * as UseCase from './usecase'
 import * as Repository from '../src/repository'
-import { setFixedDatetime } from '../src/helper'
+import { setFixedDatetime } from './utils'
 
 type Env = {
 	DB: D1Database

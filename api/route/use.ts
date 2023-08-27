@@ -2,7 +2,7 @@ import { IRequest, StatusError } from 'itty-router'
 import { json, error } from './helper'
 import * as schema from './schema'
 import { AttendeeInfo, AttendeeAccess } from '../usecase'
-import { datetimeToUnix } from '../../src/helper'
+import { datetimeToUnix } from '../utils'
 
 export type UseRequest = {
 	attendeeInfo: AttendeeInfo

@@ -1,7 +1,7 @@
 import { AttendeeRepository, RulesetRepository } from './repository'
 import { Scenario } from '../../src/model'
 import { runRuleset } from '../../src/service'
-import { getCurrentTime } from '../../src/helper'
+import { getCurrentTime } from '../utils'
 
 type AvailableTimeInfo = {
 	start: Date
