@@ -1,6 +1,6 @@
 import { json, Router, withParams, IRequest } from 'itty-router'
 import { D1Database, ExecutionContext } from '@cloudflare/workers-types'
-import * as API from '../src/api'
+import * as API from './route'
 import * as UseCase from '../src/usecase'
 import * as Repository from '../src/repository'
 import { setFixedDatetime } from '../src/helper'
