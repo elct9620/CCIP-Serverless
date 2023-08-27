@@ -1,5 +1,6 @@
 import { IRequest, StatusError } from 'itty-router'
 import { json, error } from './helper'
+import * as schema from './schema'
 import { AttendeeInfo, AttendeeAccess } from '../usecase'
 import { datetimeToUnix } from '../helper'
 
@@ -8,14 +9,7 @@ export type StatusRequest = {
 	attendeeAccess: AttendeeAccess
 } & IRequest
 
-export type StatusResponse = {
-	event_id: string
-	user_id: string
-	first_use: number | null
-	role: string
-	scenario: Record<string, any>
-	attr: Record<string, any>
-}
+export type StatusResponse = schema.Status
 
 export const status = async ({ attendeeInfo, attendeeAccess, query }: StatusRequest) => {
 	if (!query.token) {
@@ -41,7 +35,7 @@ export const status = async ({ attendeeInfo, attendeeAccess, query }: StatusRequ
 }
 
 function formatScenario(scenario: Record<string, any>) {
-	const result: Record<string, any> = {}
+	const result: Record<string, schema.Scenario> = {}
 	for (const key in scenario) {
 		const value = scenario[key]
 		result[key] = {
@@ -49,7 +43,7 @@ function formatScenario(scenario: Record<string, any>) {
 			available_time: datetimeToUnix(value.availableTime.start),
 			expire_time: datetimeToUnix(value.availableTime.end),
 			display_text: value.displayText,
-			used: value.usedAt ? datetimeToUnix(value.usedAt) : null,
+			used: datetimeToUnix(value.usedAt),
 			disabled: value.locked ? value.lockReason : null,
 			attr: value.metadata,
 		}
