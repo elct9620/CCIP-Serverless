@@ -4,7 +4,7 @@ import * as API from './route'
 import * as UseCase from '../api/usecase'
 import * as Repository from '../api/repository'
 import { setFixedDatetime } from '../api/utils'
-import { Env } from '../api/environment'
+import { Env } from './environment'
 
 type CF = [env: Env, context: ExecutionContext]
 
