@@ -1,14 +1,13 @@
 import { IRequest, StatusError } from 'itty-router'
 import { json, error } from './helper'
+import * as schema from '../../api/schema'
 import { AttendeeInfo } from '../../api/usecase'
 
 export type LandingRequest = {
 	attendeeInfo: AttendeeInfo
 } & IRequest
 
-export type LandingResponse = {
-	nickname: string
-}
+export type LandingResponse = schema.BasicAttendeeInfo
 
 export const landing = async ({ attendeeInfo, query }: LandingRequest) => {
 	if (!query.token) {
