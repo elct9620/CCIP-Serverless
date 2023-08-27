@@ -14,7 +14,7 @@ type WorkerResponse = {
 BeforeAll(async () => {
 	execSync('NO_D1_WARNING=true wrangler d1 migrations apply DB --env test --local')
 
-	apiWorker = await unstable_dev('src/index.ts', {
+	apiWorker = await unstable_dev('api/worker.ts', {
 		env: 'test',
 		vars: {
 			MOCK_DATE: '2023-08-27 00:00:00 GMT+8',
