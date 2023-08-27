@@ -55,4 +55,8 @@ export class Attendee {
 			this._firstUsedAt = new Date()
 		}
 	}
+
+	isUsedScenario(scenarioId: string): boolean {
+		return !!this.getMetadata(`_scenario_${scenarioId}`)
+	}
 }

@@ -60,3 +60,34 @@ Feature: Useable Scenario
 				"message": "invalid scenario"
 			}
 			"""
+	Scenario: When attendee try to use a used scenario
+    Given there have some attendees
+      | token                                | event_id   | role     | metadata                                            | display_name | first_used_at             |
+      | f185f505-d8c0-43ce-9e7b-bb9e8909072d | SITCON2023 | audience | {"_scenario_checkin": "2023-08-27 00:00:00 GMT+0" } | Aotoki       | 2023-08-20 00:00:00 GMT+0 |
+    And there have a ruleset for "SITCON2023" with name "audience" and scenarios:
+      """
+      {
+         "checkin":{
+            "order":0,
+            "available_time": {
+              "start": "2023-08-26 00:00:00 GMT+0",
+              "end": "2023-09-26 00:00:00 GMT+0"
+            },
+            "display_text":{
+               "en-US":"Check-in",
+               "zh-TW":"報到"
+            },
+            "locked":true,
+            "conditions": {
+            }
+         }
+      }
+      """
+    When I make a GET request to "/use/checkin?token=f185f505-d8c0-43ce-9e7b-bb9e8909072d"
+    Then the response status should be 400
+    And the response json should be:
+      """
+      {
+        "message": "has been used"
+      }
+      """

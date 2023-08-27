@@ -19,6 +19,7 @@ type ScenarioInfo = {
 
 type AttendeeScenario = Record<string, ScenarioInfo>
 
+export class ScenarioUsedError extends Error {}
 export class ScenarioNotFoundError extends Error {}
 export class ScenarioNotAvailableError extends Error {}
 
@@ -51,6 +52,10 @@ export class AttendeeAccess {
 		const attendee = await this.attendeeRepository.findByToken(token)
 		if (!attendee) {
 			return {}
+		}
+
+		if (attendee.isUsedScenario(scenarioId)) {
+			throw new ScenarioUsedError('has been used')
 		}
 
 		const ruleset = await this.rulesetRepository.findByEventId(attendee.eventId, attendee.role)
