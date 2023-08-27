@@ -42,6 +42,8 @@ Feature: Lockable Scenario
         "scenario": {
           "vipkit": {
             "order": 0,
+            "available_time": 1693008000,
+            "expire_time": 1695686400,
             "display_text": {
               "en-US": "Special Gift",
               "zh-TW": "獨家紀念品"
@@ -111,6 +113,8 @@ Feature: Lockable Scenario
 				"scenario": {
 					"vipkit": {
 						"order": 0,
+            "available_time": 1693008000,
+            "expire_time": 1695686400,
 						"display_text": {
 							"en-US": "Special Gift",
 							"zh-TW": "獨家紀念品"
@@ -180,6 +184,8 @@ Feature: Lockable Scenario
 				"scenario": {
 					"vipkit": {
 						"order": 0,
+						"available_time": 1693008000,
+            "expire_time": 1695686400,
 						"display_text": {
 							"en-US": "Special Gift",
 							"zh-TW": "獨家紀念品"

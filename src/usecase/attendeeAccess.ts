@@ -3,8 +3,14 @@ import { Scenario } from '../model'
 import { runRuleset } from '../service'
 import { getCurrentTime } from '../helper'
 
+type AvailableTimeInfo = {
+	start: Date
+	end: Date
+}
+
 type ScenarioInfo = {
 	order: number
+	availableTime: AvailableTimeInfo
 	displayText: Record<string, string>
 	locked: boolean
 	lockReason: string
@@ -75,6 +81,7 @@ function buildAttendeeScenario(scenarios: Record<string, Scenario>): Record<stri
 		const scenario = scenarios[scenarioId]
 		result[scenarioId] = {
 			order: scenario.order,
+			availableTime: scenario.availableTime,
 			displayText: scenario.displayText,
 			locked: scenario.isLocked,
 			lockReason: scenario.lockReason,

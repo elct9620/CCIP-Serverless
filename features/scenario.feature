@@ -31,6 +31,8 @@ Feature: Scenario
         "scenario": {
           "day1checkin": {
             "order": 0,
+            "available_time": 1693008000,
+            "expire_time": 1695686400,
             "display_text": {
               "en-US": "Day 1 Check-in",
               "zh-TW": "第一天報到"
@@ -103,6 +105,8 @@ Feature: Scenario
         "scenario": {
           "normalCheckin": {
             "order": 1,
+            "available_time": 1693008000,
+            "expire_time": 1695686400,
             "display_text": {
               "en-US": "Normal Check-in",
               "zh-TW": "一般報到"
@@ -152,6 +156,8 @@ Feature: Scenario
 				"scenario": {
 					"lunch": {
 						"order": 0,
+            "available_time": 1693008000,
+            "expire_time": 1695686400,
 						"display_text": {
 							"en-US": "Lunch",
 							"zh-TW": "午餐"

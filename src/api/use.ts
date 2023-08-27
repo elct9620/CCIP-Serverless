@@ -52,6 +52,8 @@ function formatScenario(scenario: Record<string, any>) {
 		result[key] = {
 			order: value.order,
 			used: 0,
+			available_time: datetimeToUnix(value.availableTime.start),
+			expire_time: datetimeToUnix(value.availableTime.end),
 			display_text: value.displayText,
 			disabled: value.locked ? value.lockReason : null,
 			attr: value.metadata,
