@@ -5,3 +5,13 @@ CCIP Serverless
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/elct9620/CCIP-Serverless)
 
 A Community Checkin with Interactivity Project Serverless version
+
+## Development
+
+| Path         | Description                                                  |
+|--------------|--------------------------------------------------------------|
+| `/api`       | The CIPP Server API implementation                           |
+| `/mock`      | The mock API for E2E testing                                 |
+| `/functions` | The `Functions` for Cloudflare Pages (be used in production) |
+| `/worker`    | The Cloudflare Worker API be used in Vite and E2E testing    |
+| `/src`       | The Domain Model of CIPP Server                              |
