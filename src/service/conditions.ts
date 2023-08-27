@@ -27,6 +27,9 @@ const ConditionHandler = {
 	[ConditionType.Attribute]: (attendee: Attendee, ...args: any[]): boolean => {
 		return attendee.getMetadata(args[0] as string) === (args[1] as string)
 	},
+	[ConditionType.UsedScenario]: (attendee: Attendee, ...args: any[]): boolean => {
+		return attendee.isUsedScenario(args[0] as string)
+	},
 }
 
 const defaultConditionHandler = (attendee: Attendee, ...args: any[]): boolean => false

@@ -76,11 +76,11 @@ export class Attendee {
 		}
 	}
 
-	useScenario(scenarioId: string): void {
+	useScenario(scenarioId: string, usedAt: Date): void {
 		if (this.isUsedScenario(scenarioId)) {
 			return
 		}
 
-		this.setMetadata(`_scenario_${scenarioId}`, new Date())
+		this.setMetadata(`_scenario_${scenarioId}`, usedAt)
 	}
 }

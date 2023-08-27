@@ -72,11 +72,13 @@ export class AttendeeAccess {
 			throw new ScenarioNotFoundError('invalid scenario')
 		}
 
-		if (!scenario.isAvailableAt(getCurrentTime())) {
+		const currentTime = getCurrentTime()
+
+		if (!scenario.isAvailableAt(currentTime)) {
 			throw new ScenarioNotAvailableError('link is expired or not available yet')
 		}
 
-		attendee.useScenario(scenarioId)
+		attendee.useScenario(scenarioId, currentTime)
 		await this.attendeeRepository.save(attendee)
 		await runRuleset(attendee, ruleset)
 

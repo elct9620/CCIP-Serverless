@@ -3,6 +3,7 @@ export enum ConditionType {
 	And = 'And',
 	Or = 'Or',
 	Attribute = 'Attribute',
+	UsedScenario = 'UsedScenario',
 }
 
 export class Condition {

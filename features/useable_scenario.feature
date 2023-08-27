@@ -74,6 +74,83 @@ Feature: Useable Scenario
 		When I make a GET request to "/use/checkin?token=f185f505-d8c0-43ce-9e7b-bb9e8909072d"
 		Then the response status should be 200
 		And the response json should have property "scenario.checkin.used" is not null
+	Scenario: When attendee use checkin scenario and unlock welcom kit
+    Given there have some attendees
+      | token                                | event_id   | role     | metadata | display_name | first_used_at             |
+      | f185f505-d8c0-43ce-9e7b-bb9e8909072d | SITCON2023 | audience |          | Aotoki       | 2023-08-20 00:00:00 GMT+0 |
+    And there have a ruleset for "SITCON2023" with name "audience" and scenarios:
+      """
+			{
+			  "checkin":{
+						"order":0,
+            "available_time": {
+              "start": "2023-08-26 00:00:00 GMT+0",
+              "end": "2023-09-26 00:00:00 GMT+0"
+            },
+						"display_text":{
+							 "en-US":"Check-in",
+							 "zh-TW":"報到"
+						},
+						"conditions": {}
+        },
+        "welcomkit": {
+          "order": 1,
+          "available_time": {
+            "start": "2023-08-26 00:00:00 GMT+0",
+            "end": "2023-09-26 00:00:00 GMT+0"
+          },
+          "display_text": {
+            "en-US": "Welcom Kit",
+            "zh-TW": "迎賓袋"
+          },
+          "locked": true,
+          "conditions": {
+            "unlock": {
+              "type": "UsedScenario",
+              "args": ["checkin"]
+            }
+          }
+        }
+			}
+			"""
+		When I make a GET request to "/use/checkin?token=f185f505-d8c0-43ce-9e7b-bb9e8909072d"
+    Then the response status should be 200
+    And the response json should be:
+      """
+      {
+        "event_id": "SITCON2023",
+        "user_id": "Aotoki",
+        "first_use": 1692489600,
+        "role": "audience",
+        "scenario": {
+          "checkin": {
+            "order": 0,
+            "available_time": 1693008000,
+            "expire_time": 1695686400,
+            "display_text": {
+              "en-US": "Check-in",
+              "zh-TW": "報到"
+            },
+            "used": 1693065600,
+            "disabled": null,
+            "attr": {}
+          },
+          "welcomkit": {
+            "order": 1,
+            "available_time": 1693008000,
+            "expire_time": 1695686400,
+            "display_text": {
+              "en-US": "Welcom Kit",
+              "zh-TW": "迎賓袋"
+            },
+            "used": null,
+            "disabled": null,
+            "attr": {}
+          }
+        },
+        "attr": {}
+      }
+      """
 	Scenario: When attendee try to use a invisible scenario
 		Given there have some attendees
 			| token                                | event_id   | role     | metadata | display_name | first_used_at             |

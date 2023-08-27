@@ -17,5 +17,5 @@ export const datetimeToUnix = (datetime: Date | null): number | null => {
 		return null
 	}
 
-	return datetime.getTime() / 1000
+	return Math.floor(datetime.getTime() / 1000)
 }
