@@ -12,6 +12,7 @@ type ScenarioInfo = {
 	order: number
 	availableTime: AvailableTimeInfo
 	displayText: Record<string, string>
+	usedAt: Date | null
 	locked: boolean
 	lockReason: string
 	metadata: Record<string, any>
@@ -75,6 +76,10 @@ export class AttendeeAccess {
 			throw new ScenarioNotAvailableError('link is expired or not available yet')
 		}
 
+		attendee.useScenario(scenarioId)
+		await this.attendeeRepository.save(attendee)
+		await runRuleset(attendee, ruleset)
+
 		return buildAttendeeScenario(visibleScenarios)
 	}
 }
@@ -88,6 +93,7 @@ function buildAttendeeScenario(scenarios: Record<string, Scenario>): Record<stri
 			order: scenario.order,
 			availableTime: scenario.availableTime,
 			displayText: scenario.displayText,
+			usedAt: scenario.usedAt,
 			locked: scenario.isLocked,
 			lockReason: scenario.lockReason,
 			metadata: scenario.metadata,

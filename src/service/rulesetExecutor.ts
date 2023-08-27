@@ -23,6 +23,11 @@ export async function copyMetadata(attendee: Attendee, ruleset: Ruleset) {
 		const scenario = ruleset.scenarios[scenarioId]
 		const metadata = scenario.metadataDefinition
 
+		const usedTime = attendee.getScenarioUsedTime(scenarioId)
+		if (usedTime) {
+			scenario.useAt(usedTime)
+		}
+
 		for (const key in metadata) {
 			const template = metadata[key]
 			const value = attendee.getMetadata(template.key)

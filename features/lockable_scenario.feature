@@ -48,6 +48,7 @@ Feature: Lockable Scenario
               "en-US": "Special Gift",
               "zh-TW": "獨家紀念品"
             },
+            "used": null,
             "disabled": null,
             "attr": {}
           }
@@ -119,6 +120,7 @@ Feature: Lockable Scenario
 							"en-US": "Special Gift",
 							"zh-TW": "獨家紀念品"
 						},
+            "used": null,
             "disabled": null,
             "attr": {}
 					}
@@ -190,6 +192,7 @@ Feature: Lockable Scenario
 							"en-US": "Special Gift",
 							"zh-TW": "獨家紀念品"
 						},
+            "used": null,
             "disabled": null,
             "attr": {}
 					}

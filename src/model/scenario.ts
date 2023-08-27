@@ -44,6 +44,8 @@ export class Scenario {
 	private _locked: boolean = false
 	private _lockReason?: string
 
+	private _usedAt?: Date
+
 	constructor(attribute: ScenarioAttribute) {
 		this.order = attribute.order || 0
 		this.availableTime = attribute.availableTime
@@ -98,5 +100,13 @@ export class Scenario {
 
 	isAvailableAt(datetime: Date): boolean {
 		return datetime >= this.availableTime.start && datetime < this.availableTime.end
+	}
+
+	get usedAt(): Date | null {
+		return this._usedAt ?? null
+	}
+
+	useAt(datetime: Date): void {
+		this._usedAt = datetime
 	}
 }

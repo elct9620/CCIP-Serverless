@@ -51,10 +51,10 @@ function formatScenario(scenario: Record<string, any>) {
 		const value = scenario[key]
 		result[key] = {
 			order: value.order,
-			used: 0,
 			available_time: datetimeToUnix(value.availableTime.start),
 			expire_time: datetimeToUnix(value.availableTime.end),
 			display_text: value.displayText,
+			used: value.usedAt ? datetimeToUnix(value.usedAt) : null,
 			disabled: value.locked ? value.lockReason : null,
 			attr: value.metadata,
 		}

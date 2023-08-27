@@ -50,6 +50,10 @@ export class Attendee {
 		return this._metadata[key]
 	}
 
+	setMetadata(key: string, value: any): void {
+		this._metadata[key] = value
+	}
+
 	touch(): void {
 		if (!this._firstUsedAt) {
 			this._firstUsedAt = new Date()
@@ -58,5 +62,25 @@ export class Attendee {
 
 	isUsedScenario(scenarioId: string): boolean {
 		return !!this.getMetadata(`_scenario_${scenarioId}`)
+	}
+
+	getScenarioUsedTime(scenarioId: string): Date | null {
+		if (!this.isUsedScenario(scenarioId)) {
+			return null
+		}
+
+		try {
+			return new Date(this.getMetadata(`_scenario_${scenarioId}`))
+		} catch (e) {
+			return null
+		}
+	}
+
+	useScenario(scenarioId: string): void {
+		if (this.isUsedScenario(scenarioId)) {
+			return
+		}
+
+		this.setMetadata(`_scenario_${scenarioId}`, new Date())
 	}
 }

@@ -43,7 +43,11 @@ export class D1AttendeeRepository {
 	}
 
 	async save(attendee: Attendee): Promise<void> {
-		const stmt = this.db.prepare('UPDATE attendees SET first_used_at = ? WHERE token = ?')
-		await stmt.bind(attendee.firstUsedAt?.toISOString(), attendee.token).run()
+		const stmt = this.db.prepare(
+			'UPDATE attendees SET first_used_at = ? AND metadata = ? WHERE token = ?'
+		)
+		await stmt
+			.bind(attendee.firstUsedAt?.toISOString(), JSON.stringify(attendee.metadata), attendee.token)
+			.run()
 	}
 }

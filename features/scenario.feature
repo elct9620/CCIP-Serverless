@@ -37,6 +37,7 @@ Feature: Scenario
               "en-US": "Day 1 Check-in",
               "zh-TW": "第一天報到"
             },
+            "used": null,
             "disabled": null,
             "attr": {}
           }
@@ -111,6 +112,7 @@ Feature: Scenario
               "en-US": "Normal Check-in",
               "zh-TW": "一般報到"
             },
+            "used": null,
             "disabled": null,
             "attr": {}
           }
@@ -162,6 +164,7 @@ Feature: Scenario
 							"en-US": "Lunch",
 							"zh-TW": "午餐"
 						},
+            "used": null,
 						"disabled": null,
 						"attr": {
 							"diet": "葷"
