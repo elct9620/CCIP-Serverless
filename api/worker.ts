@@ -4,12 +4,7 @@ import * as API from './route'
 import * as UseCase from './usecase'
 import * as Repository from './repository'
 import { setFixedDatetime } from './utils'
-
-type Env = {
-	DB: D1Database
-	// E2E testability
-	MOCK_DATE?: string
-}
+import { Env } from './environment'
 
 type CF = [env: Env, context: ExecutionContext]
 
