@@ -1,35 +1,30 @@
 import { IRequest, StatusError } from 'itty-router'
 import { json, error } from './helper'
 import * as schema from './schema'
-import { AttendeeInfo, AttendeeAccess } from '../usecase'
-import { datetimeToUnix } from '../utils'
+import { AttendeeInfo, AttendeeAccess } from '../../api/usecase'
+import { datetimeToUnix } from '../../api/utils'
 
-export type UseRequest = {
+export type StatusRequest = {
 	attendeeInfo: AttendeeInfo
 	attendeeAccess: AttendeeAccess
-	scenarioId: string
 } & IRequest
 
-export type UseResponse = schema.Status
+export type StatusResponse = schema.Status
 
-export const use = async ({ attendeeInfo, attendeeAccess, scenarioId, query }: UseRequest) => {
+export const status = async ({ attendeeInfo, attendeeAccess, query }: StatusRequest) => {
 	if (!query.token) {
 		throw new StatusError(400, 'token required')
 	}
 
-	const info = await attendeeInfo.getAttendee(query.token as string)
+	const isStaffQuery = query.StaffQuery === 'true'
+	const info = await attendeeInfo.getAttendee(query.token as string, !isStaffQuery)
 	if (!info) {
 		throw new StatusError(400, 'invalid token')
 	}
 
-	let scenarios: Record<string, any>
-	try {
-		scenarios = await attendeeAccess.useScenario(query.token as string, scenarioId)
-	} catch (e) {
-		throw new StatusError(400, (e as Error).message)
-	}
+	const scenarios = await attendeeAccess.getScenarios(query.token as string)
 
-	return json<UseResponse>({
+	return json<StatusResponse>({
 		event_id: info.eventId,
 		user_id: info.displayName,
 		first_use: datetimeToUnix(info.firstUsedAt),
