@@ -1,4 +1,5 @@
-import { Attendee, Condition, ConditionType } from '../model'
+import { Attendee } from '../attendee'
+import { Condition, ConditionType } from '../event'
 
 type ConditionHandler = (attendee: Attendee, ...args: any[]) => boolean
 

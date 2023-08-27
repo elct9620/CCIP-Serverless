@@ -1,11 +1,5 @@
-import {
-	Attendee,
-	Condition,
-	ConditionType,
-	Ruleset,
-	Scenario,
-	ScenarioConditionType,
-} from '../model'
+import { Attendee } from '../attendee'
+import { Condition, ConditionType, Ruleset, Scenario, ScenarioConditionType } from '../event'
 import { executeCondition } from './conditions'
 
 export async function runRuleset(attendee: Attendee, ruleset: Ruleset | null) {

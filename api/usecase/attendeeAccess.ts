@@ -1,5 +1,5 @@
 import { AttendeeRepository, RulesetRepository } from './repository'
-import { Scenario } from '../../src/model'
+import { Scenario } from '../../src/event'
 import { runRuleset } from '../../src/service'
 import { getCurrentTime } from '../utils'
 

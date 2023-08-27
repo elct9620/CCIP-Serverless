@@ -1,4 +1,5 @@
-import { Attendee, Ruleset } from '../../src/model'
+import { Attendee } from '../../src/attendee'
+import { Ruleset } from '../../src/event'
 
 export interface AttendeeRepository {
 	findByToken(token: string): Promise<Attendee | null>

@@ -1,5 +1,5 @@
 import { type D1Database } from '@cloudflare/workers-types'
-import { Ruleset, Scenario, ScenarioConditionType, Condition, ConditionType } from '../../src/model'
+import { Ruleset, Scenario, ScenarioConditionType, Condition, ConditionType } from '../../src/event'
 
 type RulesetSchema = {
 	event_id: string

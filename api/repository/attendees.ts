@@ -1,5 +1,5 @@
 import { type D1Database } from '@cloudflare/workers-types'
-import { Attendee, AttendeeRole } from '../../src/model'
+import { Attendee, AttendeeRole } from '../../src/attendee'
 
 type AttendeeSchema = {
 	token: string

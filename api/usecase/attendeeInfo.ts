@@ -1,6 +1,7 @@
 import { AttendeeRepository, RulesetRepository } from './repository'
 import { runRuleset } from '../../src/service'
-import { Attendee, Ruleset, Scenario } from '../../src/model'
+import { Attendee } from '../../src/attendee'
+import { Ruleset, Scenario } from '../../src/event'
 
 export type AttendeeScenario = {
 	order: number
