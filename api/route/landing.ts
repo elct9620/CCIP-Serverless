@@ -1,6 +1,6 @@
 import { IRequest, StatusError } from 'itty-router'
 import { json, error } from './helper'
-import { AttendeeInfo } from '../../src/usecase'
+import { AttendeeInfo } from '../usecase'
 
 export type LandingRequest = {
 	attendeeInfo: AttendeeInfo
