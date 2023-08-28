@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"deploy": "wrangler deploy src/index.ts",
-		"dev": "wrangler dev src/index.ts",
+		"dev": "wrangler dev worker/index.ts",
 		"unit:test": "vitest run --no-threads",
 		"unit:test:ui": "vitest --ui --no-threads",
 		"e2e:test": "cucumber-js"
