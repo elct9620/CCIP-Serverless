@@ -8,6 +8,8 @@ A Community Checkin with Interactivity Project Serverless version
 
 ## Development
 
+- Yarn 1.22.19
+
 | Path         | Description                                                  |
 |--------------|--------------------------------------------------------------|
 | `/api`       | The CIPP Server API implementation                           |
