@@ -5,53 +5,53 @@ import { AttendeeInfo, AttendeeAccess } from '../../api/usecase'
 import { datetimeToUnix } from '../../api/utils'
 
 export type UseRequest = {
-	attendeeInfo: AttendeeInfo
-	attendeeAccess: AttendeeAccess
-	scenarioId: string
+  attendeeInfo: AttendeeInfo
+  attendeeAccess: AttendeeAccess
+  scenarioId: string
 } & IRequest
 
 export type UseResponse = schema.Status
 
 export const use = async ({ attendeeInfo, attendeeAccess, scenarioId, query }: UseRequest) => {
-	if (!query.token) {
-		throw new StatusError(400, 'token required')
-	}
+  if (!query.token) {
+    throw new StatusError(400, 'token required')
+  }
 
-	const info = await attendeeInfo.getAttendee(query.token as string)
-	if (!info) {
-		throw new StatusError(400, 'invalid token')
-	}
+  const info = await attendeeInfo.getAttendee(query.token as string)
+  if (!info) {
+    throw new StatusError(400, 'invalid token')
+  }
 
-	let scenarios: Record<string, any>
-	try {
-		scenarios = await attendeeAccess.useScenario(query.token as string, scenarioId)
-	} catch (e) {
-		throw new StatusError(400, (e as Error).message)
-	}
+  let scenarios: Record<string, any>
+  try {
+    scenarios = await attendeeAccess.useScenario(query.token as string, scenarioId)
+  } catch (e) {
+    throw new StatusError(400, (e as Error).message)
+  }
 
-	return json<UseResponse>({
-		event_id: info.eventId,
-		user_id: info.displayName,
-		first_use: datetimeToUnix(info.firstUsedAt),
-		role: info.role,
-		scenario: formatScenario(scenarios),
-		attr: info.metadata ?? {},
-	})
+  return json<UseResponse>({
+    event_id: info.eventId,
+    user_id: info.displayName,
+    first_use: datetimeToUnix(info.firstUsedAt),
+    role: info.role,
+    scenario: formatScenario(scenarios),
+    attr: info.metadata ?? {},
+  })
 }
 
 function formatScenario(scenario: Record<string, any>) {
-	const result: Record<string, schema.Scenario> = {}
-	for (const key in scenario) {
-		const value = scenario[key]
-		result[key] = {
-			order: value.order,
-			available_time: datetimeToUnix(value.availableTime.start),
-			expire_time: datetimeToUnix(value.availableTime.end),
-			display_text: value.displayText,
-			used: datetimeToUnix(value.usedAt),
-			disabled: value.locked ? value.lockReason : null,
-			attr: value.metadata,
-		}
-	}
-	return result
+  const result: Record<string, schema.Scenario> = {}
+  for (const key in scenario) {
+    const value = scenario[key]
+    result[key] = {
+      order: value.order,
+      available_time: datetimeToUnix(value.availableTime.start),
+      expire_time: datetimeToUnix(value.availableTime.end),
+      display_text: value.displayText,
+      used: datetimeToUnix(value.usedAt),
+      disabled: value.locked ? value.lockReason : null,
+      attr: value.metadata,
+    }
+  }
+  return result
 }

@@ -2,91 +2,91 @@ import { type D1Database } from '@cloudflare/workers-types'
 import { Ruleset, Scenario, ScenarioConditionType, Condition, ConditionType } from '../../src/event'
 
 type RulesetSchema = {
-	event_id: string
-	name: string
-	scenarios: string
+  event_id: string
+  name: string
+  scenarios: string
 }
 
 type ConditionSchema = {
-	type: string
-	args: any[]
-	reason?: string
+  type: string
+  args: any[]
+  reason?: string
 }
 
 type MetadataSchema = {
-	key: string
+  key: string
 }
 
 type AvailableTimeSchema = {
-	start: string
-	end: string
+  start: string
+  end: string
 }
 
 type ScenarioSchema = {
-	order: number
-	available_time: AvailableTimeSchema
-	display_text: Record<string, string>
-	conditions: Record<string, ConditionSchema>
-	metadata: Record<string, MetadataSchema>
+  order: number
+  available_time: AvailableTimeSchema
+  display_text: Record<string, string>
+  conditions: Record<string, ConditionSchema>
+  metadata: Record<string, MetadataSchema>
 }
 
 export class D1RulesetRepository {
-	private readonly db: D1Database
+  private readonly db: D1Database
 
-	constructor(db: D1Database) {
-		this.db = db
-	}
+  constructor(db: D1Database) {
+    this.db = db
+  }
 
-	async findByEventId(eventId: string, name: string): Promise<Ruleset | null> {
-		const stmt = await this.db.prepare('SELECT * FROM rulesets WHERE event_id = ? AND name = ?')
-		const result = await stmt.bind(eventId, name).first<RulesetSchema>()
+  async findByEventId(eventId: string, name: string): Promise<Ruleset | null> {
+    const stmt = await this.db.prepare('SELECT * FROM rulesets WHERE event_id = ? AND name = ?')
+    const result = await stmt.bind(eventId, name).first<RulesetSchema>()
 
-		if (!result) {
-			return null
-		}
+    if (!result) {
+      return null
+    }
 
-		let scenarios: Record<string, ScenarioSchema>
-		try {
-			scenarios = JSON.parse(result.scenarios)
-		} catch (e) {
-			scenarios = {}
-		}
+    let scenarios: Record<string, ScenarioSchema>
+    try {
+      scenarios = JSON.parse(result.scenarios)
+    } catch (e) {
+      scenarios = {}
+    }
 
-		const ruleset = new Ruleset({
-			eventId: result.event_id,
-			name: result.name,
-		})
+    const ruleset = new Ruleset({
+      eventId: result.event_id,
+      name: result.name,
+    })
 
-		for (const scenarioId in scenarios) {
-			const scenario = buildScenario(scenarios[scenarioId])
-			ruleset.addScenario(scenarioId, scenario)
-		}
+    for (const scenarioId in scenarios) {
+      const scenario = buildScenario(scenarios[scenarioId])
+      ruleset.addScenario(scenarioId, scenario)
+    }
 
-		return ruleset
-	}
+    return ruleset
+  }
 }
 
 function buildScenario(data: ScenarioSchema): Scenario {
-	const scenario = new Scenario({
-		availableTime: {
-			start: new Date(data.available_time.start),
-			end: new Date(data.available_time.end),
-		},
-		order: data.order,
-		displayText: data.display_text,
-		metadataDefinition: data.metadata,
-	})
+  const scenario = new Scenario({
+    availableTime: {
+      start: new Date(data.available_time.start),
+      end: new Date(data.available_time.end),
+    },
+    order: data.order,
+    displayText: data.display_text,
+    metadataDefinition: data.metadata,
+  })
 
-	for (const conditionType in data.conditions) {
-		scenario.setCondition(
-			conditionType as ScenarioConditionType,
-			new Condition(
-				data.conditions[conditionType].type as ConditionType,
-				data.conditions[conditionType].args,
-				data.conditions[conditionType].reason
-			)
-		)
-	}
+  for (const conditionType in data.conditions) {
+    scenario.setCondition(
+      conditionType as ScenarioConditionType,
+      new Condition(
+        data.conditions[conditionType].type as ConditionType,
+        data.conditions[conditionType].args,
+        data.conditions[conditionType].reason
+      )
+    )
+  }
 
-	return scenario
+  return scenario
 }
