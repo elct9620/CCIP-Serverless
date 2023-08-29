@@ -13,6 +13,7 @@ const router = Router()
 router
   .all('*', withParams)
   .post<IRequest, CF>('/reset', Api.resetHandler)
+  .post<IRequest, CF>('/announcements', Api.createAnnouncementHandler)
   .post<IRequest, CF>('/attendees', Api.createAttendeeHandler)
   .post<IRequest, CF>('/rulesets', Api.createRulesetHandler)
   .all('*', () => error(404))
