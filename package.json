@@ -2,9 +2,11 @@
   "name": "CCIP-Serverless",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "deploy": "wrangler deploy src/index.ts",
-    "dev": "wrangler dev worker/index.ts",
+    "deploy": "yarn build && wrangler pages deploy dist",
+    "dev": "vite",
+    "build": "vite build",
     "unit:test": "vitest run --no-threads",
     "unit:test:ui": "vitest --ui --no-threads",
     "e2e:test": "cucumber-js"
@@ -18,6 +20,7 @@
     "prettier": "3.0.2",
     "tsm": "^2.3.0",
     "typescript": "^5.1.6",
+    "vite": "^4.4.9",
     "vitest": "^0.x",
     "wrangler": "^3.x"
   },
