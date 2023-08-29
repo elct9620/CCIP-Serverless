@@ -6,7 +6,7 @@
   "scripts": {
     "deploy": "yarn build && wrangler pages deploy dist",
     "dev": "vite",
-    "build": "vite build",
+    "build": "vue-tsc && vite build",
     "unit:test": "vitest run --no-threads",
     "unit:test:ui": "vitest --ui --no-threads",
     "e2e:test": "cucumber-js"

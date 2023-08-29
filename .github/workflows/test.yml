@@ -23,7 +23,7 @@ jobs:
       - name: Setup
         run: yarn install --frozen-lockfile
       - name: TypeScript Check
-        run: yarn tsc
+        run: yarn vue-tsc
   cucumber:
     runs-on: ubuntu-latest
     steps:
