@@ -6,7 +6,10 @@ type Env = {
 }
 
 export type CreateAnnouncementPayload = {
-  announced_at: number
+  /**
+   * string in datetime format
+   */
+  announced_at: string
   message_en: string
   message_zh: string
   uri: string
