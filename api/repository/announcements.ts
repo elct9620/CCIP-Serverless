@@ -2,7 +2,7 @@ import { type D1Database } from '@cloudflare/workers-types'
 import { Announcement } from '../../src/announcement'
 
 type AnnouncementSchema = {
-  announced_at: number
+  announced_at: string
   message_en: string
   message_zh: string
   uri: string
@@ -16,14 +16,13 @@ export class D1AnnouncementRepository {
   }
 
   async findByToken(token?: string): Promise<Announcement[]> {
-    const stmt = this.db.prepare('SELECT * FROM Announcement WHERE role = ? ORDER BY rowid')
-    const role = 'audience'
-    const { results } = await stmt.bind(role).all<AnnouncementSchema>()
+    const stmt = this.db.prepare('SELECT * FROM announcements ORDER BY rowid')
+    const { results } = await stmt.bind().all<AnnouncementSchema>()
 
     return results.map(
       result =>
         new Announcement({
-          announcedAt: result.announced_at,
+          announcedAt: new Date(result.announced_at),
           messageEn: result.message_en,
           messageZh: result.message_zh,
           uri: result.uri,
