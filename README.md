@@ -12,6 +12,6 @@ A Community Checkin with Interactivity Project Serverless version
 | ------------ | ------------------------------------------------------------ |
 | `/api`       | The CIPP Server API implementation                           |
 | `/mock`      | The mock API for E2E testing                                 |
-| `/functions` | The `Functions` for Cloudflare Pages (be used in production) |
-| `/worker`    | The Cloudflare Worker API be used in Vite and E2E testing    |
+| `/worker`    | The API implementation for Cloudflare Workers                |
 | `/src`       | The Domain Model of CIPP Server                              |
+| `/ui`        | The Vue-based UI                                             |
