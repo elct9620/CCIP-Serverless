@@ -1,7 +1,7 @@
-import { Announcement as AnnouncementSchema } from '../schema'
+import { Announcement } from '../../src/announcement'
 import { AnnouncementRepository } from './repository'
 
-export type AnnouncementReply = AnnouncementSchema[]
+export type AnnouncementReply = Announcement[]
 
 export class AnnouncementInfo {
   private readonly announcementRepository: AnnouncementRepository
@@ -12,12 +12,6 @@ export class AnnouncementInfo {
 
   public async findByToken(token?: string): Promise<AnnouncementReply> {
     const results = await this.announcementRepository.findByToken(token)
-
-    return results.map(result => ({
-      datetime: result.announcedAt,
-      msgEn: result.messageEn,
-      msgZh: result.messageZh,
-      uri: result.uri
-    }))
+    return results
   }
 }
