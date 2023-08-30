@@ -1,6 +1,6 @@
-import { Announcement } from '../../src/announcement'
-import { Attendee } from '../../src/attendee'
-import { Ruleset } from '../../src/event'
+import { Announcement } from '@/announcement'
+import { Attendee } from '@/attendee'
+import { Ruleset } from '@/event'
 
 export interface AnnouncementRepository {
   listAll(): Promise<Announcement[]>
