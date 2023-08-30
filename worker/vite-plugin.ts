@@ -1,5 +1,6 @@
-import { Plugin } from 'vite'
+import { Plugin, ResolvedConfig } from 'vite'
 import { unstable_dev, UnstableDevWorker } from 'wrangler'
+import colors from 'picocolors'
 
 function isRoutingRuleMatch(pathname: string, routingRule: string): boolean {
   // sanity checks
@@ -89,39 +90,49 @@ type ProxyConfig = {
   }
 }
 
-export default function WorkerProxy(config: ProxyConfig): Plugin {
+export default function WorkerProxy(proxyConfig: ProxyConfig): Plugin {
   let worker: UnstableDevWorker | null = null
+  let config: ResolvedConfig | null = null
 
-  if (!config) {
+  if (!proxyConfig) {
     throw new Error('Missing routes config')
   }
 
   return {
     name: 'worker-proxy',
     apply: 'serve',
+    configResolved: resolvedConfig => {
+      config = resolvedConfig
+    },
     configureServer: async server => {
+      // FIXME: debugger not available in unstable_dev
       worker = await unstable_dev('worker/index.ts', {
         env: 'dev',
+        logLevel: 'none',
         experimental: {
           disableExperimentalWarning: true,
-          watch: true,
+          testMode: false,
         },
       })
 
       server.middlewares.use(async (r, w, next) => {
         const pathname = r.originalUrl ?? ''
 
-        if (isMatched(pathname, [...devExclude, ...config.routes.exclude])) {
+        if (isMatched(pathname, [...devExclude, ...proxyConfig.routes.exclude])) {
           return next()
         }
 
-        if (isMatched(pathname, config.routes.include)) {
+        if (isMatched(pathname, proxyConfig.routes.include)) {
           try {
             const res = await proxyTo(worker!, {
               pathname,
               method: r.method || 'GET',
               headers: r.headers,
               body: r.read(),
+            })
+
+            config?.logger.info(colors.yellow(`${r.method} ${pathname} => ${res.status}`), {
+              timestamp: true,
             })
 
             w.writeHead(res.status)
