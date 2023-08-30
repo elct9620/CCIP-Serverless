@@ -12,7 +12,10 @@ export const setFixedDatetime = (datetime: Date | null): void => {
   fixedDatetime = datetime
 }
 
-export const datetimeToUnix = (datetime: Date | null): number | null => {
+export function datetimeToUnix(datetime: Date): number
+export function datetimeToUnix(datetime: null): null
+export function datetimeToUnix(datetime: Date | null): number | null
+export function datetimeToUnix(datetime: Date | null): number | null {
   if (!datetime) {
     return null
   }
