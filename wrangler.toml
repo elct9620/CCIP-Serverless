@@ -1,5 +1,5 @@
 name = "ccip-serverless"
-main = "./src/index.ts"
+main = "./worker/index.ts"
 compatibility_date = "2023-08-15"
 
 [env.dev]
