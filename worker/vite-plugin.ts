@@ -100,7 +100,13 @@ export default function WorkerProxy(config: ProxyConfig): Plugin {
     name: 'worker-proxy',
     apply: 'serve',
     configureServer: async server => {
-      worker = await unstable_dev('worker/index.ts', {})
+      worker = await unstable_dev('worker/index.ts', {
+        env: 'dev',
+        experimental: {
+          disableExperimentalWarning: true,
+          watch: true,
+        },
+      })
 
       server.middlewares.use(async (r, w, next) => {
         const pathname = r.originalUrl ?? ''
