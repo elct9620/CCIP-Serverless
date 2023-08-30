@@ -16,7 +16,7 @@ export class D1AnnouncementRepository {
   }
 
   async listAll(): Promise<Announcement[]> {
-    const stmt = this.db.prepare('SELECT * FROM Announcement ORDER BY rowid')
+    const stmt = this.db.prepare('SELECT * FROM Announcement ORDER BY id')
     const { results } = await stmt.all<AnnouncementSchema>()
 
     return results.map(toAnnouncement)
