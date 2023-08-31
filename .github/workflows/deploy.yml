@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
+
       - name: Set name suffix
         run: |
           if [ -z "$OVERRIDE_NAME_SUFFIX" ]
@@ -22,7 +23,9 @@ jobs:
           GH_OWNER: ${{ github.repository_owner }}
           OVERRIDE_NAME_SUFFIX: ${{ vars.OVERRIDE_NAME_SUFFIX }}
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+
       - name: Install package
         run: |
           sudo apt-get -y install jq
@@ -66,12 +69,62 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
-      - name: Create Pages project
+      - name: retrieve Terraform state KV namespace
         uses: cloudflare/wrangler-action@2.0.0
         with:
-          command: pages project create ccip-${{ env.NAME_SUFFIX }} --production-branch=main
+          command: kv:namespace list | jq -r '.[] | select( .title == "ccip-terraform-${{ env.NAME_SUFFIX }}-state" ) | .id' | awk '{print "tfstate_kv="$1}' >> $GITHUB_ENV
           apiToken: ${{ secrets.CF_API_TOKEN }}
-        continue-on-error: true
+          preCommands: |
+            echo "*** pre commands ***"
+            apt-get update && apt-get -y install jq
+            echo "******"
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+
+      - name: Init
+        run: terraform init
+        working-directory: ./tf
+
+      - name: download Terraform state
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          command: kv:key get --namespace-id=${{ env.tfstate_kv }} terraform.tfstate > ./tf/terraform.tfstate
+          postCommands: |
+            echo "*** post commands ***"
+            chmod 777 ./tf/terraform.tfstate
+            echo "******"
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+        if: ${{ env.tfstate_kv != '' }}
+
+      - name: Configure
+        run: terraform plan && terraform apply -auto-approve
+        working-directory: ./tf
+        env:
+          TF_VAR_cloudflare_account_id: ${{ secrets.CF_ACCOUNT_ID }}
+          TF_VAR_cloudflare_api_token: ${{ secrets.CF_API_TOKEN }}
+          TF_VAR_name_suffix: ${{ env.NAME_SUFFIX }}
+          TF_VAR_d1_id: ${{ env.d1_id }}
+
+      - name: retrieve Terraform state KV namespace
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          command: kv:namespace list | jq -r '.[] | select( .title == "ccip-terraform-${{ env.NAME_SUFFIX }}-state" ) | .id' | awk '{print "tfstate_kv="$1}' >> $GITHUB_ENV
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          preCommands: |
+            echo "*** pre commands ***"
+            apt-get update && apt-get -y install jq
+            echo "******"
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+        if: ${{ env.tfstate_kv == '' }}
+
+      - name: store Terraform state
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          command: kv:key put --namespace-id=${{ env.tfstate_kv }} terraform.tfstate --path=./tf/terraform.tfstate
+          apiToken: ${{ secrets.CF_API_TOKEN }}
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
