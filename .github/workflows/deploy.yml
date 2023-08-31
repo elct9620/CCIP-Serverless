@@ -61,7 +61,7 @@ jobs:
           preCommands: |
             echo "*** pre commands ***"
             sed -i "s/__DATABASE_NAME__/ccip-${{ env.NAME_SUFFIX }}/g" wrangler.toml
-            sed -i "s/__DATABASE_ID__/ccip-${{ env.d1_id }}/g" wrangler.toml
+            sed -i "s/__DATABASE_ID__/${{ env.d1_id }}/g" wrangler.toml
             echo "******"
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
