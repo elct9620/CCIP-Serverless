@@ -1,0 +1,81 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+  repository_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Set name suffix
+        run: |
+          if [ -z "$OVERRIDE_NAME_SUFFIX" ]
+          then
+              echo $GH_OWNER | awk '{ print "NAME_SUFFIX=" tolower($0) }' >> ${GITHUB_ENV}
+          else
+              echo $OVERRIDE_NAME_SUFFIX | awk '{ print "NAME_SUFFIX=" tolower($0) }' >> ${GITHUB_ENV}
+          fi
+        env:
+          GH_OWNER: ${{ github.repository_owner }}
+          OVERRIDE_NAME_SUFFIX: ${{ vars.OVERRIDE_NAME_SUFFIX }}
+
+      - uses: actions/checkout@v2
+      - name: Install package
+        run: |
+          sudo apt-get -y install jq
+
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Create D1 database
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          command: d1 create ccip-${{ env.NAME_SUFFIX }}
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+        continue-on-error: true
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+
+      - name: retrieve D1 database
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          command: d1 list --json | jq -r '.[] | select(.name == "ccip-${{ env.NAME_SUFFIX }}") | .uuid' | awk '{print "d1_id="$1}' >> $GITHUB_ENV
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          preCommands: |
+            echo "*** pre commands ***"
+            apt-get update && apt-get -y install jq
+            echo "******"
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+
+      - name: migrate D1 database
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          command: d1 migrations apply ccip-${{ env.NAME_SUFFIX }}
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          preCommands: |
+            echo "*** pre commands ***"
+            sed -i "s/__DATABASE_NAME__/ccip-${{ env.NAME_SUFFIX }}/g" wrangler.toml
+            sed -i "s/__DATABASE_ID__/ccip-${{ env.d1_id }}/g" wrangler.toml
+            echo "******"
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+
+      - name: Publish
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          preCommands: |
+            echo "*** pre commands ***"
+            yarn
+            yarn build
+            echo "******"
+          command: pages publish --project-name=ccip-${{ env.NAME_SUFFIX }} dist
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          COMMIT_HASH: ${{ github.sha }}
