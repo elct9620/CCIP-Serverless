@@ -1,4 +1,5 @@
 export * from './localized'
+export * from './announcement'
 export * from './attendee'
 export * from './scenario'
 export * from './status'
