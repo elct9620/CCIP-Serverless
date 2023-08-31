@@ -1,7 +1,7 @@
-import { Given, After } from '@cucumber/cucumber'
+import { After, DataTable, Given } from '@cucumber/cucumber'
 import { WorkerWorld } from './world'
 
-Given('there have some attendees', async function (this: WorkerWorld, dataTable) {
+Given('there have some attendees', async function (this: WorkerWorld, dataTable: DataTable) {
   const attendees = dataTable.hashes().map(row =>
     this.mock.fetch('https://testability.opass.app/attendees', {
       method: 'POST',
@@ -27,6 +27,18 @@ Given(
     })
   }
 )
+
+Given('there are some announcements', async function (this: WorkerWorld, dataTable: DataTable) {
+  const announcements = dataTable.hashes().map(row =>
+    this.mock.fetch('https://testability.opass.app/announcements', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(row),
+    })
+  )
+
+  await Promise.all(announcements)
+})
 
 After(async function (this: WorkerWorld) {
   await this.mock.fetch('https://testability.opass.app/reset', {
