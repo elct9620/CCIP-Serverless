@@ -66,6 +66,15 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
+      - name: Create Pages project
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          command: pages project create ccip-${{ env.NAME_SUFFIX }}
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+        continue-on-error: true
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+
       - name: Publish
         uses: cloudflare/wrangler-action@2.0.0
         with:
