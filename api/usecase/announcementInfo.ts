@@ -18,7 +18,7 @@ export class AnnouncementInfo {
     this.attendeeRepository = attendeeRepository
   }
 
-  public async listAllByToken(token?: string | undefined): Promise<AnnouncementReply> {
+  public async byAttendee(token?: string | undefined): Promise<AnnouncementReply> {
     let attendeeRole = defaultQueryRole
     if (token) {
       await this.attendeeRepository.findByToken(token).then(attendee => {
