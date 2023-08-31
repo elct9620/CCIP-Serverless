@@ -6,7 +6,6 @@ Feature: Announcement
       """
       []
       """
-  @wip
   Scenario: GET /announcement without token
     Given there are some announcements
       | announced_at              | message_en    | message_zh   | uri                                           | role     |
