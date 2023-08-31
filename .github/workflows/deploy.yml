@@ -69,7 +69,7 @@ jobs:
       - name: Create Pages project
         uses: cloudflare/wrangler-action@2.0.0
         with:
-          command: pages project create ccip-${{ env.NAME_SUFFIX }}
+          command: pages project create ccip-${{ env.NAME_SUFFIX }} --production-branch=main
           apiToken: ${{ secrets.CF_API_TOKEN }}
         continue-on-error: true
         env:
