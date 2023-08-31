@@ -10,15 +10,16 @@ export type CreateAnnouncementPayload = {
   message_en: string
   message_zh: string
   uri: string
+  roles: string
 }
 
 export const createAnnouncementHandler = async (req: IRequest, { DB }: Env) => {
-  const { announced_at, message_en, message_zh, uri } =
+  const { announced_at, message_en, message_zh, uri, roles } =
     (await req.json()) as CreateAnnouncementPayload
   const stmt = DB.prepare(
-    'INSERT INTO announcements (announced_at, message_en, message_zh, uri) VALUES (?, ?, ?, ?)'
+    'INSERT INTO announcements (announced_at, message_en, message_zh, uri, roles) VALUES (?, ?, ?, ?, ?)'
   )
-  const info = await stmt.bind(announced_at, message_en, message_zh, uri).run()
+  const info = await stmt.bind(announced_at, message_en, message_zh, uri, roles).run()
 
   return json(info)
 }

@@ -6,6 +6,7 @@ type AnnouncementSchema = {
   message_en: string | null
   message_zh: string | null
   uri: string
+  roles: string[]
 }
 
 export class D1AnnouncementRepository {
@@ -16,8 +17,15 @@ export class D1AnnouncementRepository {
   }
 
   async listAll(): Promise<Announcement[]> {
-    const stmt = this.db.prepare('SELECT * FROM announcements ORDER BY id')
-    const { results } = await stmt.all<AnnouncementSchema>()
+    const stmt = this.db.prepare(`
+      SELECT * FROM announcements
+        WHERE (
+          SELECT 1 FROM json_each(roles) WHERE json_each.value = ?
+        )
+        ORDER BY id
+      `)
+    const role = 'audience'
+    const { results } = await stmt.bind(role).all<AnnouncementSchema>()
 
     return results.map(toAnnouncement)
   }
