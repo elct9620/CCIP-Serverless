@@ -1,17 +1,26 @@
+import { AttendeeRole } from '@/attendee'
 import { Announcement } from '../schema'
-import { AnnouncementRepository } from './repository'
+import { AnnouncementRepository, AttendeeRepository } from './repository'
 
 export type AnnouncementReply = Announcement[]
 
+const defaultQueryRole = AttendeeRole.Audience
+
 export class AnnouncementInfo {
   private readonly announcementRepository: AnnouncementRepository
+  private readonly attendeeRepository: AttendeeRepository
 
-  constructor(announcementRepository: AnnouncementRepository) {
+  constructor(
+    announcementRepository: AnnouncementRepository,
+    attendeeRepository: AttendeeRepository
+  ) {
     this.announcementRepository = announcementRepository
+    this.attendeeRepository = attendeeRepository
   }
 
-  public async listAll(): Promise<AnnouncementReply> {
-    const results = await this.announcementRepository.listAll()
+  public async byAttendee(token?: string | undefined): Promise<AnnouncementReply> {
+    const attendee = await this.attendeeRepository.findByToken(token ?? '')
+    const results = await this.announcementRepository.listByRole(attendee?.role ?? defaultQueryRole)
     return results.map(toAnnouncementData)
   }
 }

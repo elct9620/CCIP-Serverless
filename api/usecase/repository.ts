@@ -3,7 +3,7 @@ import { Attendee } from '@/attendee'
 import { Ruleset } from '@/event'
 
 export interface AnnouncementRepository {
-  listAll(): Promise<Announcement[]>
+  listByRole(role: string): Promise<Announcement[]>
 }
 
 export interface AttendeeRepository {

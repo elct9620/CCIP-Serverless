@@ -16,7 +16,7 @@ export class D1AnnouncementRepository {
     this.db = db
   }
 
-  async listAll(): Promise<Announcement[]> {
+  async listByRole(role: string): Promise<Announcement[]> {
     const stmt = this.db.prepare(`
       SELECT * FROM announcements
         WHERE (
@@ -24,7 +24,6 @@ export class D1AnnouncementRepository {
         )
         ORDER BY id
       `)
-    const role = 'audience'
     const { results } = await stmt.bind(role).all<AnnouncementSchema>()
 
     return results.map(toAnnouncement)

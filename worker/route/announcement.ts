@@ -6,6 +6,7 @@ import { json } from './helper'
 
 export type AnnouncementRequest = {
   announcementInfo: AnnouncementInfo
+  query: Record<string, string | undefined>
 } & IRequest
 
 export type AnnouncementData = {
@@ -17,8 +18,8 @@ export type AnnouncementData = {
 
 export type AnnouncementResponse = AnnouncementData[]
 
-export const announcement = async ({ announcementInfo }: AnnouncementRequest) => {
-  const results = await announcementInfo.listAll();
+export const announcement = async ({ announcementInfo, query }: AnnouncementRequest) => {
+  const results = await announcementInfo.byAttendee(query.token)
   return json<AnnouncementResponse>(results.map(toFormattedAnnouncement))
 }
 
