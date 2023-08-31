@@ -19,16 +19,8 @@ export class AnnouncementInfo {
   }
 
   public async byAttendee(token?: string | undefined): Promise<AnnouncementReply> {
-    let attendeeRole = defaultQueryRole
-    if (token) {
-      await this.attendeeRepository.findByToken(token).then(attendee => {
-        if (attendee?.role) {
-          attendeeRole = attendee.role
-        }
-      })
-    }
-
-    const results = await this.announcementRepository.listByRole(attendeeRole)
+    const attendee = await this.attendeeRepository.findByToken(token ?? '')
+    const results = await this.announcementRepository.listByRole(attendee?.role ?? defaultQueryRole)
     return results.map(toAnnouncementData)
   }
 }
