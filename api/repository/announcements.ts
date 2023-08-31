@@ -16,7 +16,7 @@ export class D1AnnouncementRepository {
     this.db = db
   }
 
-  async listAllByRole(role: string): Promise<Announcement[]> {
+  async listByRole(role: string): Promise<Announcement[]> {
     const stmt = this.db.prepare(`
       SELECT * FROM announcements
         WHERE (

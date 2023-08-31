@@ -28,7 +28,7 @@ export class AnnouncementInfo {
       })
     }
 
-    const results = await this.announcementRepository.listAllByRole(attendeeRole)
+    const results = await this.announcementRepository.listByRole(attendeeRole)
     return results.map(toAnnouncementData)
   }
 }
