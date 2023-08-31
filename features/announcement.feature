@@ -34,7 +34,6 @@ Feature: Announcement
         }
       ]
       """
-  @wip
   Scenario: GET /announcement with nonexistent token returns announcements for audiences
     Given there are some announcements
       | announced_at              | message_en    | message_zh   | uri                                           | roles                 |
