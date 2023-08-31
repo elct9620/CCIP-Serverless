@@ -10,8 +10,9 @@ export class AnnouncementInfo {
     this.announcementRepository = announcementRepository
   }
 
-  public async listAll(): Promise<AnnouncementReply> {
-    const results = await this.announcementRepository.listAll()
+  public async listAllByToken(token?: string | undefined): Promise<AnnouncementReply> {
+    const role = !!token ? 'staff' : 'audience'
+    const results = await this.announcementRepository.listAllByRole(role)
     return results.map(toAnnouncementData)
   }
 }
