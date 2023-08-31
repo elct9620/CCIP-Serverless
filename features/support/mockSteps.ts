@@ -1,7 +1,7 @@
 import { After, DataTable, Given } from '@cucumber/cucumber'
 import { WorkerWorld } from './world'
 
-Given('there have some attendees', async function (this: WorkerWorld, dataTable) {
+Given('there have some attendees', async function (this: WorkerWorld, dataTable: DataTable) {
   const attendees = dataTable.hashes().map(row =>
     this.mock.fetch('https://testability.opass.app/attendees', {
       method: 'POST',
