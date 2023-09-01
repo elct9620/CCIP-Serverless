@@ -31,3 +31,16 @@ const toFormattedAnnouncement = (data: schema.Announcement): AnnouncementData =>
   msgZh: data.messageZh,
   uri: data.uri,
 })
+
+export const routes = [
+  {
+    method: 'post',
+    path: '/announcement',
+    handler: createAnnouncement,
+  },
+  {
+    method: 'get',
+    path: '/announcement',
+    handler: listAnnouncements,
+  },
+]

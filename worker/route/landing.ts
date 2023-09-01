@@ -21,3 +21,11 @@ export const landing = async ({ attendeeInfo, query }: LandingRequest) => {
 
   return json<LandingResponse>({ nickname: info.displayName })
 }
+
+export const routes = [
+  {
+    method: 'get',
+    path: '/landing',
+    handler: landing,
+  },
+]

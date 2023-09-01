@@ -34,6 +34,14 @@ export const status = async ({ attendeeInfo, attendeeAccess, query }: StatusRequ
   })
 }
 
+export const routes = [
+  {
+    method: 'get',
+    path: '/status',
+    handler: status,
+  },
+]
+
 function formatScenario(scenario: Record<string, any>) {
   const result: Record<string, schema.Scenario> = {}
   for (const key in scenario) {

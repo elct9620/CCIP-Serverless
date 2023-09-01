@@ -39,6 +39,14 @@ export const use = async ({ attendeeInfo, attendeeAccess, scenarioId, query }: U
   })
 }
 
+export const routes = [
+  {
+    method: 'get',
+    path: '/use/:scenarioId',
+    handler: use,
+  },
+]
+
 function formatScenario(scenario: Record<string, any>) {
   const result: Record<string, schema.Scenario> = {}
   for (const key in scenario) {
