@@ -10,7 +10,7 @@ When('I make a GET request to {string}', async function (this: WorkerWorld, path
 })
 
 When(
-  'I make a POST request to {string}',
+  'I make a POST request to {string}:',
   async function (this: WorkerWorld, path: string, datatable: DataTable) {
     this.apiResponse = await this.api.fetch(`https://ccip.opass.app${path}`, {
       method: 'POST',
