@@ -18,7 +18,9 @@ export type AnnouncementData = {
 
 export type AnnouncementResponse = AnnouncementData[]
 
-export const announcement = async ({ announcementInfo, query }: AnnouncementRequest) => {
+export const createAnnouncement = async (request: AnnouncementRequest) => json({ status: 'OK' })
+
+export const listAnnouncements = async ({ announcementInfo, query }: AnnouncementRequest) => {
   const results = await announcementInfo.byAttendee(query.token)
   return json<AnnouncementResponse>(results.map(toFormattedAnnouncement))
 }
