@@ -9,6 +9,10 @@ import { Env } from './environment'
 type CF = [env: Env, context: ExecutionContext]
 
 const withUsecases = (request: IRequest, env: Env, context: ExecutionContext) => {
+  if (!env.DB) {
+    throw new Error('DB is not available')
+  }
+
   const announcementRepository = new Repository.D1AnnouncementRepository(env.DB)
   const attendeeRepository = new Repository.D1AttendeeRepository(env.DB)
   const rulesetRepository = new Repository.D1RulesetRepository(env.DB)
