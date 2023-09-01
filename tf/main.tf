@@ -46,7 +46,7 @@ resource "cloudflare_pages_project" "ccip_pages_project" {
         DB = sensitive(var.d1_id)
       }
 
-      compatibility_date = "2023-01-09"
+      compatibility_date = "2023-08-14"
     }
   }
 }

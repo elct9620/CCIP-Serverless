@@ -1,6 +1,6 @@
 name = "ccip-serverless"
 main = "./worker/index.ts"
-compatibility_date = "2023-08-15"
+compatibility_date = "2023-08-14"
 
 [env.dev]
 [[env.dev.d1_databases]]
