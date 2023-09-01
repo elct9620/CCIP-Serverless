@@ -5,6 +5,8 @@ on:
       - main
   repository_dispatch:
 
+concurrency: deploy
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
