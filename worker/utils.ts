@@ -1,9 +1,6 @@
 import { json as _json, ErrorFormatter, ErrorBody } from 'itty-router'
 import type { ResponseInit } from '@cloudflare/workers-types'
-
-export type ApiError = {
-  message: string
-}
+import type { ApplicationError } from '@api/schema'
 
 const errorMessages: Record<number, string> = {
   400: 'Bad Request',
@@ -23,5 +20,5 @@ export const error: ErrorFormatter = (a = 500, b?: ErrorBody) => {
 
   b = b || errorMessages[a] || 'Unknown Error'
 
-  return json<ApiError>({ message: b.toString() }, { status: a })
+  return json<ApplicationError>({ message: b.toString() }, { status: a })
 }
