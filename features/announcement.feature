@@ -84,3 +84,14 @@ Feature: Announcement
         }
       ]
       """
+  Scenario: POST /announcement
+    When I make a POST request to "/announcement"
+      | msg_en        | msg_zh   | uri                                           | role         |
+      | hello world   | 世界你好 | https://testability.opass.app/announcements/1 | ["audience"] |
+    Then the response status should be 200
+    And the response json should be:
+      """
+      {
+        "status": "OK"
+      }
+      """

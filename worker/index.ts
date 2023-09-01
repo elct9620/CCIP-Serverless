@@ -42,6 +42,7 @@ router
   )
   // CCIP API
   .get('/announcement', API.announcement)
+  .post('/announcement', API.announcement)
   .get('/landing', API.landing)
   .get('/status', API.status)
   .get('/use/:scenarioId', API.use)
