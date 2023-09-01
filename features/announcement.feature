@@ -86,8 +86,14 @@ Feature: Announcement
       """
   Scenario: POST /announcement
     When I make a POST request to "/announcement":
-      | msg_en        | msg_zh   | uri                                           | role         |
-      | hello world   | 世界你好 | https://testability.opass.app/announcements/1 | ["audience"] |
+      """
+      {
+        "msg_en": "hello world",
+        "msg_zh": "世界你好",
+        "uri": "https://testability.opass.app/announcements/1",
+        "role": "[\"audience\"]"
+      }
+      """
     Then the response status should be 200
     And the response json should be:
       """

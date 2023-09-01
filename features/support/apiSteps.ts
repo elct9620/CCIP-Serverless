@@ -1,4 +1,4 @@
-import { DataTable, Then, When } from '@cucumber/cucumber'
+import { Then, When } from '@cucumber/cucumber'
 import { WorkerWorld } from './world'
 import { expect } from 'expect'
 
@@ -11,11 +11,11 @@ When('I make a GET request to {string}', async function (this: WorkerWorld, path
 
 When(
   'I make a POST request to {string}:',
-  async function (this: WorkerWorld, path: string, datatable: DataTable) {
+  async function (this: WorkerWorld, path: string, payload: string) {
     this.apiResponse = await this.api.fetch(`https://ccip.opass.app${path}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(datatable.hashes()),
+      body: payload,
     })
   }
 )
