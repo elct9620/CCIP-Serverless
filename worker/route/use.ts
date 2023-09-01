@@ -3,6 +3,7 @@ import { json, error } from '@worker/utils'
 import * as schema from '@api/schema'
 import { AttendeeInfo, AttendeeAccess } from '@api/usecase'
 import { datetimeToUnix } from '@api/utils'
+import { get } from '@worker/router'
 
 export type UseRequest = {
   attendeeInfo: AttendeeInfo
@@ -11,41 +12,6 @@ export type UseRequest = {
 } & IRequest
 
 export type UseResponse = schema.Status
-
-export const use = async ({ attendeeInfo, attendeeAccess, scenarioId, query }: UseRequest) => {
-  if (!query.token) {
-    throw new StatusError(400, 'token required')
-  }
-
-  const info = await attendeeInfo.getAttendee(query.token as string)
-  if (!info) {
-    throw new StatusError(400, 'invalid token')
-  }
-
-  let scenarios: Record<string, any>
-  try {
-    scenarios = await attendeeAccess.useScenario(query.token as string, scenarioId)
-  } catch (e) {
-    throw new StatusError(400, (e as Error).message)
-  }
-
-  return json<UseResponse>({
-    event_id: info.eventId,
-    user_id: info.displayName,
-    first_use: datetimeToUnix(info.firstUsedAt),
-    role: info.role,
-    scenario: formatScenario(scenarios),
-    attr: info.metadata ?? {},
-  })
-}
-
-export const routes = [
-  {
-    method: 'get',
-    path: '/use/:scenarioId',
-    handler: use,
-  },
-]
 
 function formatScenario(scenario: Record<string, any>) {
   const result: Record<string, schema.Scenario> = {}
@@ -62,4 +28,34 @@ function formatScenario(scenario: Record<string, any>) {
     }
   }
   return result
+}
+
+export class UseController {
+  @get('/use/:scenarioId')
+  async use({ attendeeInfo, attendeeAccess, scenarioId, query }: UseRequest) {
+    if (!query.token) {
+      throw new StatusError(400, 'token required')
+    }
+
+    const info = await attendeeInfo.getAttendee(query.token as string)
+    if (!info) {
+      throw new StatusError(400, 'invalid token')
+    }
+
+    let scenarios: Record<string, any>
+    try {
+      scenarios = await attendeeAccess.useScenario(query.token as string, scenarioId)
+    } catch (e) {
+      throw new StatusError(400, (e as Error).message)
+    }
+
+    return json<UseResponse>({
+      event_id: info.eventId,
+      user_id: info.displayName,
+      first_use: datetimeToUnix(info.firstUsedAt),
+      role: info.role,
+      scenario: formatScenario(scenarios),
+      attr: info.metadata ?? {},
+    })
+  }
 }

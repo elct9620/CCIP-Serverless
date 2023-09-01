@@ -3,6 +3,7 @@ import { json } from '@worker/utils'
 import * as schema from '@api/schema'
 import { AnnouncementInfo } from '@api/usecase'
 import { datetimeToUnix } from '@api/utils'
+import { get, post } from '@worker/router'
 
 export type AnnouncementRequest = {
   announcementInfo: AnnouncementInfo
@@ -18,13 +19,6 @@ export type AnnouncementData = {
 
 export type AnnouncementResponse = AnnouncementData[]
 
-export const createAnnouncement = async (request: AnnouncementRequest) => json({ status: 'OK' })
-
-export const listAnnouncements = async ({ announcementInfo, query }: AnnouncementRequest) => {
-  const results = await announcementInfo.byAttendee(query.token)
-  return json<AnnouncementResponse>(results.map(toFormattedAnnouncement))
-}
-
 const toFormattedAnnouncement = (data: schema.Announcement): AnnouncementData => ({
   datetime: datetimeToUnix(data.announcedAt),
   msgEn: data.messageEn,
@@ -32,15 +26,15 @@ const toFormattedAnnouncement = (data: schema.Announcement): AnnouncementData =>
   uri: data.uri,
 })
 
-export const routes = [
-  {
-    method: 'post',
-    path: '/announcement',
-    handler: createAnnouncement,
-  },
-  {
-    method: 'get',
-    path: '/announcement',
-    handler: listAnnouncements,
-  },
-]
+export class AnnouncementController {
+  @get('/announcement')
+  async listAnnouncements(request: AnnouncementRequest) {
+    const results = await request.announcementInfo.byAttendee(request.query.token)
+    return json<AnnouncementResponse>(results.map(toFormattedAnnouncement))
+  }
+
+  @post('/announcement')
+  async createAnnouncement(request: AnnouncementRequest) {
+    return json({ status: 'OK' })
+  }
+}

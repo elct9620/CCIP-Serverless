@@ -1,13 +1,36 @@
 import { RouterType, RouteHandler, IRequest } from 'itty-router'
 import { json, error } from '@worker/utils'
 
+type AppRequest = IRequest & any
 export interface Route {
   method?: string
   path: string
-  handler: RouteHandler<IRequest & any>
+  handler: RouteHandler<AppRequest>
 }
 
-export const setup = (router: RouterType, ...routes: Route[]) => {
+const routes: Route[] = []
+
+export function get(path: string) {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    routes.push({
+      method: 'get',
+      path,
+      handler: descriptor.value!,
+    })
+  }
+}
+
+export function post(path: string) {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    routes.push({
+      method: 'post',
+      path,
+      handler: descriptor.value!,
+    })
+  }
+}
+
+export const setup = (router: RouterType) => {
   routes.forEach(({ method, path, handler }) => {
     if (method) {
       router[method](path, handler)

@@ -3,6 +3,7 @@ import { json, error } from '@worker/utils'
 import * as schema from '@api/schema'
 import { AttendeeInfo, AttendeeAccess } from '@api/usecase'
 import { datetimeToUnix } from '@api/utils'
+import { get } from '@worker/router'
 
 export type StatusRequest = {
   attendeeInfo: AttendeeInfo
@@ -10,37 +11,6 @@ export type StatusRequest = {
 } & IRequest
 
 export type StatusResponse = schema.Status
-
-export const status = async ({ attendeeInfo, attendeeAccess, query }: StatusRequest) => {
-  if (!query.token) {
-    throw new StatusError(400, 'token required')
-  }
-
-  const isStaffQuery = query.StaffQuery === 'true'
-  const info = await attendeeInfo.getAttendee(query.token as string, !isStaffQuery)
-  if (!info) {
-    throw new StatusError(400, 'invalid token')
-  }
-
-  const scenarios = await attendeeAccess.getScenarios(query.token as string)
-
-  return json<StatusResponse>({
-    event_id: info.eventId,
-    user_id: info.displayName,
-    first_use: datetimeToUnix(info.firstUsedAt),
-    role: info.role,
-    scenario: formatScenario(scenarios),
-    attr: info.metadata ?? {},
-  })
-}
-
-export const routes = [
-  {
-    method: 'get',
-    path: '/status',
-    handler: status,
-  },
-]
 
 function formatScenario(scenario: Record<string, any>) {
   const result: Record<string, schema.Scenario> = {}
@@ -57,4 +27,30 @@ function formatScenario(scenario: Record<string, any>) {
     }
   }
   return result
+}
+
+export class StatusController {
+  @get('/status')
+  async status({ attendeeInfo, attendeeAccess, query }: StatusRequest) {
+    if (!query.token) {
+      throw new StatusError(400, 'token required')
+    }
+
+    const isStaffQuery = query.StaffQuery === 'true'
+    const info = await attendeeInfo.getAttendee(query.token as string, !isStaffQuery)
+    if (!info) {
+      throw new StatusError(400, 'invalid token')
+    }
+
+    const scenarios = await attendeeAccess.getScenarios(query.token as string)
+
+    return json<StatusResponse>({
+      event_id: info.eventId,
+      user_id: info.displayName,
+      first_use: datetimeToUnix(info.firstUsedAt),
+      role: info.role,
+      scenario: formatScenario(scenarios),
+      attr: info.metadata ?? {},
+    })
+  }
 }
