@@ -35,6 +35,8 @@ export class AnnouncementController {
 
   @post('/announcement')
   async createAnnouncement(request: AnnouncementRequest) {
+    const params = await new Response(request.body).json<Record<string, unknown>>()
+    await request.announcementInfo.create(params)
     return json({ status: 'OK' })
   }
 }

@@ -16,6 +16,21 @@ export class D1AnnouncementRepository {
     this.db = db
   }
 
+  async create(_params: any): Promise<void> {
+    const stmt = this.db.prepare(`
+      INSERT INTO announcements (announced_at, message_en, message_zh, uri, roles)
+        VALUES (?, ?, ?, ?, ?)
+    `)
+    const fixedValues = [
+      new Date('2023-08-27 00:00:00 GMT+8').toISOString(),
+      'hello world',
+      '世界你好',
+      'https://testability.opass.app/announcements/1',
+      '["audience"]',
+    ]
+    await stmt.bind(...fixedValues).run()
+  }
+
   async listByRole(role: string): Promise<Announcement[]> {
     const stmt = this.db.prepare(`
       SELECT * FROM announcements

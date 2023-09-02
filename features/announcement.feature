@@ -84,7 +84,7 @@ Feature: Announcement
         }
       ]
       """
-  Scenario: POST /announcement
+  Scenario: POST /announcement for audience
     When I make a POST request to "/announcement":
       """
       {
@@ -100,4 +100,17 @@ Feature: Announcement
       {
         "status": "OK"
       }
+      """
+    When I make a GET request to "/announcement"
+    Then the response status should be 200
+    And the response json should be:
+      """
+      [
+        {
+          "datetime": 1693065600,
+          "msgEn": "hello world",
+          "msgZh": "世界你好",
+          "uri": "https://testability.opass.app/announcements/1"
+        }
+      ]
       """

@@ -23,6 +23,10 @@ export class AnnouncementInfo {
     const results = await this.announcementRepository.listByRole(attendee?.role ?? defaultQueryRole)
     return results.map(toAnnouncementData)
   }
+
+  public async create(params: Record<string, unknown>): Promise<void> {
+    await this.announcementRepository.create(params)
+  }
 }
 
 const toAnnouncementData = (data: {
