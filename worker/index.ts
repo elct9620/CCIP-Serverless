@@ -13,6 +13,9 @@ const controllers = [
   Controller.StatusController,
   Controller.LandingController,
   Controller.UseController,
-].map((Controller: any) => new Controller())
+]
+controllers.forEach(function initializeRoutes(Controller: any) {
+  new Controller()
+})
 
 export default setup(router)
