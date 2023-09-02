@@ -24,6 +24,19 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: TypeScript Check
         run: yarn vue-tsc
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+      - name: Setup
+        run: yarn install --frozen-lockfile
+      - name: ESLint
+        run: yarn eslint .
   cucumber:
     runs-on: ubuntu-latest
     steps:

@@ -21,7 +21,7 @@ export class Ruleset {
   }
 
   get visibleScenarios(): Record<string, Scenario> {
-    let result: Record<string, Scenario> = {}
+    const result: Record<string, Scenario> = {}
 
     for (const scenarioId in this.scenarios) {
       const scenario = this.scenarios[scenarioId]

@@ -4,7 +4,7 @@ import { Condition, ConditionType } from '../event'
 type ConditionHandler = (attendee: Attendee, ...args: any[]) => boolean
 
 const ConditionHandler = {
-  [ConditionType.Empty]: (attendee: Attendee, ...args: any[]): boolean => true,
+  [ConditionType.Empty]: (): boolean => true,
   [ConditionType.And]: (attendee: Attendee, ...args: any[]): boolean => {
     for (const condition of args) {
       const handler = getConditionHandler(condition.type)
@@ -33,7 +33,7 @@ const ConditionHandler = {
   },
 }
 
-const defaultConditionHandler = (attendee: Attendee, ...args: any[]): boolean => false
+const defaultConditionHandler = (): boolean => false
 
 function getConditionHandler(type: ConditionType) {
   return ConditionHandler[type] ?? defaultConditionHandler

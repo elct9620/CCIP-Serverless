@@ -1,6 +1,5 @@
-import { error, json, IRequest } from 'itty-router'
-import { D1Database, ExecutionContext } from '@cloudflare/workers-types'
-import { UnstableDevWorker } from 'wrangler'
+import { json, IRequest } from 'itty-router'
+import { D1Database } from '@cloudflare/workers-types'
 
 type Env = {
   DB: D1Database

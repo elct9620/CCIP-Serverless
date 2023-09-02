@@ -1,5 +1,5 @@
 import { Attendee } from '../attendee'
-import { Condition, ConditionType, Ruleset, Scenario, ScenarioConditionType } from '../event'
+import { Ruleset, ScenarioConditionType } from '../event'
 import { executeCondition } from './conditions'
 
 export async function runRuleset(attendee: Attendee, ruleset: Ruleset | null) {
@@ -40,7 +40,7 @@ export async function unlockScenarios(attendee: Attendee, ruleset: Ruleset) {
     try {
       await executeCondition(attendee, condition)
       scenario.unlock()
-    } catch (e: any) {
+    } catch (e: unknown) {
       scenario.lock((e as Error).message)
     }
   }
@@ -53,7 +53,7 @@ export async function hideScenarios(attendee: Attendee, ruleset: Ruleset) {
 
     try {
       await executeCondition(attendee, condition)
-    } catch (e: any) {
+    } catch (e: unknown) {
       scenario.hide()
     }
   }

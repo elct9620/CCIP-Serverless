@@ -1,5 +1,5 @@
 import { IRequest, StatusError } from 'itty-router'
-import { json, error } from '@worker/utils'
+import { json } from '@worker/utils'
 import * as schema from '@api/schema'
 import { AttendeeInfo, AttendeeAccess } from '@api/usecase'
 import { datetimeToUnix } from '@api/utils'

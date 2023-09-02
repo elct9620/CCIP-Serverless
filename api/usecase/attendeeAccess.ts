@@ -87,7 +87,7 @@ export class AttendeeAccess {
 }
 
 function buildAttendeeScenario(scenarios: Record<string, Scenario>): Record<string, ScenarioInfo> {
-  let result: Record<string, ScenarioInfo> = {}
+  const result: Record<string, ScenarioInfo> = {}
 
   for (const scenarioId in scenarios) {
     const scenario = scenarios[scenarioId]
