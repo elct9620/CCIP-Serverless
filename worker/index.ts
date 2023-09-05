@@ -12,8 +12,9 @@ const _Controllers = [
   Controller.StatusController,
   Controller.LandingController,
   Controller.UseController,
+  Controller.PuzzleStatus,
 ]
 
-_Controllers.forEach((Controller: new () => any) => new Controller())
+_Controllers.forEach((Controller: new () => object) => new Controller())
 
 export default setup(router)
