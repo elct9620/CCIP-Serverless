@@ -14,12 +14,14 @@ export class PuzzleStatus {
   async getStatus({ puzzleInfo }: PuzzleStatusRequest) {
     const status = await puzzleInfo.getStatus()
 
+    const coupon = status.isRevoked ? 0 : datetimeToUnix(status.usedAt)
+
     return json<schema.PuzzleStatus>({
       user_id: status.displayName,
       puzzles: [],
       deliverers: [],
-      valid: datetimeToUnix(status.completedAt) ?? 0,
-      coupon: datetimeToUnix(status.couponUsedAt) ?? 0,
+      valid: datetimeToUnix(status.completedAt),
+      coupon,
     })
   }
 }

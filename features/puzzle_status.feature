@@ -11,7 +11,7 @@ Feature: Puzzle Status
         "user_id": "Aotoki",
         "puzzles": [],
         "deliverers": [],
-        "valid": 0,
-        "coupon": 0
+        "valid": null,
+        "coupon": null
       }
       """

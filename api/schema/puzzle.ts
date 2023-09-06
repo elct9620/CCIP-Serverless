@@ -2,6 +2,6 @@ export type PuzzleStatus = {
   user_id: string
   puzzles: null[]
   deliverers: null[]
-  valid: number
-  coupon: number
+  valid: number | null
+  coupon: number | null
 }

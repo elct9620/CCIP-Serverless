@@ -1,14 +1,15 @@
 export type DeliverStatus = {
   deliverer: string
-  delivedAt: Date
+  redeemedAt: Date
 }
 
 export type PuzzleStatus = {
   displayName: string
   collectedItems: string[]
   delivers: DeliverStatus[]
+  isRevoked: boolean
   completedAt: Date | null
-  couponUsedAt: Date | null
+  usedAt: Date | null
 }
 
 export class PuzzleInfo {
@@ -17,8 +18,9 @@ export class PuzzleInfo {
       displayName: 'Aotoki',
       collectedItems: [],
       delivers: [],
+      isRevoked: false,
       completedAt: null,
-      couponUsedAt: null,
+      usedAt: null,
     }
   }
 }
