@@ -11,13 +11,16 @@ export const withUsecases = (request: IRequest, env: Env) => {
   const announcementRepository = new Repository.D1AnnouncementRepository(env.DB)
   const attendeeRepository = new Repository.D1AttendeeRepository(env.DB)
   const rulesetRepository = new Repository.D1RulesetRepository(env.DB)
+
   const announcementInfo = new UseCase.AnnouncementInfo(announcementRepository, attendeeRepository)
   const attendeeInfo = new UseCase.AttendeeInfo(attendeeRepository, rulesetRepository)
   const attendeeAccess = new UseCase.AttendeeAccess(attendeeRepository, rulesetRepository)
+  const puzzleInfo = new UseCase.PuzzleInfo()
 
   Object.assign(request, {
     announcementInfo,
     attendeeInfo,
     attendeeAccess,
+    puzzleInfo,
   })
 }
