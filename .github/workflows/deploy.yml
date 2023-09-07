@@ -1,8 +1,10 @@
 name: Deploy
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
   repository_dispatch:
 
 concurrency: deploy
