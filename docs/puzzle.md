@@ -54,6 +54,12 @@ class PuzzleStatus {
 }
 ```
 
+### PuzzleStats
+
+活動的整體進度資訊
+
+> TBD
+
 ## Domain Event
 
 ### Puzzle Initialized
@@ -124,3 +130,12 @@ class PuzzleStatus {
  | version | bigint       | The activity version  |
  | type    | varchar(255) | Type of activity      |
  | args    | text         | JSON array as payload |
+
+ > **Note**
+ > `CREATE UNIQUE INDEX activity_versions ON puzzle_activities(token, version);`
+
+ ### Puzzle Events
+
+活動的整體進度資訊
+
+ > TBD
