@@ -1,4 +1,4 @@
-import { IRequest } from 'itty-router'
+import { IRequest, StatusError } from 'itty-router'
 import * as schema from '@api/schema'
 import { PuzzleInfo } from '@api/usecase'
 import { datetimeToUnix } from '@api/utils'
@@ -11,10 +11,13 @@ export type PuzzleStatusRequest = {
 
 export class PuzzleStatus {
   @get('/event/puzzle')
-  async getStatus({ puzzleInfo }: PuzzleStatusRequest) {
-    const status = await puzzleInfo.getStatus()
+  async getStatus({ puzzleInfo, query }: PuzzleStatusRequest) {
+    if (!query.token) {
+      throw new StatusError(400, 'token is required')
+    }
 
-    const coupon = status.isRevoked ? 0 : datetimeToUnix(status.usedAt)
+    const status = await puzzleInfo.getStatus(query.token as string)
+    const coupon = status.isRevoked ? 0 : datetimeToUnix(status.redeemAt)
 
     return json<schema.PuzzleStatus>({
       user_id: status.displayName,
