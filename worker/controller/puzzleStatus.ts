@@ -17,6 +17,10 @@ export class PuzzleStatus {
     }
 
     const status = await puzzleInfo.getStatus(query.token as string)
+    if (status === null) {
+      throw new StatusError(404, 'Invalid token, please try again after checkin.')
+    }
+
     const coupon = status.isRevoked ? 0 : datetimeToUnix(status.redeemAt)
 
     return json<schema.PuzzleStatus>({

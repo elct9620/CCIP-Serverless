@@ -1,4 +1,4 @@
-import { Status } from '@/puzzle'
+import { PuzzleStatusRepository } from './repository'
 
 export type DeliverStatus = {
   deliverer: string
@@ -15,8 +15,18 @@ export type PuzzleStatus = {
 }
 
 export class PuzzleInfo {
-  async getStatus(publicToken: string): Promise<PuzzleStatus> {
-    const status = new Status(publicToken)
+  private readonly statuses: PuzzleStatusRepository
+
+  constructor(statuses: PuzzleStatusRepository) {
+    this.statuses = statuses
+  }
+
+  async getStatus(publicToken: string): Promise<PuzzleStatus | null> {
+    const status = await this.statuses.getStatus(publicToken)
+    if (status === null) {
+      return null
+    }
+
     status.changeDisplayName('Aotoki')
 
     const collectedItems = status.collectedItems.map(item => item.id)
