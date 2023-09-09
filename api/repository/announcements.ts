@@ -2,6 +2,7 @@ import { type D1Database } from '@cloudflare/workers-types'
 import { Announcement } from '@/announcement'
 
 type AnnouncementSchema = {
+  id: number
   announced_at: string
   message_en: string | null
   message_zh: string | null
@@ -47,6 +48,7 @@ export class D1AnnouncementRepository {
 
 const toAnnouncement = (data: AnnouncementSchema) =>
   new Announcement({
+    id: data.id,
     announcedAt: new Date(data.announced_at),
     messageEn: data.message_en,
     messageZh: data.message_zh,

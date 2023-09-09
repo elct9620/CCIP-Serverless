@@ -1,10 +1,13 @@
+import { Entity } from '@/core'
+
+type MetadataValue = string | number | boolean | null
 type Attributes = {
   token: string
   eventId: string
   displayName: string
   firstUsedAt?: Date
   role: AttendeeRole
-  metadata: Record<string, any>
+  metadata: Record<string, MetadataValue>
 }
 
 export enum AttendeeRole {
@@ -12,13 +15,13 @@ export enum AttendeeRole {
   Staff = 'staff',
 }
 
-export class Attendee {
+export class Attendee implements Entity<string> {
   public readonly token: string
   public readonly eventId: string
   public readonly displayName: string
   public readonly role: AttendeeRole = AttendeeRole.Audience
 
-  private _metadata: Record<string, any> = {}
+  private _metadata: Record<string, MetadataValue> = {}
   private _firstUsedAt: Date | null = null
 
   constructor(attributes: Attributes) {
@@ -30,12 +33,16 @@ export class Attendee {
     this._firstUsedAt = attributes.firstUsedAt ?? null
   }
 
+  get id(): string {
+    return this.token
+  }
+
   get firstUsedAt(): Date | null {
     return this._firstUsedAt
   }
 
-  get metadata(): Record<string, any> {
-    const publicMetadata: Record<string, any> = {}
+  get metadata(): Record<string, MetadataValue> {
+    const publicMetadata: Record<string, MetadataValue> = {}
     for (const key in this._metadata) {
       if (key.startsWith('_')) {
         continue
@@ -46,11 +53,11 @@ export class Attendee {
     return publicMetadata
   }
 
-  getMetadata(key: string): any {
+  getMetadata(key: string): MetadataValue {
     return this._metadata[key]
   }
 
-  setMetadata(key: string, value: any): void {
+  setMetadata(key: string, value: MetadataValue): void {
     this._metadata[key] = value
   }
 
@@ -70,7 +77,7 @@ export class Attendee {
     }
 
     try {
-      return new Date(this.getMetadata(`_scenario_${scenarioId}`))
+      return new Date(this.getMetadata(`_scenario_${scenarioId}`) as string)
     } catch (e) {
       return null
     }
@@ -81,6 +88,6 @@ export class Attendee {
       return
     }
 
-    this.setMetadata(`_scenario_${scenarioId}`, usedAt)
+    this.setMetadata(`_scenario_${scenarioId}`, usedAt.toISOString())
   }
 }
