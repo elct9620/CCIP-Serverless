@@ -1,7 +1,7 @@
 import { AttendeeRepository, RulesetRepository } from './repository'
-import { Scenario } from '../../src/event'
-import { runRuleset } from '../../src/service'
-import { getCurrentTime } from '../utils'
+import { Scenario } from '@/event'
+import { runRuleset } from '@/service'
+import { getCurrentTime } from '@/core'
 
 type AvailableTimeInfo = {
   start: Date

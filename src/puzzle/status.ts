@@ -1,4 +1,4 @@
-import { EsAggregateRoot } from '@/core'
+import { EsAggregateRoot, getCurrentTime } from '@/core'
 import { ActivityEvent, AttendeeInitialized } from './event'
 
 export type CollectedItem = {
@@ -30,7 +30,7 @@ export class Status extends EsAggregateRoot<string, ActivityEvent> {
   }
 
   changeDisplayName(name: string): void {
-    this.apply(new AttendeeInitialized(this.id, this.id, new Date(), name))
+    this.apply(new AttendeeInitialized(crypto.randomUUID(), this.id, getCurrentTime(), name))
   }
 
   get isRevoked(): boolean {
@@ -47,14 +47,6 @@ export class Status extends EsAggregateRoot<string, ActivityEvent> {
 
   get collectedItems(): CollectedItem[] {
     return this._collectedItems
-  }
-
-  collect(name: string, deliverBy: string, time: Date): void {
-    this._collectedItems.push({
-      id: name,
-      deliverer: deliverBy,
-      collectedAt: time,
-    })
   }
 
   when(event: ActivityEvent): void {
