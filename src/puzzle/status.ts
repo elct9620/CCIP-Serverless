@@ -1,19 +1,28 @@
+import { EsAggregateRoot } from '@/core'
+import { ActivityEvent, AttendeeInitialized } from './event'
+
 export type CollectedItem = {
   id: string
   deliverer: string
   collectedAt: Date
 }
 
-export class Status {
-  public readonly token: string
+type EventHandler = (this: Status, event: ActivityEvent) => void
+export class Status extends EsAggregateRoot<string, ActivityEvent> {
+  static eventHandlers: { [key: string]: EventHandler } = {
+    AttendeeInitialized: function (this: Status, event: ActivityEvent) {
+      this._displayName = (event as AttendeeInitialized).displayName
+    },
+  }
+
   private _displayName?: string
   private _collectedItems: CollectedItem[] = []
   private _revokedAt?: Date
   private _completedAt?: Date
   private _redeemedAt?: Date
 
-  constructor(token: string) {
-    this.token = token
+  constructor(token: string, events?: ActivityEvent[]) {
+    super(token, events)
   }
 
   get displayName(): string {
@@ -21,31 +30,19 @@ export class Status {
   }
 
   changeDisplayName(name: string): void {
-    this._displayName = name
+    this.apply(new AttendeeInitialized(this.id, this.id, new Date(), name))
   }
 
   get isRevoked(): boolean {
     return !!this._revokedAt
   }
 
-  revoke(time: Date): void {
-    this._revokedAt = time
-  }
-
   get completedAt(): Date | null {
     return this._completedAt || null
   }
 
-  complete(time: Date): void {
-    this._completedAt = time
-  }
-
   get redeemedAt(): Date | null {
     return this._redeemedAt || null
-  }
-
-  redeem(time: Date): void {
-    this._redeemedAt = time
   }
 
   get collectedItems(): CollectedItem[] {
@@ -58,5 +55,12 @@ export class Status {
       deliverer: deliverBy,
       collectedAt: time,
     })
+  }
+
+  when(event: ActivityEvent): void {
+    const handler: EventHandler = Status.eventHandlers[event.constructor.name]
+    if (handler) {
+      handler.call(this, event)
+    }
   }
 }
