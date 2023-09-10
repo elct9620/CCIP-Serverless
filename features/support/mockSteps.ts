@@ -36,6 +36,17 @@ Given('there are some announcements', async function (this: WorkerWorld, dataTab
   })
 })
 
+Given(
+  'there have some puzzle activity events',
+  async function (this: WorkerWorld, dataTable: DataTable) {
+    await this.mock.fetch('https://testability.opass.app/puzzle/activity_events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dataTable.hashes()),
+    })
+  }
+)
+
 After(async function (this: WorkerWorld) {
   await this.mock.fetch('https://testability.opass.app/reset', {
     method: 'POST',

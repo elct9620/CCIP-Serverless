@@ -16,6 +16,7 @@ router
   .post<IRequest, CF>('/announcements', Api.createAnnouncementHandler)
   .post<IRequest, CF>('/attendees', Api.createAttendeeHandler)
   .post<IRequest, CF>('/rulesets', Api.createRulesetHandler)
+  .post<IRequest, CF>('/puzzle/activity_events', Api.createPuzzleActivityEventHandler)
   .all('*', () => error(404))
 
 export default {
