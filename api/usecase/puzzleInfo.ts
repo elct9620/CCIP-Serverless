@@ -27,8 +27,6 @@ export class PuzzleInfo {
       return null
     }
 
-    status.changeDisplayName('Aotoki')
-
     const pieces = status.pieces.map(piece => piece.name)
     const delivers = status.pieces
       .filter(piece => piece.isReceived)

@@ -41,12 +41,13 @@ export abstract class EsAggregateRoot<ID, E extends DomainEvent> extends Aggrega
     super(id)
 
     if (events) {
-      this.replay(events)
-      this.clearEvents()
+      throw new Error(
+        'Call replayEvents and clearEvents method in subclass to restore state from events'
+      )
     }
   }
 
-  protected replay(events: E[]): void {
+  protected replayEvents(events: E[]): void {
     events.forEach(event => this.apply(event))
   }
 

@@ -1,6 +1,6 @@
 import { type D1Database } from '@cloudflare/workers-types'
 import { type Class } from '@/core/utils'
-import { Status, ActivityEvent, AttendeeInitialized } from '@/puzzle'
+import { Status, ActivityEvent, AttendeeInitialized, PuzzleCollected } from '@/puzzle'
 
 type EventSchema = {
   id: string
@@ -13,6 +13,7 @@ type EventSchema = {
 
 const eventConstructors: Record<string, Class<ActivityEvent>> = {
   AttendeeInitialized: AttendeeInitialized,
+  PuzzleCollected: PuzzleCollected,
 }
 
 export class D1PuzzleStatusRepository {
@@ -43,7 +44,7 @@ function buildDomainEvent(event: EventSchema): ActivityEvent | null {
     return null
   }
 
-  const domainEvent = Object.create(klass)
+  const domainEvent = Object.create(klass.prototype)
 
   const payload = JSON.parse(event.payload) as object
   const properties = {

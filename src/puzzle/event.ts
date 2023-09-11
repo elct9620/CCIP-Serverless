@@ -20,3 +20,14 @@ export class AttendeeInitialized extends ActivityEvent {
     this.displayName = displayName
   }
 }
+
+export class PuzzleCollected extends ActivityEvent {
+  public readonly pieceName: string
+  public readonly giverName: string
+
+  constructor(id: string, aggregateId: string, occurredAt: Date, name: string, giverName: string) {
+    super(id, aggregateId, occurredAt)
+    this.pieceName = name
+    this.giverName = giverName
+  }
+}
