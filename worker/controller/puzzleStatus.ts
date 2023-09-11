@@ -25,8 +25,8 @@ export class PuzzleStatus {
 
     return json<schema.PuzzleStatus>({
       user_id: status.displayName,
-      puzzles: [],
-      deliverers: [],
+      puzzles: status.pieces,
+      deliverers: status.delivers.map(deliver => deliver.deliverer),
       valid: datetimeToUnix(status.completedAt),
       coupon,
     })

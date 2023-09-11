@@ -1,11 +1,6 @@
 import { EsAggregateRoot, getCurrentTime } from '@/core'
 import { ActivityEvent, AttendeeInitialized } from './event'
-
-export type CollectedItem = {
-  id: string
-  deliverer: string
-  collectedAt: Date
-}
+import { Piece } from './piece'
 
 type EventHandler = (this: Status, event: ActivityEvent) => void
 export class Status extends EsAggregateRoot<string, ActivityEvent> {
@@ -16,7 +11,7 @@ export class Status extends EsAggregateRoot<string, ActivityEvent> {
   }
 
   private _displayName?: string
-  private _collectedItems: CollectedItem[] = []
+  private _pieces: Piece[] = []
   private _revokedAt?: Date
   private _completedAt?: Date
   private _redeemedAt?: Date
@@ -45,8 +40,8 @@ export class Status extends EsAggregateRoot<string, ActivityEvent> {
     return this._redeemedAt || null
   }
 
-  get collectedItems(): CollectedItem[] {
-    return this._collectedItems
+  get pieces(): Piece[] {
+    return [...this._pieces]
   }
 
   when(event: ActivityEvent): void {
