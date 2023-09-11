@@ -7,7 +7,7 @@ let mockWorker: UnstableDevWorker
 
 type WorkerResponse = {
   status: number
-  json(): Promise<any>
+  json(): Promise<object | Array<object>>
   clone(): WorkerResponse
 }
 

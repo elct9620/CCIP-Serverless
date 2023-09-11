@@ -11,3 +11,5 @@ export const getCurrentTime = (): Date => {
 export const setFixedDatetime = (datetime: Date | null): void => {
   fixedDatetime = datetime
 }
+
+export type Class<T> = new (...args: any[]) => T // eslint-disable-line @typescript-eslint/no-explicit-any

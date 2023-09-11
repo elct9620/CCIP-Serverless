@@ -1,4 +1,5 @@
 import { type D1Database } from '@cloudflare/workers-types'
+import { type Class } from '@/core/utils'
 import { Status, ActivityEvent, AttendeeInitialized } from '@/puzzle'
 
 type EventSchema = {
@@ -8,6 +9,10 @@ type EventSchema = {
   version: number
   payload: string
   occurred_at: Date
+}
+
+const eventConstructors: Record<string, Class<ActivityEvent>> = {
+  AttendeeInitialized: AttendeeInitialized,
 }
 
 export class D1PuzzleStatusRepository {
@@ -33,8 +38,21 @@ export class D1PuzzleStatusRepository {
 }
 
 function buildDomainEvent(event: EventSchema): ActivityEvent | null {
-  if (event.type != 'AttendeeInitialized') return null
+  const klass = eventConstructors[event.type]
+  if (!klass) {
+    return null
+  }
 
-  const args = JSON.parse(event.payload) as string[]
-  return new AttendeeInitialized(event.id, event.aggregate_id, event.occurred_at, args[0])
+  const domainEvent = Object.create(klass)
+
+  const payload = JSON.parse(event.payload) as object
+  const properties = {
+    id: event.id,
+    aggregateId: event.aggregate_id,
+    occurredAt: event.occurred_at,
+    ...payload,
+  }
+  Object.assign(domainEvent, properties)
+
+  return domainEvent
 }
