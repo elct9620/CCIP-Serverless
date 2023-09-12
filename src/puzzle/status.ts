@@ -10,6 +10,10 @@ export class Status extends AggregateRoot<string, ActivityEvent> {
   private _completedAt?: Date
   private _redeemedAt?: Date
 
+  constructor(id: string, _events?: ActivityEvent[]) {
+    super(id)
+  }
+
   get displayName(): string {
     return this._displayName || ''
   }
