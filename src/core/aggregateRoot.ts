@@ -35,26 +35,3 @@ export abstract class AggregateRoot<ID, E extends DomainEvent> implements Entity
     this.addDomainEvent(event)
   }
 }
-
-export abstract class EsAggregateRoot<ID, E extends DomainEvent> extends AggregateRoot<ID, E> {
-  constructor(id: ID, events?: E[]) {
-    super(id)
-
-    if (events) {
-      throw new Error(
-        'Call replayEvents and clearEvents method in subclass to restore state from events'
-      )
-    }
-  }
-
-  protected replayEvents(events: E[]): void {
-    events.forEach(event => this.apply(event))
-  }
-
-  public apply(event: E): void {
-    this.when(event)
-    super.apply(event)
-  }
-
-  abstract when(event: E): void
-}

@@ -5,8 +5,7 @@ Feature: Puzzle Status
       | b44845bd-8bd2-428d-ad65-f6a619bf8a96 | AttendeeInitialized | f185f505-d8c0-43ce-9e7b-bb9e8909072d | 0       | { "displayName": "Aotoki" }            | 2023-09-10 20:48:00 |
       | f41c7a07-d2f4-469a-ae16-4df251eddbf6 | PuzzleCollected     | f185f505-d8c0-43ce-9e7b-bb9e8909072d | 1       | { "pieceName": "=", "giverName": "COSCUP" } | 2023-09-10 20:50:00 |
     When I make a GET request to "/event/puzzle?token=f185f505-d8c0-43ce-9e7b-bb9e8909072d"
-    # Then the response status should be 200
-    And the response json should be:
+    Then the response json should be:
       """
       {
         "user_id": "Aotoki",
@@ -16,3 +15,4 @@ Feature: Puzzle Status
         "coupon": null
       }
       """
+    And the response status should be 200
