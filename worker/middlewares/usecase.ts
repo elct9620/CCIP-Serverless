@@ -17,11 +17,13 @@ export const withUsecases = (request: IRequest, env: Env) => {
   const attendeeInfo = new UseCase.AttendeeInfo(attendeeRepository, rulesetRepository)
   const attendeeAccess = new UseCase.AttendeeAccess(attendeeRepository, rulesetRepository)
   const puzzleInfo = new UseCase.PuzzleInfo(puzzleStatusRepository)
+  const booth = new UseCase.Booth()
 
   Object.assign(request, {
     announcementInfo,
     attendeeInfo,
     attendeeAccess,
     puzzleInfo,
+    booth,
   })
 }
