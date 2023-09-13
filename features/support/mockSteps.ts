@@ -1,14 +1,23 @@
+import { UnstableDevWorker } from 'wrangler'
 import { After, DataTable, Given } from '@cucumber/cucumber'
 import { WorkerWorld } from './world'
 
+async function createMockData(apiClient: UnstableDevWorker, path: string, body: string) {
+  const res = await apiClient.fetch(`https://testability.opass.app${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body,
+  })
+
+  if (!res.ok) {
+    throw new Error(await res.text())
+  }
+}
+
 Given('there have some attendees', async function (this: WorkerWorld, dataTable: DataTable) {
-  const attendees = dataTable.hashes().map(row =>
-    this.mock.fetch('https://testability.opass.app/attendees', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(row),
-    })
-  )
+  const attendees = dataTable
+    .hashes()
+    .map(row => createMockData(this.mock, '/attendees', JSON.stringify(row)))
 
   await Promise.all(attendees)
 })
@@ -16,40 +25,30 @@ Given('there have some attendees', async function (this: WorkerWorld, dataTable:
 Given(
   'there have a ruleset for {string} with name {string} and scenarios:',
   async function (this: WorkerWorld, eventId: string, name: string, scenarios: string) {
-    await this.mock.fetch('https://testability.opass.app/rulesets', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    await createMockData(
+      this.mock,
+      '/rulesets',
+      JSON.stringify({
         event_id: eventId,
         name,
         scenarios: JSON.parse(scenarios),
-      }),
-    })
+      })
+    )
   }
 )
 
 Given('there are some announcements', async function (this: WorkerWorld, dataTable: DataTable) {
-  await this.mock.fetch('https://testability.opass.app/announcements', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(dataTable.hashes()),
-  })
+  await createMockData(this.mock, '/announcements', JSON.stringify(dataTable.hashes()))
 })
 
 Given(
   'there have some puzzle activity events',
   async function (this: WorkerWorld, dataTable: DataTable) {
-    const res = await this.mock.fetch('https://testability.opass.app/puzzle/activity_events', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(dataTable.hashes()),
-    })
-
-    if (!res.ok) {
-      throw new Error(await res.text())
-    }
+    await createMockData(this.mock, '/puzzle/activity_events', JSON.stringify(dataTable.hashes()))
   }
 )
+
+Given('there have some booths', async function (this: WorkerWorld, _dataTable: DataTable) {})
 
 After(async function (this: WorkerWorld) {
   await this.mock.fetch('https://testability.opass.app/reset', {

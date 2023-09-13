@@ -13,6 +13,7 @@ const _Controllers = [
   Controller.LandingController,
   Controller.UseController,
   Controller.PuzzleStatus,
+  Controller.PuzzleDeliverer,
 ]
 
 _Controllers.forEach((Controller: new () => object) => new Controller())
