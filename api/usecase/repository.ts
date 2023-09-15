@@ -4,7 +4,7 @@ import { Ruleset } from '@/event'
 import { Status as PuzzleStatus } from '@/puzzle'
 
 export interface AnnouncementRepository {
-  create(params: Omit<Announcement, 'id'> & { roles: string[] }): Promise<void>
+  create(params: Omit<Announcement, 'id'>): Promise<void>
   listByRole(role: string): Promise<Announcement[]>
 }
 

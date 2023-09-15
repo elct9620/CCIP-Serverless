@@ -7,7 +7,7 @@ type CreateAnnouncementRequest = Omit<Announcement, 'id' | 'announcedAt'> & {
   roles: string[]
 }
 
-export type AnnouncementReply = Omit<Announcement, 'id'>[]
+export type AnnouncementReply = Omit<Announcement, 'id' | 'roles'>[]
 
 const defaultQueryRole = AttendeeRole.Audience
 
@@ -39,7 +39,7 @@ const toAnnouncementData = (data: {
   messageEn: string | null
   messageZh: string | null
   uri: string
-}): Omit<Announcement, 'id'> => ({
+}): Omit<Announcement, 'id' | 'roles'> => ({
   announcedAt: data.announcedAt,
   messageEn: data.messageEn,
   messageZh: data.messageZh,
@@ -48,7 +48,7 @@ const toAnnouncementData = (data: {
 
 const toCreateAnnouncementParams = (
   params: CreateAnnouncementRequest
-): Omit<Announcement, 'id'> & { roles: string[] } => ({
+): Omit<Announcement, 'id'> => ({
   ...params,
   announcedAt: getCurrentTime(),
 })
