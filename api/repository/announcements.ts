@@ -10,6 +10,14 @@ type AnnouncementSchema = {
   roles: string[]
 }
 
+type CreateAnnouncementParams = {
+  announcedAt: Date
+  messageEn: string | null
+  messageZh: string | null
+  uri: string
+  roles: string[]
+}
+
 export class D1AnnouncementRepository {
   private readonly db: D1Database
 
@@ -17,19 +25,13 @@ export class D1AnnouncementRepository {
     this.db = db
   }
 
-  async create(): Promise<void> {
+  async create(params: CreateAnnouncementParams): Promise<void> {
+    const { announcedAt, messageEn, messageZh, uri, roles } = params;
     const stmt = this.db.prepare(`
       INSERT INTO announcements (announced_at, message_en, message_zh, uri, roles)
         VALUES (?, ?, ?, ?, ?)
     `)
-    const fixedValues = [
-      new Date('2023-08-27 00:00:00 GMT+8').toISOString(),
-      'hello world',
-      '世界你好',
-      'https://testability.opass.app/announcements/1',
-      '["audience"]',
-    ]
-    await stmt.bind(...fixedValues).run()
+    await stmt.bind(announcedAt.toISOString(), messageEn, messageZh, uri, JSON.stringify(roles)).run()
   }
 
   async listByRole(role: string): Promise<Announcement[]> {
