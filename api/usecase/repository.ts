@@ -1,6 +1,6 @@
 import { Announcement } from '@/announcement'
 import { Attendee } from '@/attendee'
-import { Ruleset } from '@/event'
+import { Ruleset, Booth } from '@/event'
 import { Status as PuzzleStatus } from '@/puzzle'
 
 export interface AnnouncementRepository {
@@ -19,4 +19,8 @@ export interface RulesetRepository {
 
 export interface PuzzleStatusRepository {
   getStatus(token: string): Promise<PuzzleStatus | null>
+}
+
+export interface BoothRepository {
+  listAll(): Promise<Booth[]>
 }
