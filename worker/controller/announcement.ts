@@ -19,7 +19,7 @@ export type AnnouncementData = {
 
 export type AnnouncementResponse = AnnouncementData[]
 
-export type AnnouncementPayload = {
+export type CreateAnnouncementPayload = {
   msg_en: string | null
   msg_zh: string | null
   uri: string
@@ -33,7 +33,9 @@ const toFormattedAnnouncement = (data: schema.Announcement): AnnouncementData =>
   uri: data.uri,
 })
 
-const toCreateAnnouncementParams = (data: AnnouncementPayload): schema.CreateAnnouncementParams => {
+const toCreateAnnouncementParams = (
+  data: CreateAnnouncementPayload
+): schema.CreateAnnouncementParams => {
   let roles: string[]
   try {
     if (Array.isArray(data.role)) {
@@ -63,7 +65,7 @@ export class AnnouncementController {
 
   @post('/announcement')
   async createAnnouncement(request: AnnouncementRequest) {
-    const params = await request.json<AnnouncementPayload>()
+    const params = await request.json<CreateAnnouncementPayload>()
     await request.announcementInfo.create(toCreateAnnouncementParams(params))
     return json({ status: 'OK' })
   }
