@@ -10,14 +10,6 @@ type AnnouncementSchema = {
   roles: string[]
 }
 
-type CreateAnnouncementParams = {
-  announcedAt: Date
-  messageEn: string | null
-  messageZh: string | null
-  uri: string
-  roles: string[]
-}
-
 export class D1AnnouncementRepository {
   private readonly db: D1Database
 
@@ -25,7 +17,11 @@ export class D1AnnouncementRepository {
     this.db = db
   }
 
-  async create(params: CreateAnnouncementParams): Promise<void> {
+  async create(
+    params: Omit<Announcement, 'id'> & {
+      roles: string[]
+    }
+  ): Promise<void> {
     const { announcedAt, messageEn, messageZh, uri, roles } = params;
     const stmt = this.db.prepare(`
       INSERT INTO announcements (announced_at, message_en, message_zh, uri, roles)
