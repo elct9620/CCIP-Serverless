@@ -63,7 +63,7 @@ export class AnnouncementController {
 
   @post('/announcement')
   async createAnnouncement(request: AnnouncementRequest) {
-    const params = await new Response(request.body).json<AnnouncementPayload>()
+    const params = await request.json<AnnouncementPayload>()
     await request.announcementInfo.create(toCreateAnnouncementParams(params))
     return json({ status: 'OK' })
   }
