@@ -1,9 +1,13 @@
 import { getCurrentTime } from '@/core/utils'
+import { Announcement } from '@/announcement'
 import { AttendeeRole } from '@/attendee'
-import { Announcement, CreateAnnouncementParams } from '../schema'
 import { AnnouncementRepository, AttendeeRepository } from './repository'
 
-export type AnnouncementReply = Announcement[]
+type CreateAnnouncementRequest = Omit<Announcement, 'id' | 'announcedAt'> & {
+  roles: string[]
+}
+
+export type AnnouncementReply = Omit<Announcement, 'id'>[]
 
 const defaultQueryRole = AttendeeRole.Audience
 
@@ -25,7 +29,7 @@ export class AnnouncementInfo {
     return results.map(toAnnouncementData)
   }
 
-  public async create(params: CreateAnnouncementParams): Promise<void> {
+  public async create(params: CreateAnnouncementRequest): Promise<void> {
     await this.announcementRepository.create(toCreateAnnouncementParams(params))
   }
 }
@@ -35,7 +39,7 @@ const toAnnouncementData = (data: {
   messageEn: string | null
   messageZh: string | null
   uri: string
-}): Announcement => ({
+}): Omit<Announcement, 'id'> => ({
   announcedAt: data.announcedAt,
   messageEn: data.messageEn,
   messageZh: data.messageZh,
@@ -43,7 +47,7 @@ const toAnnouncementData = (data: {
 })
 
 const toCreateAnnouncementParams = (
-  params: CreateAnnouncementParams
+  params: CreateAnnouncementRequest
 ): Omit<Announcement, 'id'> & { roles: string[] } => ({
   ...params,
   announcedAt: getCurrentTime(),
