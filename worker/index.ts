@@ -1,11 +1,11 @@
 import { Router, withParams } from 'itty-router'
-import { withUsecases, withTestability } from '@worker/middlewares'
+import { withUsecases, withTestability, withQueries } from '@worker/middlewares'
 import { setup } from '@worker/router'
 import * as Controller from '@worker/controller'
 
 const router = Router()
 
-router.all('*', withParams).all('*', withUsecases).all('*', withTestability)
+router.all('*', withParams).all('*', withUsecases).all('*', withQueries).all('*', withTestability)
 
 const _Controllers = [
   Controller.AnnouncementController,
