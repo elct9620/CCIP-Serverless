@@ -22,12 +22,14 @@ export class D1AnnouncementRepository {
       roles: string[]
     }
   ): Promise<void> {
-    const { announcedAt, messageEn, messageZh, uri, roles } = params;
+    const { announcedAt, messageEn, messageZh, uri, roles } = params
     const stmt = this.db.prepare(`
       INSERT INTO announcements (announced_at, message_en, message_zh, uri, roles)
         VALUES (?, ?, ?, ?, ?)
     `)
-    await stmt.bind(announcedAt.toISOString(), messageEn, messageZh, uri, JSON.stringify(roles)).run()
+    await stmt
+      .bind(announcedAt.toISOString(), messageEn, messageZh, uri, JSON.stringify(roles))
+      .run()
   }
 
   async listByRole(role: string): Promise<Announcement[]> {
