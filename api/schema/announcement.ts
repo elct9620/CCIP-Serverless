@@ -5,9 +5,9 @@ export type Announcement = {
   uri: string
 }
 
-export type CreateAnnouncementParams = {
-  messageEn: string | null
-  messageZh: string | null
+export type CreateAnnouncementPayload = {
+  msg_en: string | null
+  msg_zh: string | null
   uri: string
-  roles: string[]
+  role: string | string[]
 }
