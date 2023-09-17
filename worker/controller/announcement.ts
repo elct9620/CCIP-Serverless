@@ -50,7 +50,7 @@ const toCreateAnnouncementParams = (data: AnnouncementPayload): schema.CreateAnn
     messageEn: typeof data.msg_en === 'string' ? data.msg_en : null,
     messageZh: typeof data.msg_zh === 'string' ? data.msg_zh : null,
     uri: typeof data.uri === 'string' ? data.uri : '',
-    roles
+    roles,
   }
 }
 
