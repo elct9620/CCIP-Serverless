@@ -1,6 +1,6 @@
 import { IRequest, StatusError } from 'itty-router'
 import * as schema from '@api/schema'
-import { PuzzleInfo } from '@api/usecase'
+import { PuzzleInfo } from '@api/command'
 import { datetimeToUnix } from '@api/utils'
 import { get } from '@worker/router'
 import { json } from '@worker/utils'

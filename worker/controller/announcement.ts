@@ -1,7 +1,7 @@
 import { IRequest } from 'itty-router'
 import { json } from '@worker/utils'
 import * as schema from '@api/schema'
-import { AnnouncementInfo } from '@api/usecase'
+import { AnnouncementInfo } from '@api/command'
 import { datetimeToUnix } from '@api/utils'
 import { get, post } from '@worker/router'
 

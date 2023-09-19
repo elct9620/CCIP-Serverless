@@ -1,7 +1,7 @@
 import { IRequest, StatusError } from 'itty-router'
 import { json } from '@worker/utils'
 import * as schema from '@api/schema'
-import { AttendeeInfo } from '@api/usecase'
+import { AttendeeInfo } from '@api/command'
 import { get } from '@worker/router'
 
 export type LandingRequest = {

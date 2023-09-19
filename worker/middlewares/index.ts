@@ -1,3 +1,3 @@
-export * from './usecase'
+export * from './command'
 export * from './query'
 export * from './testability'
