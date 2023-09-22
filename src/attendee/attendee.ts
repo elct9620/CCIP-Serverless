@@ -1,4 +1,4 @@
-import { Entity } from '@/core'
+import { Entity, getCurrentTime } from '@/core'
 
 type MetadataValue = string | number | boolean | null
 type Attributes = {
@@ -53,6 +53,10 @@ export class Attendee implements Entity<string> {
     return publicMetadata
   }
 
+  get metadataWithHidden(): Record<string, MetadataValue> {
+    return this._metadata
+  }
+
   getMetadata(key: string): MetadataValue {
     return this._metadata[key]
   }
@@ -63,7 +67,7 @@ export class Attendee implements Entity<string> {
 
   touch(): void {
     if (!this._firstUsedAt) {
-      this._firstUsedAt = new Date()
+      this._firstUsedAt = getCurrentTime()
     }
   }
 

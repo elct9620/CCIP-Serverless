@@ -1,4 +1,5 @@
-import { AttendeeRepository, RulesetRepository } from './repository'
+import { Query } from '@/core'
+import { AttendeeRepository } from '../command/repository'
 
 export type AttendeeScenario = {
   order: number
@@ -7,33 +8,30 @@ export type AttendeeScenario = {
   lockReason: string | null
 }
 
-export type AttendeeReply = {
+export type AttendeeInfoInput = {
+  token: string
+}
+
+export type AttendeeInfoOutput = {
   eventId: string
   displayName: string
   firstUsedAt: Date | null
   role: string
   scenario?: Record<string, AttendeeScenario>
   metadata: Record<string, any>
-}
+} | null
 
-export class AttendeeInfo {
+export class AttendeeInfo implements Query<AttendeeInfoInput, AttendeeInfoOutput> {
   private readonly attendeeRepository: AttendeeRepository
-  private readonly rulesetRepository: RulesetRepository
 
-  constructor(attendeeRepository: AttendeeRepository, rulesetRepository: RulesetRepository) {
+  constructor(attendeeRepository: AttendeeRepository) {
     this.attendeeRepository = attendeeRepository
-    this.rulesetRepository = rulesetRepository
   }
 
-  public async getAttendee(token: string, touch: boolean = false): Promise<AttendeeReply | null> {
-    const attendee = await this.attendeeRepository.findByToken(token)
+  public async execute(input: AttendeeInfoInput): Promise<AttendeeInfoOutput> {
+    const attendee = await this.attendeeRepository.findByToken(input.token)
     if (!attendee) {
       return null
-    }
-
-    if (touch) {
-      attendee.touch()
-      await this.attendeeRepository.save(attendee)
     }
 
     return {

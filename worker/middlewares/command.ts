@@ -14,14 +14,15 @@ export const withCommands = (request: IRequest, env: Env) => {
   const puzzleStatusRepository = new Repository.D1PuzzleStatusRepository(env.DB)
 
   const announcementInfo = new Command.AnnouncementInfo(announcementRepository, attendeeRepository)
-  const attendeeInfo = new Command.AttendeeInfo(attendeeRepository, rulesetRepository)
+
   const attendeeAccess = new Command.AttendeeAccess(attendeeRepository, rulesetRepository)
   const puzzleInfo = new Command.PuzzleInfo(puzzleStatusRepository)
+  const initializeAttendeeCommand = new Command.InitializeAttendeeCommand(attendeeRepository)
 
   Object.assign(request, {
     announcementInfo,
-    attendeeInfo,
     attendeeAccess,
+    initializeAttendeeCommand,
     puzzleInfo,
   })
 }
