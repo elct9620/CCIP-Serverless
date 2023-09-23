@@ -1,4 +1,5 @@
 import { type D1Database } from '@cloudflare/workers-types'
+import { Repository } from '@/core'
 import { Attendee, AttendeeRole } from '../../src/attendee'
 
 type AttendeeSchema = {
@@ -10,14 +11,14 @@ type AttendeeSchema = {
   metadata?: string
 }
 
-export class D1AttendeeRepository {
+export class D1AttendeeRepository implements Repository<Attendee> {
   private readonly db: D1Database
 
   constructor(db: D1Database) {
     this.db = db
   }
 
-  async findByToken(token: string): Promise<Attendee | null> {
+  async findById(token: string): Promise<Attendee | null> {
     const stmt = this.db.prepare('SELECT * FROM attendees WHERE token = ?')
     const result = await stmt.bind(token).first<AttendeeSchema>()
 
@@ -53,5 +54,10 @@ export class D1AttendeeRepository {
         attendee.token
       )
       .run()
+  }
+
+  async delete(attendee: Attendee): Promise<void> {
+    const stmt = this.db.prepare('DELETE FROM attendees WHERE token = ?')
+    await stmt.bind(attendee.token).run()
   }
 }

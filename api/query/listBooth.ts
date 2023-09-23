@@ -1,16 +1,14 @@
 import { Booth } from '@/event'
-import { Query, Projection, ProjectionInput } from '@/core'
-
-export type BoothQueryInput = ProjectionInput
+import { Query, Projection } from '@/core'
 
 type BoothInfo = {
   name: string
 }
 
 export class ListBooth implements Query<void, BoothInfo[]> {
-  private readonly booths: Projection<BoothQueryInput, Booth[]>
+  private readonly booths: Projection<void, Booth[]>
 
-  constructor(booths: Projection<BoothQueryInput, Booth[]>) {
+  constructor(booths: Projection<void, Booth[]>) {
     this.booths = booths
   }
 

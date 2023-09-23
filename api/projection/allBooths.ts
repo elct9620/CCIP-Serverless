@@ -1,9 +1,8 @@
 import { type D1Database } from '@cloudflare/workers-types'
 import { Projection } from '@/core'
-import { BoothQueryInput } from '@api/query'
 import { Booth } from '@/event'
 
-export class D1AllBoothProjection implements Projection<BoothQueryInput, Booth[]> {
+export class D1AllBoothProjection implements Projection<void, Booth[]> {
   private readonly db: D1Database
 
   constructor(db: D1Database) {

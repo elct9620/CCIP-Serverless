@@ -1,19 +1,19 @@
-import { Command } from '@/core'
-import { AttendeeRepository } from './repository'
+import { Repository, Command } from '@/core'
+import { Attendee } from '@/attendee'
 
 export type InitAttendeeInput = {
   token: string
 }
 
 export class InitializeAttendeeCommand implements Command<InitAttendeeInput, void> {
-  private readonly attendees: AttendeeRepository
+  private readonly attendees: Repository<Attendee>
 
-  constructor(attendees: AttendeeRepository) {
+  constructor(attendees: Repository<Attendee>) {
     this.attendees = attendees
   }
 
   async execute(input: InitAttendeeInput): Promise<void> {
-    const attendee = await this.attendees.findByToken(input.token)
+    const attendee = await this.attendees.findById(input.token)
     if (!attendee) {
       return
     }

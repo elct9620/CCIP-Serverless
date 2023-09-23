@@ -1,7 +1,8 @@
-import { AttendeeRepository, RulesetRepository } from './repository'
+import { RulesetRepository } from './repository'
 import { Scenario } from '@/event'
 import { runRuleset } from '@/service'
-import { getCurrentTime } from '@/core'
+import { Repository, getCurrentTime } from '@/core'
+import { Attendee } from '@/attendee'
 
 type AvailableTimeInfo = {
   start: Date
@@ -25,16 +26,16 @@ export class ScenarioNotFoundError extends Error {}
 export class ScenarioNotAvailableError extends Error {}
 
 export class AttendeeAccess {
-  private readonly attendeeRepository: AttendeeRepository
+  private readonly attendeeRepository: Repository<Attendee>
   private readonly rulesetRepository: RulesetRepository
 
-  constructor(attendeeRepository: AttendeeRepository, rulesetRepository: RulesetRepository) {
+  constructor(attendeeRepository: Repository<Attendee>, rulesetRepository: RulesetRepository) {
     this.attendeeRepository = attendeeRepository
     this.rulesetRepository = rulesetRepository
   }
 
   async getScenarios(token: string): Promise<AttendeeScenario> {
-    const attendee = await this.attendeeRepository.findByToken(token)
+    const attendee = await this.attendeeRepository.findById(token)
     if (!attendee) {
       return {}
     }
@@ -50,7 +51,7 @@ export class AttendeeAccess {
   }
 
   async useScenario(token: string, scenarioId: string): Promise<AttendeeScenario> {
-    const attendee = await this.attendeeRepository.findByToken(token)
+    const attendee = await this.attendeeRepository.findById(token)
     if (!attendee) {
       return {}
     }

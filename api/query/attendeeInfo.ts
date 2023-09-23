@@ -1,5 +1,5 @@
-import { Query } from '@/core'
-import { AttendeeRepository } from '../command/repository'
+import { Repository, Query } from '@/core'
+import { Attendee } from '@/attendee'
 
 export type AttendeeScenario = {
   order: number
@@ -22,14 +22,14 @@ export type AttendeeInfoOutput = {
 } | null
 
 export class AttendeeInfo implements Query<AttendeeInfoInput, AttendeeInfoOutput> {
-  private readonly attendeeRepository: AttendeeRepository
+  private readonly attendees: Repository<Attendee>
 
-  constructor(attendeeRepository: AttendeeRepository) {
-    this.attendeeRepository = attendeeRepository
+  constructor(attendees: Repository<Attendee>) {
+    this.attendees = attendees
   }
 
   public async execute(input: AttendeeInfoInput): Promise<AttendeeInfoOutput> {
-    const attendee = await this.attendeeRepository.findByToken(input.token)
+    const attendee = await this.attendees.findById(input.token)
     if (!attendee) {
       return null
     }
