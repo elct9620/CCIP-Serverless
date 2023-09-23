@@ -1,5 +1,4 @@
 import { Announcement } from '@/announcement'
-import { Attendee } from '@/attendee'
 import { Ruleset, Booth } from '@/event'
 import { Status as PuzzleStatus } from '@/puzzle'
 
