@@ -1,22 +1,22 @@
 import { IRequest, StatusError } from 'itty-router'
 import * as schema from '@api/schema'
-import { PuzzleInfo } from '@api/command'
+import { GetPuzzleStatus } from '@api/query'
 import { datetimeToUnix } from '@api/utils'
 import { get } from '@worker/router'
 import { json } from '@worker/utils'
 
 export type PuzzleStatusRequest = {
-  puzzleInfo: PuzzleInfo
+  getPuzzleStatus: GetPuzzleStatus
 } & IRequest
 
 export class PuzzleStatus {
   @get('/event/puzzle')
-  async getStatus({ puzzleInfo, query }: PuzzleStatusRequest) {
+  async getStatus({ getPuzzleStatus, query }: PuzzleStatusRequest) {
     if (!query.token) {
       throw new StatusError(400, 'token is required')
     }
 
-    const status = await puzzleInfo.getStatus(query.token as string)
+    const status = await getPuzzleStatus.execute({ publicToken: query.token as string })
     if (status === null) {
       throw new StatusError(404, 'Invalid token, please try again after checkin.')
     }

@@ -11,18 +11,15 @@ export const withCommands = (request: IRequest, env: Env) => {
   const announcementRepository = new Repository.D1AnnouncementRepository(env.DB)
   const attendeeRepository = new Repository.D1AttendeeRepository(env.DB)
   const rulesetRepository = new Repository.D1RulesetRepository(env.DB)
-  const puzzleStatusRepository = new Repository.D1PuzzleStatusRepository(env.DB)
 
   const announcementInfo = new Command.AnnouncementInfo(announcementRepository, attendeeRepository)
 
   const attendeeAccess = new Command.AttendeeAccess(attendeeRepository, rulesetRepository)
-  const puzzleInfo = new Command.PuzzleInfo(puzzleStatusRepository)
   const initializeAttendeeCommand = new Command.InitializeAttendeeCommand(attendeeRepository)
 
   Object.assign(request, {
     announcementInfo,
     attendeeAccess,
     initializeAttendeeCommand,
-    puzzleInfo,
   })
 }

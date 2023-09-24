@@ -1,11 +1,16 @@
-import { PuzzleStatusRepository } from './repository'
+import { Repository, Query } from '@/core'
+import { Status } from '@/puzzle'
+
+export type GetStatusInput = {
+  publicToken: string
+}
 
 export type DeliverStatus = {
   deliverer: string
   redeemedAt: Date
 }
 
-export type PuzzleStatus = {
+export type GetStatusOutput = {
   displayName: string
   pieces: string[]
   delivers: DeliverStatus[]
@@ -14,15 +19,15 @@ export type PuzzleStatus = {
   redeemAt: Date | null
 }
 
-export class PuzzleInfo {
-  private readonly statuses: PuzzleStatusRepository
+export class GetPuzzleStatus implements Query<GetStatusInput, GetStatusOutput> {
+  private readonly statuses: Repository<Status>
 
-  constructor(statuses: PuzzleStatusRepository) {
+  constructor(statuses: Repository<Status>) {
     this.statuses = statuses
   }
 
-  async getStatus(publicToken: string): Promise<PuzzleStatus | null> {
-    const status = await this.statuses.getStatus(publicToken)
+  async execute({ publicToken }: GetStatusInput): Promise<GetStatusOutput | null> {
+    const status = await this.statuses.findById(publicToken)
     if (status === null) {
       return null
     }
