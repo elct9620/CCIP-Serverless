@@ -1,8 +1,13 @@
 import { Scenario, Ruleset } from '@/event'
 import { runRuleset } from '@/service'
 import { GetRulesetInput } from '@api/projection'
-import { Projection, Repository, getCurrentTime } from '@/core'
+import { Projection, Repository, Command, getCurrentTime } from '@/core'
 import { Attendee } from '@/attendee'
+
+export type RunAttendeeScenarioInput = {
+  token: string
+  scenarioId: string
+}
 
 type AvailableTimeInfo = {
   start: Date
@@ -19,13 +24,15 @@ type ScenarioInfo = {
   metadata: Record<string, any>
 }
 
-type AttendeeScenario = Record<string, ScenarioInfo>
+type RunAttendeeScenarioOutput = Record<string, ScenarioInfo>
 
 export class ScenarioUsedError extends Error {}
 export class ScenarioNotFoundError extends Error {}
 export class ScenarioNotAvailableError extends Error {}
 
-export class AttendeeAccess {
+export class RunAttendeeScenario
+  implements Command<RunAttendeeScenarioInput, RunAttendeeScenarioOutput>
+{
   private readonly attendees: Repository<Attendee>
   private readonly getRulesetByEvent: Projection<GetRulesetInput, Ruleset>
 
@@ -37,7 +44,10 @@ export class AttendeeAccess {
     this.getRulesetByEvent = getRulesetByEvent
   }
 
-  async useScenario(token: string, scenarioId: string): Promise<AttendeeScenario> {
+  async execute({
+    token,
+    scenarioId,
+  }: RunAttendeeScenarioInput): Promise<RunAttendeeScenarioOutput> {
     const attendee = await this.attendees.findById(token)
     if (!attendee) {
       return {}

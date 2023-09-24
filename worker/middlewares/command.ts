@@ -15,12 +15,12 @@ export const withCommands = (request: IRequest, env: Env) => {
 
   const announcementInfo = new Command.AnnouncementInfo(announcementRepository, attendeeRepository)
 
-  const attendeeAccess = new Command.AttendeeAccess(attendeeRepository, getRulesetByEvent)
+  const runAttendeeScenario = new Command.RunAttendeeScenario(attendeeRepository, getRulesetByEvent)
   const initializeAttendeeCommand = new Command.InitializeAttendeeCommand(attendeeRepository)
 
   Object.assign(request, {
     announcementInfo,
-    attendeeAccess,
+    runAttendeeScenario,
     initializeAttendeeCommand,
   })
 }
