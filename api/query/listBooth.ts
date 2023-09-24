@@ -13,7 +13,7 @@ export class ListBooth implements Query<void, BoothInfo[]> {
   }
 
   async execute(): Promise<BoothInfo[]> {
-    const booths = await this.booths.query()
+    const booths = (await this.booths.query()) ?? []
 
     return booths.map(booth => ({ name: booth.name }))
   }

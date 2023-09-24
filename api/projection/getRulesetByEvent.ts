@@ -1,5 +1,11 @@
 import { type D1Database } from '@cloudflare/workers-types'
-import { Ruleset, Scenario, ScenarioConditionType, Condition, ConditionType } from '../../src/event'
+import { Projection } from '@/core'
+import { Ruleset, Scenario, ScenarioConditionType, Condition, ConditionType } from '@/event'
+
+export type GetRulesetInput = {
+  eventId: string
+  role: string
+}
 
 type RulesetSchema = {
   event_id: string
@@ -30,16 +36,16 @@ type ScenarioSchema = {
   metadata: Record<string, MetadataSchema>
 }
 
-export class D1RulesetRepository {
+export class D1RulesetProjection implements Projection<GetRulesetInput, Ruleset> {
   private readonly db: D1Database
 
   constructor(db: D1Database) {
     this.db = db
   }
 
-  async findByEventId(eventId: string, name: string): Promise<Ruleset | null> {
+  async query({ eventId, role }: GetRulesetInput): Promise<Ruleset | null> {
     const stmt = await this.db.prepare('SELECT * FROM rulesets WHERE event_id = ? AND name = ?')
-    const result = await stmt.bind(eventId, name).first<RulesetSchema>()
+    const result = await stmt.bind(eventId, role).first<RulesetSchema>()
 
     if (!result) {
       return null

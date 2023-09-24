@@ -1,7 +1,7 @@
-import { RulesetRepository } from './repository'
-import { Scenario } from '@/event'
+import { Scenario, Ruleset } from '@/event'
 import { runRuleset } from '@/service'
-import { Repository, getCurrentTime } from '@/core'
+import { GetRulesetInput } from '@api/projection'
+import { Projection, Repository, getCurrentTime } from '@/core'
 import { Attendee } from '@/attendee'
 
 type AvailableTimeInfo = {
@@ -26,32 +26,19 @@ export class ScenarioNotFoundError extends Error {}
 export class ScenarioNotAvailableError extends Error {}
 
 export class AttendeeAccess {
-  private readonly attendeeRepository: Repository<Attendee>
-  private readonly rulesetRepository: RulesetRepository
+  private readonly attendees: Repository<Attendee>
+  private readonly getRulesetByEvent: Projection<GetRulesetInput, Ruleset>
 
-  constructor(attendeeRepository: Repository<Attendee>, rulesetRepository: RulesetRepository) {
-    this.attendeeRepository = attendeeRepository
-    this.rulesetRepository = rulesetRepository
-  }
-
-  async getScenarios(token: string): Promise<AttendeeScenario> {
-    const attendee = await this.attendeeRepository.findById(token)
-    if (!attendee) {
-      return {}
-    }
-
-    const ruleset = await this.rulesetRepository.findByEventId(attendee.eventId, attendee.role)
-    if (!ruleset) {
-      return {}
-    }
-
-    await runRuleset(attendee, ruleset)
-
-    return buildAttendeeScenario(ruleset.visibleScenarios)
+  constructor(
+    attendees: Repository<Attendee>,
+    getRulesetByEvent: Projection<GetRulesetInput, Ruleset>
+  ) {
+    this.attendees = attendees
+    this.getRulesetByEvent = getRulesetByEvent
   }
 
   async useScenario(token: string, scenarioId: string): Promise<AttendeeScenario> {
-    const attendee = await this.attendeeRepository.findById(token)
+    const attendee = await this.attendees.findById(token)
     if (!attendee) {
       return {}
     }
@@ -60,7 +47,10 @@ export class AttendeeAccess {
       throw new ScenarioUsedError('has been used')
     }
 
-    const ruleset = await this.rulesetRepository.findByEventId(attendee.eventId, attendee.role)
+    const ruleset = await this.getRulesetByEvent.query({
+      eventId: attendee.eventId,
+      role: attendee.role,
+    })
     if (!ruleset) {
       return {}
     }
@@ -80,7 +70,7 @@ export class AttendeeAccess {
     }
 
     attendee.useScenario(scenarioId, currentTime)
-    await this.attendeeRepository.save(attendee)
+    await this.attendees.save(attendee)
     await runRuleset(attendee, ruleset)
 
     return buildAttendeeScenario(visibleScenarios)

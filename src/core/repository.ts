@@ -1,5 +1,5 @@
 export interface Projection<I, O> {
-  query(input?: I): Promise<O>
+  query(input?: I): Promise<O | null>
 }
 
 export interface Repository<T> {

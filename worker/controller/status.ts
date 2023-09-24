@@ -1,14 +1,14 @@
 import { IRequest, StatusError } from 'itty-router'
 import { json } from '@worker/utils'
 import * as schema from '@api/schema'
-import { AttendeeAccess, InitializeAttendeeCommand } from '@api/command'
-import { AttendeeInfo } from '@api/query'
+import { InitializeAttendeeCommand } from '@api/command'
+import { AttendeeInfo, GetAttendeeScenario } from '@api/query'
 import { datetimeToUnix } from '@api/utils'
 import { get } from '@worker/router'
 
 export type StatusRequest = {
   attendeeInfo: AttendeeInfo
-  attendeeAccess: AttendeeAccess
+  getAttendeeScenario: GetAttendeeScenario
   initializeAttendeeCommand: InitializeAttendeeCommand
 } & IRequest
 
@@ -33,7 +33,12 @@ function formatScenario(scenario: Record<string, any>) {
 
 export class StatusController {
   @get('/status')
-  async status({ attendeeInfo, initializeAttendeeCommand, attendeeAccess, query }: StatusRequest) {
+  async status({
+    attendeeInfo,
+    initializeAttendeeCommand,
+    getAttendeeScenario,
+    query,
+  }: StatusRequest) {
     if (!query.token) {
       throw new StatusError(400, 'token required')
     }
@@ -48,7 +53,7 @@ export class StatusController {
       throw new StatusError(400, 'invalid token')
     }
 
-    const scenarios = await attendeeAccess.getScenarios(query.token as string)
+    const scenarios = await getAttendeeScenario.execute({ token: query.token as string })
 
     return json<StatusResponse>({
       event_id: info.eventId,
