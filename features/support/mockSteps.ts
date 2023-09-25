@@ -48,7 +48,9 @@ Given(
   }
 )
 
-Given('there have some booths', async function (this: WorkerWorld, _dataTable: DataTable) {})
+Given('there have some booths', async function (this: WorkerWorld, dataTable: DataTable) {
+  await createMockData(this.mock, '/booths', JSON.stringify(dataTable.hashes()))
+})
 
 After(async function (this: WorkerWorld) {
   await this.mock.fetch('https://testability.opass.app/reset', {

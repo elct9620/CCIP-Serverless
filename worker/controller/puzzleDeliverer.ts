@@ -10,8 +10,8 @@ type DelivererListRequest = IRequest & {
 
 export class PuzzleDeliverer {
   @get('/event/puzzle/deliverers')
-  async getDeliverers({ listBooth }: DelivererListRequest) {
-    const booths = await listBooth.execute()
+  async getDeliverers({ query, listBooth }: DelivererListRequest) {
+    const booths = await listBooth.execute({ eventId: query.event_id as string })
 
     return json<schema.BoothList>(booths.map(({ name }) => name))
   }
