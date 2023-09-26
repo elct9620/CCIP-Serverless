@@ -13,3 +13,15 @@ Feature: Puzzle Deliverers
       ]
       """
     And the response status should be 200
+
+  Scenario: When I ask for deliverer which I owned and I can see the slug
+    Given there have some booths
+      | token                                | name   | event_id |
+      | 30b546a6-4710-43c1-9556-421906f2afe1 | COSCUP | SITCON   |
+      | f05e5898-10e7-4e75-b64f-61d2d062e4f9 | SITCON | SITCON   |
+    When I make a GET request to "/event/puzzle/deliverer?event_id=SITCON&token=30b546a6-4710-43c1-9556-421906f2afe1"
+    Then the response json should be:
+      """
+      { "slug": "COSCUP" }
+      """
+    And the response status should be 200

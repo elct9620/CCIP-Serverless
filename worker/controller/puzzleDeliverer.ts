@@ -15,4 +15,9 @@ export class PuzzleDeliverer {
 
     return json<schema.BoothList>(booths.map(({ name }) => name))
   }
+
+  @get('/event/puzzle/deliverer')
+  async getDeliverer() {
+    return json<schema.BoothStaff>({ slug: 'COSCUP' })
+  }
 }
