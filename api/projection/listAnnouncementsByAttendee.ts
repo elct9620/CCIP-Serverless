@@ -25,7 +25,7 @@ export class D1ListAnnouncementsByAttendee
 
   async query({ role }: ListAnnouncementsInput): Promise<Announcement[] | null> {
     if (!role) {
-      return null
+      return []
     }
 
     const stmt = this.db.prepare(`
