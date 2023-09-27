@@ -17,7 +17,7 @@ export class D1AnnouncementRepository {
     this.db = db
   }
 
-  async create(announcement: any): Promise<void> {
+  async create(announcement: Record<string, unknown>): Promise<void> {
     const { id, announcedAt, messageEn, messageZh, uri, roles } = announcement
     const stmt = this.db.prepare(`
       INSERT INTO announcements (id, announced_at, message_en, message_zh, uri, roles)
