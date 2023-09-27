@@ -41,7 +41,7 @@ export class D1ListAnnouncementsByAttendee
   }
 }
 
-const toAnnouncement = (data: AnnouncementSchema): Announcement => ({
+const toAnnouncement = (data: AnnouncementSchema): Announcement => new Announcement({
   id: data.id,
   announcedAt: new Date(data.announced_at),
   messageEn: data.message_en,
