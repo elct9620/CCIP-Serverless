@@ -1,4 +1,5 @@
 import { Command, getCurrentTime } from '@/core'
+import { Announcement } from '@/announcement'
 import { AnnouncementRepository } from './repository'
 
 export type CreateAnnouncementInput = {
@@ -16,15 +17,13 @@ export class CreateAnnouncement implements Command<CreateAnnouncementInput, void
   }
 
   public async execute(input: CreateAnnouncementInput): Promise<void> {
-    const stubbedId = crypto.randomUUID()
-    const params = {
-      id: stubbedId,
-      announcedAt: getCurrentTime().toISOString(),
+    const announcement = new Announcement({
+      announcedAt: getCurrentTime(),
       messageEn: input.messageEn,
       messageZh: input.messageZh,
       uri: input.uri,
       roles: input.roles,
-    }
-    await this.announcementRepository.create(params)
+    })
+    await this.announcementRepository.create(announcement)
   }
 }

@@ -12,6 +12,7 @@ export type ListAnnouncementsOutput = {
   messageEn: string | null
   messageZh: string | null
   uri: string
+  roles: string[]
 }[]
 
 const defaultQueryRole = AttendeeRole.Audience
@@ -37,6 +38,7 @@ export class ListAnnouncementsByToken implements Query<GetAttendeeInput, ListAnn
       messageEn: result.messageEn,
       messageZh: result.messageZh,
       uri: result.uri,
+      roles: result.roles,
     }))
   }
 }

@@ -1,3 +1,5 @@
+import { Announcement } from '@/announcement'
+
 export interface AnnouncementRepository {
-  create(params: any): Promise<void>
+  create(announcement: Announcement): Promise<void>
 }
