@@ -1,15 +1,15 @@
 import { Entity } from '@/core'
 
 type Attributes = {
-  id: number
+  id: string
   announcedAt: Date
   messageEn: string | null
   messageZh: string | null
   uri: string
 }
 
-export class Announcement implements Entity<number> {
-  public readonly id: number
+export class Announcement implements Entity<string> {
+  public readonly id: string
   public readonly announcedAt: Date
   public readonly messageEn: string | null
   public readonly messageZh: string | null

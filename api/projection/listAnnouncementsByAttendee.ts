@@ -3,7 +3,7 @@ import { Projection } from '@/core'
 import { Announcement } from '@/announcement'
 
 type AnnouncementSchema = {
-  id: number
+  id: string
   announced_at: string
   message_en: string | null
   message_zh: string | null
@@ -33,7 +33,7 @@ export class D1ListAnnouncementsByAttendee
         WHERE (
           SELECT 1 FROM json_each(roles) WHERE json_each.value = ?
         )
-        ORDER BY id
+        ORDER BY announced_at DESC
       `)
     const { results } = await stmt.bind(role).all<AnnouncementSchema>()
 
@@ -41,10 +41,11 @@ export class D1ListAnnouncementsByAttendee
   }
 }
 
-const toAnnouncement = (data: AnnouncementSchema): Announcement => new Announcement({
-  id: data.id,
-  announcedAt: new Date(data.announced_at),
-  messageEn: data.message_en,
-  messageZh: data.message_zh,
-  uri: data.uri,
-})
+const toAnnouncement = (data: AnnouncementSchema): Announcement =>
+  new Announcement({
+    id: data.id,
+    announcedAt: new Date(data.announced_at),
+    messageEn: data.message_en,
+    messageZh: data.message_zh,
+    uri: data.uri,
+  })
