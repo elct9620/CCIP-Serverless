@@ -13,7 +13,7 @@ export const withCommands = (request: IRequest, env: Env) => {
   const attendeeRepository = new Repository.D1AttendeeRepository(env.DB)
   const getRulesetByEvent = new Projection.D1RulesetProjection(env.DB)
 
-  const announcementInfo = new Command.AnnouncementInfo(announcementRepository, attendeeRepository)
+  const announcementInfo = new Command.AnnouncementInfo(announcementRepository)
 
   const runAttendeeScenario = new Command.RunAttendeeScenario(attendeeRepository, getRulesetByEvent)
   const initializeAttendeeCommand = new Command.InitializeAttendeeCommand(attendeeRepository)
