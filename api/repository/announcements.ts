@@ -2,7 +2,7 @@ import { type D1Database } from '@cloudflare/workers-types'
 import { Announcement } from '@/announcement'
 
 type AnnouncementSchema = {
-  id: number
+  id: string
   announced_at: string
   message_en: string | null
   message_zh: string | null
@@ -19,10 +19,11 @@ export class D1AnnouncementRepository {
 
   async create(): Promise<void> {
     const stmt = this.db.prepare(`
-      INSERT INTO announcements (announced_at, message_en, message_zh, uri, roles)
-        VALUES (?, ?, ?, ?, ?)
+      INSERT INTO announcements (id, announced_at, message_en, message_zh, uri, roles)
+        VALUES (?, ?, ?, ?, ?, ?)
     `)
     const fixedValues = [
+      crypto.randomUUID(),
       new Date('2023-08-27 00:00:00 GMT+8').toISOString(),
       'hello world',
       '世界你好',
