@@ -1,14 +1,14 @@
 import { IRequest } from 'itty-router'
 import { json } from '@worker/utils'
 import * as schema from '@api/schema'
-import { AnnouncementInfo } from '@api/command'
+import * as Command from '@api/command'
 import { ListAnnouncementsByToken } from '@api/query'
 import { datetimeToUnix } from '@api/utils'
 import { get, post } from '@worker/router'
 
 export type AnnouncementRequest = {
   listAnnouncementsByToken: ListAnnouncementsByToken
-  announcementInfo: AnnouncementInfo
+  initializeAnnouncementCommand: Command.InitializeAnnouncement
   query: Record<string, string | undefined>
 } & IRequest
 
@@ -61,14 +61,16 @@ const toFormattedAnnouncement = (data: schema.Announcement): AnnouncementData =>
 export class AnnouncementController {
   @get('/announcement')
   async listAnnouncements(request: AnnouncementRequest) {
-    const results = await request.listAnnouncementsByToken.execute({ token: String(request.query.token) })
+    const results = await request.listAnnouncementsByToken.execute({
+      token: String(request.query.token),
+    })
     return json<AnnouncementResponse>(results.map(toFormattedAnnouncement))
   }
 
   @post('/announcement')
   async createAnnouncement(request: AnnouncementRequest) {
     const params = await request.json<schema.CreateAnnouncementPayload>()
-    await request.announcementInfo.create(toCreateAnnouncementParams(params))
+    await request.initializeAnnouncementCommand.execute(toCreateAnnouncementParams(params))
     return json({ status: 'OK' })
   }
 }

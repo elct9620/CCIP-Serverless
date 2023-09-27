@@ -1,3 +1,3 @@
-export * from './announcementInfo'
+export * from './initializeAnnouncement'
 export * from './runAttendeeScenario'
 export * from './initializeAttendee'
