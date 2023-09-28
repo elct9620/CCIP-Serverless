@@ -1,6 +1,5 @@
-import { Command, getCurrentTime } from '@/core'
+import { Command, Repository, getCurrentTime } from '@/core'
 import { Announcement } from '@/announcement'
-import { AnnouncementRepository } from './repository'
 
 export type CreateAnnouncementInput = {
   messageEn: string | null
@@ -10,9 +9,9 @@ export type CreateAnnouncementInput = {
 }
 
 export class CreateAnnouncement implements Command<CreateAnnouncementInput, void> {
-  private readonly announcementRepository: AnnouncementRepository
+  private readonly announcementRepository: Repository<Announcement>
 
-  constructor(announcementRepository: AnnouncementRepository) {
+  constructor(announcementRepository: Repository<Announcement>) {
     this.announcementRepository = announcementRepository
   }
 
@@ -26,6 +25,6 @@ export class CreateAnnouncement implements Command<CreateAnnouncementInput, void
       uri: input.uri,
       roles: input.roles,
     })
-    await this.announcementRepository.create(announcement)
+    await this.announcementRepository.save(announcement)
   }
 }
