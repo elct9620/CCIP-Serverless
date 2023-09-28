@@ -12,12 +12,13 @@ export const withQueries = (request: IRequest, env: Env) => {
   const attendeeRepository = new Repository.D1AttendeeRepository(env.DB)
   const puzzleStatusRepository = new Repository.D1PuzzleStatusRepository(env.DB)
   const getRulesetByEvent = new Projection.D1RulesetProjection(env.DB)
+  const findBoothByToken = new Projection.D1FindBoothByToken(env.DB)
 
   const attendeeInfo = new Query.AttendeeInfo(attendeeRepository)
   const getPuzzleStatus = new Query.GetPuzzleStatus(puzzleStatusRepository)
   const allBoothProjection = new Projection.D1AllBoothProjection(env.DB)
   const listBooth = new Query.ListBooth(allBoothProjection)
-  const getBoothByToken = new Query.GetBoothByToken()
+  const getBoothByToken = new Query.GetBoothByToken(findBoothByToken)
   const listAnnouncementsProjection = new Projection.D1ListAnnouncementsByAttendee(env.DB)
   const listAnnouncementsByToken = new Query.ListAnnouncementsByToken(
     listAnnouncementsProjection,

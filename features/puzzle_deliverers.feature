@@ -1,9 +1,11 @@
 Feature: Puzzle Deliverers
-  Scenario: When I ask for deliverers I can see a list of booths
+  Background:
     Given there have some booths
       | token                                | name   | event_id |
       | 30b546a6-4710-43c1-9556-421906f2afe1 | COSCUP | SITCON   |
       | f05e5898-10e7-4e75-b64f-61d2d062e4f9 | SITCON | SITCON   |
+
+  Scenario: When I ask for deliverers I can see a list of booths
     When I make a GET request to "/event/puzzle/deliverers?event_id=SITCON"
     Then the response json should be:
       """
@@ -14,11 +16,24 @@ Feature: Puzzle Deliverers
       """
     And the response status should be 200
 
+  Scenario: When I ask for deliverer but without token
+    When I make a GET request to "/event/puzzle/deliverer"
+    Then the response json should be:
+      """
+      { "message": "token required" }
+      """
+    And the response status should be 400
+
+  Scenario: When I ask for deliverer but token is invalid
+    When I make a GET request to "/event/puzzle/deliverer?token=invalid-token"
+    Then the response json should be:
+      """
+      { "message": "invalid deliverer token" }
+      """
+    And the response status should be 400
+
+
   Scenario: When I ask for deliverer which I owned and I can see the slug
-    Given there have some booths
-      | token                                | name   | event_id |
-      | 30b546a6-4710-43c1-9556-421906f2afe1 | COSCUP | SITCON   |
-      | f05e5898-10e7-4e75-b64f-61d2d062e4f9 | SITCON | SITCON   |
     When I make a GET request to "/event/puzzle/deliverer?event_id=SITCON&token=30b546a6-4710-43c1-9556-421906f2afe1"
     Then the response json should be:
       """
