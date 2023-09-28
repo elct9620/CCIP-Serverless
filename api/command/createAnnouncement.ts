@@ -17,7 +17,9 @@ export class CreateAnnouncement implements Command<CreateAnnouncementInput, void
   }
 
   public async execute(input: CreateAnnouncementInput): Promise<void> {
+    const announcementId = crypto.randomUUID()
     const announcement = new Announcement({
+      id: announcementId,
       announcedAt: getCurrentTime(),
       messageEn: input.messageEn,
       messageZh: input.messageZh,

@@ -1,7 +1,7 @@
 import { Entity } from '@/core'
 
 type Attributes = {
-  id?: string
+  id: string
   announcedAt: Date
   messageEn: string | null
   messageZh: string | null
@@ -18,7 +18,7 @@ export class Announcement implements Entity<string> {
   public readonly roles: string[]
 
   constructor(attributes: Attributes) {
-    this.id = attributes.id ?? crypto.randomUUID()
+    this.id = attributes.id
     this.announcedAt = attributes.announcedAt
     this.messageEn = attributes.messageEn
     this.messageZh = attributes.messageZh
