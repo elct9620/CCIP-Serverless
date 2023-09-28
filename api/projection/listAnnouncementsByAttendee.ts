@@ -8,6 +8,7 @@ type AnnouncementSchema = {
   message_en: string | null
   message_zh: string | null
   uri: string
+  roles: string
 }
 
 export type ListAnnouncementsInput = {
@@ -41,11 +42,20 @@ export class D1ListAnnouncementsByAttendee
   }
 }
 
-const toAnnouncement = (data: AnnouncementSchema): Announcement =>
-  new Announcement({
+const toAnnouncement = (data: AnnouncementSchema): Announcement => {
+  let roles: string[]
+  try {
+    roles = JSON.parse(data.roles)
+  } catch {
+    roles = []
+  }
+
+  return new Announcement({
     id: data.id,
     announcedAt: new Date(data.announced_at),
     messageEn: data.message_en,
     messageZh: data.message_zh,
     uri: data.uri,
+    roles,
   })
+}

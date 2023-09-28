@@ -3,6 +3,7 @@ export type Announcement = {
   messageEn: string | null
   messageZh: string | null
   uri: string
+  roles: string[]
 }
 
 export type CreateAnnouncementPayload = {

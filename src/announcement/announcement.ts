@@ -6,6 +6,7 @@ type Attributes = {
   messageEn: string | null
   messageZh: string | null
   uri: string
+  roles?: string[]
 }
 
 export class Announcement implements Entity<string> {
@@ -14,6 +15,7 @@ export class Announcement implements Entity<string> {
   public readonly messageEn: string | null
   public readonly messageZh: string | null
   public readonly uri: string
+  public readonly roles: string[]
 
   constructor(attributes: Attributes) {
     this.id = attributes.id
@@ -21,5 +23,6 @@ export class Announcement implements Entity<string> {
     this.messageEn = attributes.messageEn
     this.messageZh = attributes.messageZh
     this.uri = attributes.uri
+    this.roles = attributes.roles ?? []
   }
 }
