@@ -1,10 +1,11 @@
 import { IRequest } from 'itty-router'
 import * as schema from '@api/schema'
-import { ListBooth } from '@api/query'
+import { ListBooth, GetBoothByToken } from '@api/query'
 import { get } from '@worker/router'
 import { json } from '@worker/utils'
 
 type DelivererListRequest = IRequest & {
+  getBoothByToken: GetBoothByToken
   listBooth: ListBooth
 }
 
@@ -17,7 +18,9 @@ export class PuzzleDeliverer {
   }
 
   @get('/event/puzzle/deliverer')
-  async getDeliverer() {
-    return json<schema.BoothStaff>({ slug: 'COSCUP' })
+  async getDeliverer({ getBoothByToken }: DelivererListRequest) {
+    const ownedBooth = await getBoothByToken.execute()
+
+    return json<schema.BoothStaff>({ slug: ownedBooth.name })
   }
 }

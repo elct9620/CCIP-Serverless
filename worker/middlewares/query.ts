@@ -17,8 +17,12 @@ export const withQueries = (request: IRequest, env: Env) => {
   const getPuzzleStatus = new Query.GetPuzzleStatus(puzzleStatusRepository)
   const allBoothProjection = new Projection.D1AllBoothProjection(env.DB)
   const listBooth = new Query.ListBooth(allBoothProjection)
+  const getBoothByToken = new Query.GetBoothByToken()
   const listAnnouncementsProjection = new Projection.D1ListAnnouncementsByAttendee(env.DB)
-  const listAnnouncementsByToken = new Query.ListAnnouncementsByToken(listAnnouncementsProjection, attendeeRepository)
+  const listAnnouncementsByToken = new Query.ListAnnouncementsByToken(
+    listAnnouncementsProjection,
+    attendeeRepository
+  )
   const getAttendeeScenario = new Query.GetAttendeeScenario(attendeeRepository, getRulesetByEvent)
 
   Object.assign(request, {
@@ -27,5 +31,6 @@ export const withQueries = (request: IRequest, env: Env) => {
     attendeeInfo,
     listAnnouncementsByToken,
     getAttendeeScenario,
+    getBoothByToken,
   })
 }
