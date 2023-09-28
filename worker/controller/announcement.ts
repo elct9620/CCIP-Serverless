@@ -29,23 +29,11 @@ type CreateAnnouncementParams = {
 const toCreateAnnouncementParams = (
   data: schema.CreateAnnouncementPayload
 ): CreateAnnouncementParams => {
-  let roles: string[]
-  try {
-    if (Array.isArray(data.role)) {
-      roles = data.role.map(String)
-    } else {
-      const parsed = JSON.parse(data.role)
-      roles = Array.isArray(parsed) ? parsed.map(String) : []
-    }
-  } catch {
-    roles = []
-  }
-
   return {
     messageEn: typeof data.msg_en === 'string' ? data.msg_en : null,
     messageZh: typeof data.msg_zh === 'string' ? data.msg_zh : null,
     uri: typeof data.uri === 'string' ? data.uri : '',
-    roles,
+    roles: Array.isArray(data.role) ? data.role : [],
   }
 }
 

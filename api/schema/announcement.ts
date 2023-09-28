@@ -9,5 +9,5 @@ export type CreateAnnouncementPayload = {
   msg_en: string | null
   msg_zh: string | null
   uri: string
-  role: string | string[]
+  role: string[]
 }
