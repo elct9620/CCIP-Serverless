@@ -11,7 +11,7 @@ export type CreateAnnouncementPayload = {
   message_en: string
   message_zh: string
   uri: string
-  roles: string
+  roles: string[]
 }
 
 export const createAnnouncementHandler = async (req: IRequest, { DB }: Env) => {
@@ -22,7 +22,14 @@ export const createAnnouncementHandler = async (req: IRequest, { DB }: Env) => {
   const payloadArray = Array.isArray(payload) ? payload : [payload]
   const info = await DB.batch(
     payloadArray.map(data =>
-      stmt.bind(data.id, data.announced_at, data.message_en, data.message_zh, data.uri, data.roles)
+      stmt.bind(
+        data.id,
+        data.announced_at,
+        data.message_en,
+        data.message_zh,
+        data.uri,
+        JSON.stringify(data.roles)
+      )
     )
   )
 
