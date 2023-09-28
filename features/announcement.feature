@@ -91,7 +91,7 @@ Feature: Announcement
         "msg_en": "hello world",
         "msg_zh": "世界你好",
         "uri": "https://testability.opass.app/announcements/1",
-        "role": "[\"audience\"]"
+        "role": ["audience"]
       }
       """
     Then the response status should be 200
