@@ -1,21 +1,21 @@
 import { Command, getCurrentTime } from '@/core'
 import { AnnouncementRepository } from './repository'
 
-export type InitializeAnnouncementInput = {
+export type CreateAnnouncementInput = {
   messageEn: string | null
   messageZh: string | null
   uri: string
   roles: string[]
 }
 
-export class InitializeAnnouncement implements Command<InitializeAnnouncementInput, void> {
+export class CreateAnnouncement implements Command<CreateAnnouncementInput, void> {
   private readonly announcementRepository: AnnouncementRepository
 
   constructor(announcementRepository: AnnouncementRepository) {
     this.announcementRepository = announcementRepository
   }
 
-  public async execute(input: InitializeAnnouncementInput): Promise<void> {
+  public async execute(input: CreateAnnouncementInput): Promise<void> {
     const stubbedId = crypto.randomUUID()
     const params = {
       id: stubbedId,

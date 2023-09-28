@@ -8,7 +8,7 @@ import { get, post } from '@worker/router'
 
 export type AnnouncementRequest = {
   listAnnouncementsByToken: ListAnnouncementsByToken
-  initializeAnnouncementCommand: Command.InitializeAnnouncement
+  createAnnouncementCommand: Command.CreateAnnouncement
   query: Record<string, string | undefined>
 } & IRequest
 
@@ -70,7 +70,7 @@ export class AnnouncementController {
   @post('/announcement')
   async createAnnouncement(request: AnnouncementRequest) {
     const params = await request.json<schema.CreateAnnouncementPayload>()
-    await request.initializeAnnouncementCommand.execute(toCreateAnnouncementParams(params))
+    await request.createAnnouncementCommand.execute(toCreateAnnouncementParams(params))
     return json({ status: 'OK' })
   }
 }
