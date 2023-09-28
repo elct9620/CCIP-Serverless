@@ -19,16 +19,9 @@ export type AnnouncementData = {
   uri: string
 }
 
-type CreateAnnouncementParams = {
-  messageEn: string | null
-  messageZh: string | null
-  uri: string
-  roles: string[]
-}
-
 const toCreateAnnouncementParams = (
   data: schema.CreateAnnouncementPayload
-): CreateAnnouncementParams => {
+): Command.CreateAnnouncementInput => {
   return {
     messageEn: typeof data.msg_en === 'string' ? data.msg_en : null,
     messageZh: typeof data.msg_zh === 'string' ? data.msg_zh : null,
