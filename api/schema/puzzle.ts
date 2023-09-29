@@ -5,3 +5,7 @@ export type PuzzleStatus = {
   valid: number | null
   coupon: number | null
 }
+
+export type DeliverPuzzlePayload = {
+  receiver: string
+}
