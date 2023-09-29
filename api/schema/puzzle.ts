@@ -10,6 +10,14 @@ export type DeliverPuzzlePayload = {
   receiver: string
 }
 
+export type PuzzleDeliveredResponse = {
+  status: 'OK'
+  /**
+   * Receiver's display name
+   */
+  user_id: string
+}
+
 export type PuzzleItemStat = {
   puzzle: string
   quantity: number
