@@ -14,6 +14,7 @@ export type AttendeeInfoInput = {
 
 export type AttendeeInfoOutput = {
   eventId: string
+  publicToken: string
   displayName: string
   firstUsedAt: Date | null
   role: string
@@ -36,6 +37,7 @@ export class AttendeeInfo implements Query<AttendeeInfoInput, AttendeeInfoOutput
 
     return {
       eventId: attendee.eventId,
+      publicToken: attendee.publicToken,
       displayName: attendee.displayName,
       firstUsedAt: attendee.firstUsedAt,
       role: attendee.role,

@@ -57,6 +57,10 @@ export class Attendee implements Entity<string> {
     return this._metadata
   }
 
+  get publicToken(): string {
+    return '041656f614f3b624ad8c7409c25db3b7e9a512ce'
+  }
+
   getMetadata(key: string): MetadataValue {
     return this._metadata[key]
   }

@@ -23,6 +23,7 @@ Feature: Status
 			"""
 			{
 				"event_id": "COSCUP2023",
+        "public_token": "041656f614f3b624ad8c7409c25db3b7e9a512ce",
 				"user_id": "Aotoki",
 				"first_use": 1692489600,
 				"role": "audience",
@@ -40,6 +41,7 @@ Feature: Status
 			"""
 			{
 				"event_id": "HITCON2023",
+        "public_token": "041656f614f3b624ad8c7409c25db3b7e9a512ce",
 				"user_id": "Aotoki",
 				"first_use": 1692489600,
 				"role": "staff",
@@ -57,6 +59,7 @@ Feature: Status
 			"""
 			{
 				"event_id": "SITCON2015",
+        "public_token": "041656f614f3b624ad8c7409c25db3b7e9a512ce",
 				"user_id": "Aotoki",
 				"first_use": 1692489600,
 				"role": "staff",

@@ -55,6 +55,7 @@ export class UseController {
 
     return json<UseResponse>({
       event_id: info.eventId,
+      public_token: info.publicToken,
       user_id: info.displayName,
       first_use: datetimeToUnix(info.firstUsedAt),
       role: info.role,

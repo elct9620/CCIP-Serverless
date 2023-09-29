@@ -3,6 +3,7 @@ import { AttendeeMetadata } from './attendee'
 
 export type Status = {
   event_id: string
+  public_token: string
   user_id: string
   first_use: number | null
   role: string
