@@ -33,8 +33,11 @@ export class D1AttendeeRepository implements Repository<Attendee> {
       metadata = {}
     }
 
+    const publicToken = await calculatePublicToken(token)
+
     return new Attendee({
       token: result.token,
+      publicToken: publicToken,
       eventId: result.event_id,
       displayName: result.display_name,
       role: result.role === 'staff' ? AttendeeRole.Staff : AttendeeRole.Audience,
@@ -60,4 +63,11 @@ export class D1AttendeeRepository implements Repository<Attendee> {
     const stmt = this.db.prepare('DELETE FROM attendees WHERE token = ?')
     await stmt.bind(attendee.token).run()
   }
+}
+
+async function calculatePublicToken(token: string): Promise<string> {
+  const uint8Token = new TextEncoder().encode(token)
+  const hashBuffer = await crypto.subtle.digest('SHA-1', uint8Token)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
 }

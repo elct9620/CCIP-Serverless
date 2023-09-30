@@ -3,6 +3,7 @@ import { Entity, getCurrentTime } from '@/core'
 type MetadataValue = string | number | boolean | null
 type Attributes = {
   token: string
+  publicToken: string
   eventId: string
   displayName: string
   firstUsedAt?: Date
@@ -17,6 +18,7 @@ export enum AttendeeRole {
 
 export class Attendee implements Entity<string> {
   public readonly token: string
+  public readonly publicToken: string
   public readonly eventId: string
   public readonly displayName: string
   public readonly role: AttendeeRole = AttendeeRole.Audience
@@ -26,6 +28,7 @@ export class Attendee implements Entity<string> {
 
   constructor(attributes: Attributes) {
     this.token = attributes.token
+    this.publicToken = attributes.publicToken
     this.eventId = attributes.eventId
     this.displayName = attributes.displayName
     this.role = attributes.role
@@ -55,10 +58,6 @@ export class Attendee implements Entity<string> {
 
   get metadataWithHidden(): Record<string, MetadataValue> {
     return this._metadata
-  }
-
-  get publicToken(): string {
-    return '041656f614f3b624ad8c7409c25db3b7e9a512ce'
   }
 
   getMetadata(key: string): MetadataValue {
