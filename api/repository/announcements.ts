@@ -10,13 +10,13 @@ export class D1AnnouncementRepository implements Repository<Announcement> {
   }
 
   async save(announcement: Announcement): Promise<void> {
-    const { id, announcedAt, messageEn, messageZh, uri, roles } = announcement
+    const { id, announcedAt, message, uri, roles } = announcement
     const stmt = this.db.prepare(`
-      INSERT INTO announcements (id, announced_at, message_en, message_zh, uri, roles)
-        VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO announcements (id, announced_at, message, uri, roles)
+        VALUES (?, ?, ?, ?, ?)
     `)
     await stmt
-      .bind(id, announcedAt.toISOString(), messageEn, messageZh, uri, JSON.stringify(roles))
+      .bind(id, announcedAt.toISOString(), JSON.stringify(message), uri, JSON.stringify(roles))
       .run()
   }
 

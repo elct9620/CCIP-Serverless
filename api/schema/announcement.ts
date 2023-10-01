@@ -1,7 +1,6 @@
 export type Announcement = {
   announcedAt: Date
-  messageEn: string | null
-  messageZh: string | null
+  message: Record<string, string | null>
   uri: string
   roles: string[]
 }

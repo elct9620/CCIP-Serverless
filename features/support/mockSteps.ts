@@ -38,14 +38,15 @@ Given(
 )
 
 Given('there are some announcements', async function (this: WorkerWorld, dataTable: DataTable) {
-  const toRowWithRolesAsArray = (row: Record<string, string>) => ({
+  const toRowWithJsonData = (row: Record<string, string>) => ({
     ...row,
+    message: JSON.parse(row.message),
     roles: JSON.parse(row.roles),
   })
   await createMockData(
     this.mock,
     '/announcements',
-    JSON.stringify(dataTable.hashes().map(toRowWithRolesAsArray))
+    JSON.stringify(dataTable.hashes().map(toRowWithJsonData))
   )
 })
 

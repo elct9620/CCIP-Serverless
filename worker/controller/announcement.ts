@@ -23,8 +23,10 @@ const toCreateAnnouncementParams = (
   data: schema.CreateAnnouncementPayload
 ): Command.CreateAnnouncementInput => {
   return {
-    messageEn: typeof data.msg_en === 'string' ? data.msg_en : null,
-    messageZh: typeof data.msg_zh === 'string' ? data.msg_zh : null,
+    message: {
+      ...(typeof data.msg_en === 'string' && { [schema.Languages.enUS]: data.msg_en }),
+      ...(typeof data.msg_zh === 'string' && { [schema.Languages.zhTW]: data.msg_zh }),
+    },
     uri: typeof data.uri === 'string' ? data.uri : '',
     roles: Array.isArray(data.role) ? data.role : [],
   }
@@ -34,8 +36,8 @@ export type AnnouncementResponse = AnnouncementData[]
 
 const toFormattedAnnouncement = (data: schema.Announcement): AnnouncementData => ({
   datetime: datetimeToUnix(data.announcedAt),
-  msgEn: data.messageEn,
-  msgZh: data.messageZh,
+  msgEn: data.message[schema.Languages.enUS],
+  msgZh: data.message[schema.Languages.zhTW],
   uri: data.uri,
 })
 

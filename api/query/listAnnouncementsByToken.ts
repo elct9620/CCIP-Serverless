@@ -1,5 +1,5 @@
 import { Projection, Query, Repository } from '@/core'
-import { Announcement } from '@/announcement'
+import { Announcement, LocalizedText } from '@/announcement'
 import { Attendee, AttendeeRole } from '@/attendee'
 import { ListAnnouncementsInput } from '@api/projection'
 
@@ -9,8 +9,7 @@ export type GetAttendeeInput = {
 
 export type ListAnnouncementsOutput = {
   announcedAt: Date
-  messageEn: string | null
-  messageZh: string | null
+  message: LocalizedText
   uri: string
   roles: string[]
 }[]
@@ -35,8 +34,7 @@ export class ListAnnouncementsByToken implements Query<GetAttendeeInput, ListAnn
       (await this.announcements.query({ role: attendee?.role ?? defaultQueryRole })) ?? []
     return results.map(result => ({
       announcedAt: result.announcedAt,
-      messageEn: result.messageEn,
-      messageZh: result.messageZh,
+      message: result.message,
       uri: result.uri,
       roles: result.roles,
     }))
