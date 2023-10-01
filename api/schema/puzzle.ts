@@ -13,7 +13,11 @@ export type DeliverPuzzlePayload = {
 export type PuzzleDeliveredResponse = {
   status: 'OK'
   /**
-   * Receiver's display name
+   * Receiver's display name.
+   *
+   * @example
+   *
+   * "Aotoki"
    */
   user_id: string
 }
