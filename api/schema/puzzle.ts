@@ -9,3 +9,11 @@ export type PuzzleStatus = {
 export type DeliverPuzzlePayload = {
   receiver: string
 }
+
+export type PuzzleItemStat = {
+  puzzle: string
+  quantity: number
+  currency: number
+}
+
+export type PuzzleStats = PuzzleItemStat[]
