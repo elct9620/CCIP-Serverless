@@ -11,11 +11,11 @@ export type PuzzleDeliveryRequest = {
 export class PuzzleDelivery {
   @post('/event/puzzle/deliver')
   async deliver(request: PuzzleDeliveryRequest) {
-    const delivererToken = request.query.token
+    const boothToken = request.query.token
     const body = await request.json()
     const receiverToken = isDeliverPuzzleForm(body) ? body.receiver : null
 
-    if (!delivererToken || !receiverToken) {
+    if (!boothToken || !receiverToken) {
       throw new StatusError(400, 'token and receiver required')
     }
 
@@ -24,10 +24,10 @@ export class PuzzleDelivery {
       throw new StatusError(404, 'invalid receiver token')
     }
 
-    const stubbedPermittedDelivererTokens: Record<string, string> = {
+    const stubbedPermittedBoothTokens: Record<string, string> = {
       '1024914b-ee65-4728-b687-8341f5affa89': 'Some booth',
     }
-    if (stubbedPermittedDelivererTokens[String(delivererToken)]) {
+    if (stubbedPermittedBoothTokens[String(boothToken)]) {
       return json<schema.PuzzleDeliveredResponse>({
         status: 'OK',
         user_id: receiver.displayName,

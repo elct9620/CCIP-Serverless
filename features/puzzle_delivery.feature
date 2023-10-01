@@ -1,5 +1,5 @@
 Feature: Puzzle Delivery
-  Scenario: POST /event/puzzle/deliver with permitted token and receiver token
+  Scenario: POST /event/puzzle/deliver with permitted booth token and receiver token
     Given there have some attendees
       | token                                | event_id   | display_name |
       | f185f505-d8c0-43ce-9e7b-bb9e8909072d | COSCUP2023 | Aotoki       |
@@ -17,7 +17,7 @@ Feature: Puzzle Delivery
         "user_id": "Aotoki"
       }
       """
-  Scenario: POST /event/puzzle/deliver with unpermitted token
+  Scenario: POST /event/puzzle/deliver with unpermitted booth token
     Given there have some attendees
       | token                                | event_id   | display_name |
       | f185f505-d8c0-43ce-9e7b-bb9e8909072d | COSCUP2023 | Aotoki       |
@@ -34,7 +34,7 @@ Feature: Puzzle Delivery
         "message": "invalid token"
       }
       """
-  Scenario: POST /event/puzzle/deliver without token in querystring
+  Scenario: POST /event/puzzle/deliver without booth token in querystring
     When I make a POST request to "/event/puzzle/deliver":
       """
       {
