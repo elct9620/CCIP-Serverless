@@ -1,6 +1,6 @@
 import { type D1Database } from '@cloudflare/workers-types'
 import { Projection } from '@/core'
-import { Announcement } from '@/announcement'
+import { Announcement, AnnouncementLocales } from '@/announcement'
 
 type AnnouncementSchema = {
   id: string
@@ -55,6 +55,10 @@ const toAnnouncement = (data: AnnouncementSchema): Announcement => {
     announcedAt: new Date(data.announced_at),
     messageEn: data.message_en,
     messageZh: data.message_zh,
+    message: {
+      ...(data.message_en && { [AnnouncementLocales.enUS]: data.message_en }),
+      ...(data.message_zh && { [AnnouncementLocales.zhTW]: data.message_zh }),
+    },
     uri: data.uri,
     roles,
   })

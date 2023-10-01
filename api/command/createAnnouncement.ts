@@ -1,5 +1,5 @@
 import { Command, Repository, getCurrentTime } from '@/core'
-import { Announcement } from '@/announcement'
+import { Announcement, AnnouncementLocales } from '@/announcement'
 
 export type CreateAnnouncementInput = {
   messageEn: string | null
@@ -22,6 +22,10 @@ export class CreateAnnouncement implements Command<CreateAnnouncementInput, void
       announcedAt: getCurrentTime(),
       messageEn: input.messageEn,
       messageZh: input.messageZh,
+      message: {
+        ...(input.messageEn && { [AnnouncementLocales.enUS]: input.messageEn }),
+        ...(input.messageZh && { [AnnouncementLocales.zhTW]: input.messageZh }),
+      },
       uri: input.uri,
       roles: input.roles,
     })
