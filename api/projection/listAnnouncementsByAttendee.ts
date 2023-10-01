@@ -53,8 +53,6 @@ const toAnnouncement = (data: AnnouncementSchema): Announcement => {
   return new Announcement({
     id: data.id,
     announcedAt: new Date(data.announced_at),
-    messageEn: data.message_en,
-    messageZh: data.message_zh,
     message: {
       ...(data.message_en && { [AnnouncementLocales.enUS]: data.message_en }),
       ...(data.message_zh && { [AnnouncementLocales.zhTW]: data.message_zh }),

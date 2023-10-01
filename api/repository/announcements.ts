@@ -1,6 +1,6 @@
 import { type D1Database } from '@cloudflare/workers-types'
 import { Repository } from '@/core'
-import { Announcement } from '@/announcement'
+import { Announcement, AnnouncementLocales } from '@/announcement'
 
 export class D1AnnouncementRepository implements Repository<Announcement> {
   private readonly db: D1Database
@@ -10,13 +10,20 @@ export class D1AnnouncementRepository implements Repository<Announcement> {
   }
 
   async save(announcement: Announcement): Promise<void> {
-    const { id, announcedAt, messageEn, messageZh, uri, roles } = announcement
+    const { id, announcedAt, message, uri, roles } = announcement
     const stmt = this.db.prepare(`
       INSERT INTO announcements (id, announced_at, message_en, message_zh, uri, roles)
         VALUES (?, ?, ?, ?, ?, ?)
     `)
     await stmt
-      .bind(id, announcedAt.toISOString(), messageEn, messageZh, uri, JSON.stringify(roles))
+      .bind(
+        id,
+        announcedAt.toISOString(),
+        message[AnnouncementLocales.enUS],
+        message[AnnouncementLocales.zhTW],
+        uri,
+        JSON.stringify(roles)
+      )
       .run()
   }
 
