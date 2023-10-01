@@ -1,12 +1,11 @@
 import { type D1Database } from '@cloudflare/workers-types'
 import { Projection } from '@/core'
-import { Announcement, AnnouncementLocales } from '@/announcement'
+import { Announcement, LocalizedText } from '@/announcement'
 
 type AnnouncementSchema = {
   id: string
   announced_at: string
-  message_en: string | null
-  message_zh: string | null
+  message: string
   uri: string
   roles: string
 }
@@ -43,6 +42,13 @@ export class D1ListAnnouncementsByAttendee
 }
 
 const toAnnouncement = (data: AnnouncementSchema): Announcement => {
+  let message: LocalizedText
+  try {
+    message = JSON.parse(data.message)
+  } catch {
+    message = {}
+  }
+
   let roles: string[]
   try {
     roles = JSON.parse(data.roles)
@@ -53,10 +59,7 @@ const toAnnouncement = (data: AnnouncementSchema): Announcement => {
   return new Announcement({
     id: data.id,
     announcedAt: new Date(data.announced_at),
-    message: {
-      ...(data.message_en && { [AnnouncementLocales.enUS]: data.message_en }),
-      ...(data.message_zh && { [AnnouncementLocales.zhTW]: data.message_zh }),
-    },
+    message,
     uri: data.uri,
     roles,
   })
