@@ -1,11 +1,12 @@
 import { IRequest, StatusError } from 'itty-router'
-import { AttendeeInfo } from '@api/query'
+import * as Query from '@api/query'
 import * as schema from '@api/schema'
 import { post } from '@worker/router'
 import { json } from '@worker/utils'
 
 export type PuzzleDeliveryRequest = {
-  attendeeInfo: AttendeeInfo
+  attendeeInfo: Query.AttendeeInfo
+  getBoothByToken: Query.GetBoothByToken
 } & IRequest
 
 export class PuzzleDelivery {
@@ -24,17 +25,15 @@ export class PuzzleDelivery {
       throw new StatusError(404, 'invalid receiver token')
     }
 
-    const stubbedPermittedBoothTokens: Record<string, string> = {
-      '1024914b-ee65-4728-b687-8341f5affa89': 'Some booth',
-    }
-    if (stubbedPermittedBoothTokens[String(boothToken)]) {
-      return json<schema.PuzzleDeliveredResponse>({
-        status: 'OK',
-        user_id: receiver.displayName,
-      })
-    } else {
+    const booth = await request.getBoothByToken.execute({ token: String(boothToken) })
+    if (!booth) {
       throw new StatusError(400, 'invalid token')
     }
+
+    return json<schema.PuzzleDeliveredResponse>({
+      status: 'OK',
+      user_id: receiver.displayName,
+    })
   }
 }
 

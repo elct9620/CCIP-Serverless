@@ -1,5 +1,8 @@
 Feature: Puzzle Delivery
   Scenario: POST /event/puzzle/deliver with permitted booth token and receiver token
+    Given there have some booths
+      | token                                | name   | event_id |
+      | 1024914b-ee65-4728-b687-8341f5affa89 | COSCUP | SITCON   |
     Given there have some attendees
       | token                                | event_id   | display_name |
       | f185f505-d8c0-43ce-9e7b-bb9e8909072d | COSCUP2023 | Aotoki       |
