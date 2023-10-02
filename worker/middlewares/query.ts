@@ -25,6 +25,7 @@ export const withQueries = (request: IRequest, env: Env) => {
     attendeeRepository
   )
   const getAttendeeScenario = new Query.GetAttendeeScenario(attendeeRepository, getRulesetByEvent)
+  const getPuzzleStats = new Query.GetPuzzleStats()
 
   Object.assign(request, {
     getPuzzleStatus,
@@ -33,5 +34,6 @@ export const withQueries = (request: IRequest, env: Env) => {
     listAnnouncementsByToken,
     getAttendeeScenario,
     getBoothByToken,
+    getPuzzleStats,
   })
 }
