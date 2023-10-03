@@ -1,4 +1,5 @@
-import { Query } from '@/core'
+import { Query, Repository } from '@/core'
+import { Stats } from '@/puzzle'
 
 export type GetPuzzleStatsInput = {
   eventId: string
@@ -16,12 +17,30 @@ export type GetPuzzleStatsOutput = {
   totalValid: number
 }
 
+const emptyStats: GetPuzzleStatsOutput = {
+  items: [],
+  totalDelivered: 0,
+  totalValid: 0,
+}
+
 export class GetPuzzleStats implements Query<GetPuzzleStatsInput, GetPuzzleStatsOutput> {
-  async execute(): Promise<GetPuzzleStatsOutput> {
+  private readonly stats: Repository<Stats>
+
+  constructor(stats: Repository<Stats>) {
+    this.stats = stats
+  }
+
+  async execute({ eventId }: GetPuzzleStatsInput): Promise<GetPuzzleStatsOutput> {
+    const stats = await this.stats.findById(eventId)
+
+    if (!stats) {
+      return emptyStats
+    }
+
     return {
       items: [],
-      totalDelivered: 0,
-      totalValid: 0,
+      totalDelivered: stats.totalDelivered,
+      totalValid: stats.totalValid,
     }
   }
 }

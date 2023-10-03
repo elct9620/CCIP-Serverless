@@ -11,7 +11,7 @@ export type PuzzleStatsRequest = {
 export class PuzzleDashboard {
   @get('/event/puzzle/dashboard')
   async getStats({ getPuzzleStats }: PuzzleStatsRequest) {
-    const stats = await getPuzzleStats.execute()
+    const stats = await getPuzzleStats.execute({ eventId: 'mock_event' })
 
     return json<schema.PuzzleStats>([
       { puzzle: 'total', quantity: stats.totalDelivered, currency: stats.totalValid },
