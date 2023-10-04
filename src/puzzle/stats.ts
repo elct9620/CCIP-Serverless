@@ -1,10 +1,10 @@
-import { Entity } from '@/core'
+import { AggregateRoot, Replayable } from '@/core'
+import { StatEvent } from './event'
 
-export class Stats implements Entity<string> {
-  public readonly id: string
-
+@Replayable
+export class Stats extends AggregateRoot<string, StatEvent> {
   constructor(id: string) {
-    this.id = id
+    super(id)
   }
 
   get totalDelivered(): number {

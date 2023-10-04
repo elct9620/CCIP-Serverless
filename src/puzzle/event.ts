@@ -31,3 +31,15 @@ export class PuzzleCollected extends ActivityEvent {
     this.giverName = giverName
   }
 }
+
+export abstract class StatEvent implements DomainEvent {
+  public readonly id: string
+  public readonly aggregateId: string
+  public readonly occurredAt: Date
+
+  constructor(id: string, aggregateId: string, occurredAt: Date) {
+    this.id = id
+    this.aggregateId = aggregateId
+    this.occurredAt = occurredAt
+  }
+}
