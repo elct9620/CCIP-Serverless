@@ -43,3 +43,12 @@ export abstract class StatEvent implements DomainEvent {
     this.occurredAt = occurredAt
   }
 }
+
+export class PuzzleStatIncremented extends StatEvent {
+  public readonly puzzleName: string
+
+  constructor(id: string, aggregateId: string, occurredAt: Date, puzzleName: string) {
+    super(id, aggregateId, occurredAt)
+    this.puzzleName = puzzleName
+  }
+}
