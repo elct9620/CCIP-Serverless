@@ -20,6 +20,9 @@ Feature: Puzzle Dashboard
 			"""
 			[
         {
+          "puzzle": "=", "quantity": 1, "currency": 1
+        },
+        {
           "puzzle": "total", "quantity": 1, "currency": 1
         }
 			]

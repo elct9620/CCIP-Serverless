@@ -14,6 +14,11 @@ export class PuzzleDashboard {
     const stats = await getPuzzleStats.execute({ eventId: query.event_id as string })
 
     return json<schema.PuzzleStats>([
+      ...stats.items.map(({ name, deliverAmount, validAmount }) => ({
+        puzzle: name,
+        quantity: deliverAmount,
+        currency: validAmount,
+      })),
       { puzzle: 'total', quantity: stats.totalDelivered, currency: stats.totalValid },
     ])
   }

@@ -38,7 +38,11 @@ export class GetPuzzleStats implements Query<GetPuzzleStatsInput, GetPuzzleStats
     }
 
     return {
-      items: [],
+      items: stats.puzzles.map(puzzle => ({
+        name: puzzle.name,
+        deliverAmount: puzzle.delivered,
+        validAmount: puzzle.valid,
+      })),
       totalDelivered: stats.totalDelivered,
       totalValid: stats.totalValid,
     }
