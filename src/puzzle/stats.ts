@@ -1,5 +1,5 @@
 import { AggregateRoot, Replayable, getCurrentTime } from '@/core'
-import { StatEvent, PuzzleStatIncremented } from './event'
+import { StatEvent, PuzzleStatIncremented, PuzzleStatDecremented } from './event'
 
 export class PuzzleStat {
   public readonly name: string
@@ -23,6 +23,10 @@ export class PuzzleStat {
   deliver(): void {
     this._delivered++
     this._valid++
+  }
+
+  revoke(): void {
+    this._valid--
   }
 }
 
@@ -50,6 +54,10 @@ export class Stats extends AggregateRoot<string, StatEvent> {
     this.apply(new PuzzleStatIncremented(crypto.randomUUID(), this.id, getCurrentTime(), name))
   }
 
+  revokePuzzle(name: string): void {
+    this.apply(new PuzzleStatDecremented(crypto.randomUUID(), this.id, getCurrentTime(), name))
+  }
+
   private _onPuzzleStatIncremented(event: PuzzleStatIncremented): void {
     let puzzle = this._puzzles.get(event.puzzleName)
     if (puzzle === undefined) {
@@ -57,5 +65,13 @@ export class Stats extends AggregateRoot<string, StatEvent> {
       this._puzzles.set(event.puzzleName, puzzle)
     }
     puzzle.deliver()
+  }
+
+  private _onPuzzleStatDecremented(event: PuzzleStatDecremented): void {
+    const puzzle = this._puzzles.get(event.puzzleName)
+    if (puzzle === undefined) {
+      return
+    }
+    puzzle.revoke()
   }
 }

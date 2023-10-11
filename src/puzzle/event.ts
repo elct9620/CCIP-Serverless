@@ -52,3 +52,12 @@ export class PuzzleStatIncremented extends StatEvent {
     this.puzzleName = puzzleName
   }
 }
+
+export class PuzzleStatDecremented extends StatEvent {
+  public readonly puzzleName: string
+
+  constructor(id: string, aggregateId: string, occurredAt: Date, puzzleName: string) {
+    super(id, aggregateId, occurredAt)
+    this.puzzleName = puzzleName
+  }
+}
