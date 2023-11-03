@@ -16,10 +16,12 @@ export const withCommands = (request: IRequest, env: Env) => {
   const createAnnouncementCommand = new Command.CreateAnnouncement(announcementRepository)
   const runAttendeeScenario = new Command.RunAttendeeScenario(attendeeRepository, getRulesetByEvent)
   const initializeAttendeeCommand = new Command.InitializeAttendeeCommand(attendeeRepository)
+  const deliverPuzzle = new Command.DeliverPuzzleCommand(attendeeRepository)
 
   Object.assign(request, {
     createAnnouncementCommand,
     runAttendeeScenario,
     initializeAttendeeCommand,
+    deliverPuzzle,
   })
 }

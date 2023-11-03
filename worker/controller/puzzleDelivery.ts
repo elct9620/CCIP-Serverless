@@ -1,5 +1,6 @@
 import { IRequest, StatusError } from 'itty-router'
 import * as Query from '@api/query'
+import * as Command from '@api/command'
 import * as schema from '@api/schema'
 import { post } from '@worker/router'
 import { json } from '@worker/utils'
@@ -7,6 +8,7 @@ import { json } from '@worker/utils'
 export type PuzzleDeliveryRequest = {
   attendeeInfo: Query.AttendeeInfo
   getBoothByToken: Query.GetBoothByToken
+  deliverPuzzle: Command.DeliverPuzzleCommand
 } & IRequest
 
 export class PuzzleDelivery {
@@ -30,9 +32,13 @@ export class PuzzleDelivery {
       throw new StatusError(400, 'invalid token')
     }
 
+    const result = await request.deliverPuzzle.execute({
+      token: receiverToken,
+    })
+
     return json<schema.PuzzleDeliveredResponse>({
       status: 'OK',
-      user_id: receiver.displayName,
+      user_id: result.attendeeName,
     })
   }
 }
