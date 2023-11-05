@@ -22,24 +22,27 @@ export class PuzzleDelivery {
       throw new StatusError(400, 'token and receiver required')
     }
 
-    const receiver = await request.attendeeInfo.execute({ token: receiverToken })
-    if (!receiver) {
-      throw new StatusError(404, 'invalid receiver token')
-    }
-
     const booth = await request.getBoothByToken.execute({ token: String(boothToken) })
     if (!booth) {
       throw new StatusError(400, 'invalid token')
     }
 
-    const result = await request.deliverPuzzle.execute({
-      token: receiverToken,
-    })
+    try {
+      const result = await request.deliverPuzzle.execute({
+        token: receiverToken,
+      })
 
-    return json<schema.PuzzleDeliveredResponse>({
-      status: 'OK',
-      user_id: result.attendeeName,
-    })
+      return json<schema.PuzzleDeliveredResponse>({
+        status: 'OK',
+        user_id: result.attendeeName,
+      })
+    } catch (e: unknown) {
+      if (e instanceof Command.PuzzleReceiverNotFoundError) {
+        throw new StatusError(404, 'invalid receiver token')
+      }
+
+      throw e
+    }
   }
 }
 

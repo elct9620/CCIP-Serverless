@@ -63,17 +63,21 @@ Feature: Puzzle Delivery
         "message": "token and receiver required"
       }
       """
+
   Scenario: POST /event/puzzle/deliver with nonexistent receiver token
-    When I make a POST request to "/event/puzzle/deliver?token=f185f505-d8c0-43ce-9e7b-bb9e8909072d":
+    Given there have some booths
+      | token                                | name   | event_id |
+      | 1024914b-ee65-4728-b687-8341f5affa89 | COSCUP | SITCON   |
+    When I make a POST request to "/event/puzzle/deliver?token=1024914b-ee65-4728-b687-8341f5affa89":
       """
       {
         "receiver": "1cf41a53-4aea-452b-a204-6b0b52eee380"
       }
       """
-    Then the response status should be 404
-    And the response json should be:
+    Then the response json should be:
       """
       {
         "message": "invalid receiver token"
       }
       """
+    And the response status should be 404

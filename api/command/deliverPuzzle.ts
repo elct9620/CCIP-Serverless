@@ -10,6 +10,8 @@ export type DeliverPuzzleOutput = {
   attendeeName: string
 }
 
+export class PuzzleReceiverNotFoundError extends Error {}
+
 export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, DeliverPuzzleOutput> {
   private readonly attendees: Repository<Attendee>
 
@@ -20,10 +22,7 @@ export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, Deliver
   async execute(input: DeliverPuzzleInput): Promise<DeliverPuzzleOutput> {
     const attendee = await this.attendees.findById(input.token)
     if (!attendee) {
-      return {
-        success: false,
-        attendeeName: '',
-      }
+      throw new PuzzleReceiverNotFoundError()
     }
 
     return {
