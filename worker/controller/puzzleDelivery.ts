@@ -1,5 +1,4 @@
 import { IRequest, StatusError } from 'itty-router'
-import * as Query from '@api/query'
 import * as Command from '@api/command'
 import * as schema from '@api/schema'
 import { post } from '@worker/router'
