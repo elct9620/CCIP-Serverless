@@ -11,12 +11,13 @@ export const withCommands = (request: IRequest, env: Env) => {
 
   const announcementRepository = new Repository.D1AnnouncementRepository(env.DB)
   const attendeeRepository = new Repository.D1AttendeeRepository(env.DB)
+  const getBoothByToken = new Projection.D1FindBoothByToken(env.DB)
   const getRulesetByEvent = new Projection.D1RulesetProjection(env.DB)
 
   const createAnnouncementCommand = new Command.CreateAnnouncement(announcementRepository)
   const runAttendeeScenario = new Command.RunAttendeeScenario(attendeeRepository, getRulesetByEvent)
   const initializeAttendeeCommand = new Command.InitializeAttendeeCommand(attendeeRepository)
-  const deliverPuzzle = new Command.DeliverPuzzleCommand(attendeeRepository)
+  const deliverPuzzle = new Command.DeliverPuzzleCommand(attendeeRepository, getBoothByToken)
 
   Object.assign(request, {
     createAnnouncementCommand,

@@ -6,30 +6,24 @@ import { post } from '@worker/router'
 import { json } from '@worker/utils'
 
 export type PuzzleDeliveryRequest = {
-  attendeeInfo: Query.AttendeeInfo
-  getBoothByToken: Query.GetBoothByToken
   deliverPuzzle: Command.DeliverPuzzleCommand
 } & IRequest
 
 export class PuzzleDelivery {
   @post('/event/puzzle/deliver')
   async deliver(request: PuzzleDeliveryRequest) {
-    const boothToken = request.query.token
+    const delivererTooken = request.query.token
     const body = await request.json()
     const receiverToken = isDeliverPuzzleForm(body) ? body.receiver : null
 
-    if (!boothToken || !receiverToken) {
+    if (!delivererTooken || !receiverToken) {
       throw new StatusError(400, 'token and receiver required')
-    }
-
-    const booth = await request.getBoothByToken.execute({ token: String(boothToken) })
-    if (!booth) {
-      throw new StatusError(400, 'invalid token')
     }
 
     try {
       const result = await request.deliverPuzzle.execute({
         token: receiverToken,
+        delivererToken: String(delivererTooken),
       })
 
       return json<schema.PuzzleDeliveredResponse>({
@@ -39,6 +33,10 @@ export class PuzzleDelivery {
     } catch (e: unknown) {
       if (e instanceof Command.PuzzleReceiverNotFoundError) {
         throw new StatusError(404, 'invalid receiver token')
+      }
+
+      if (e instanceof Command.PuzzleDelivererNotFoundError) {
+        throw new StatusError(400, 'invalid token')
       }
 
       throw e
