@@ -1,6 +1,7 @@
 import { Repository, Projection, Command } from '@/core'
 import { Attendee } from '@/attendee'
 import { Booth } from '@/event'
+import { Status } from '@/puzzle'
 import { FindBoothByTokenInput } from '@api/projection'
 
 export type DeliverPuzzleInput = {
@@ -19,9 +20,15 @@ export class PuzzleDelivererNotFoundError extends Error {}
 export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, DeliverPuzzleOutput> {
   private readonly attendees: Repository<Attendee>
   private readonly booths: Projection<FindBoothByTokenInput, Booth>
+  private readonly statuses: Repository<Status>
 
-  constructor(attendees: Repository<Attendee>, booths: Projection<FindBoothByTokenInput, Booth>) {
+  constructor(
+    attendees: Repository<Attendee>,
+    statuses: Repository<Status>,
+    booths: Projection<FindBoothByTokenInput, Booth>
+  ) {
     this.attendees = attendees
+    this.statuses = statuses
     this.booths = booths
   }
 
@@ -35,6 +42,17 @@ export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, Deliver
     if (!attendee) {
       throw new PuzzleReceiverNotFoundError()
     }
+
+    const status = await this.statuses.findById(input.token)
+    if (!status) {
+      throw new PuzzleReceiverNotFoundError()
+    }
+
+    if (status.isNew()) {
+      status.changeDisplayName(attendee.displayName)
+    }
+
+    await this.statuses.save(status)
 
     return {
       success: true,

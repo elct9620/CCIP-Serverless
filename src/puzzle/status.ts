@@ -14,6 +14,10 @@ export class Status extends AggregateRoot<string, ActivityEvent> {
     super(id)
   }
 
+  isNew(): boolean {
+    return this.version == -1
+  }
+
   get displayName(): string {
     return this._displayName || ''
   }
