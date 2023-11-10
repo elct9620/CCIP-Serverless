@@ -12,14 +12,14 @@ Feature: Puzzle Delivery
         "receiver": "f185f505-d8c0-43ce-9e7b-bb9e8909072d"
       }
       """
-    Then the response status should be 200
-    And the response json should be:
+    Then the response json should be:
       """
       {
         "status": "OK",
         "user_id": "Aotoki"
       }
       """
+    And the response status should be 200
   Scenario: POST /event/puzzle/deliver with unpermitted booth token
     Given there have some attendees
       | token                                | event_id   | display_name |

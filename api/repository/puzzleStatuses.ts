@@ -38,7 +38,30 @@ export class D1PuzzleStatusRepository implements Repository<Status> {
     return new Status(token, events)
   }
 
-  async save(_status: Status): Promise<void> {}
+  async save(status: Status): Promise<void> {
+    const stmt = this.db.prepare(
+      `INSERT INTO puzzle_activity_events (id, type, aggregate_id, version, payload, occurred_at) VALUES (?, ?, ?, ?, ?, ?)`
+    )
+
+    const pendingEventSize = status.domainEvents.length
+    const versionStart = status.version - pendingEventSize + 1
+    const events = status.domainEvents.map((event, idx) => ({
+      id: event.id,
+      type: event.constructor.name,
+      aggregateId: event.aggregateId,
+      version: versionStart + idx,
+      payload: JSON.stringify(event),
+      occurredAt: event.occurredAt.toISOString(),
+    }))
+
+    await this.db.batch(
+      events.map(({ id, type, aggregateId, version, payload, occurredAt }) =>
+        stmt.bind(id, type, aggregateId, version, payload, occurredAt)
+      )
+    )
+
+    return
+  }
 
   async delete(_status: Status): Promise<void> {}
 }
@@ -53,10 +76,10 @@ function buildDomainEvent(event: EventSchema): ActivityEvent | null {
 
   const payload = JSON.parse(event.payload) as object
   const properties = {
+    ...payload,
     id: event.id,
     aggregateId: event.aggregate_id,
     occurredAt: event.occurred_at,
-    ...payload,
   }
   Object.assign(domainEvent, properties)
 
