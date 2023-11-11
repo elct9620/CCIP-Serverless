@@ -56,7 +56,7 @@ export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, Deliver
 
     return {
       success: true,
-      attendeeName: attendee.displayName,
+      attendeeName: status.displayName,
     }
   }
 }
