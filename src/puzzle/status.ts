@@ -46,6 +46,10 @@ export class Status extends AggregateRoot<string, ActivityEvent> {
     this.apply(new PuzzleCollected(crypto.randomUUID(), this.id, getCurrentTime(), name, giverName))
   }
 
+  isDeliveredBy(giverName: string): boolean {
+    return this._pieces.some(piece => piece.giverName == giverName)
+  }
+
   private _onAttendeeInitialized(event: AttendeeInitialized): void {
     this._displayName = event.displayName
   }

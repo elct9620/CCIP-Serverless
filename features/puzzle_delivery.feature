@@ -3,7 +3,7 @@ Feature: Puzzle Delivery
     Given there have some booths
       | token                                | name   | event_id |
       | 1024914b-ee65-4728-b687-8341f5affa89 | COSCUP | SITCON   |
-    Given there have some attendees
+    And there have some attendees
       | token                                | event_id   | display_name |
       | f185f505-d8c0-43ce-9e7b-bb9e8909072d | COSCUP2023 | Aotoki       |
     When I make a POST request to "/event/puzzle/deliver?token=1024914b-ee65-4728-b687-8341f5affa89":
@@ -64,7 +64,7 @@ Feature: Puzzle Delivery
       }
       """
 
-  Scenario: POST /event/puzzle/deliver with nonexistent receiver token
+  Scenario: POST /event/puzzle/deliver with non-exist receiver token
     Given there have some booths
       | token                                | name   | event_id |
       | 1024914b-ee65-4728-b687-8341f5affa89 | COSCUP | SITCON   |
@@ -81,3 +81,28 @@ Feature: Puzzle Delivery
       }
       """
     And the response status should be 404
+
+  Scenario: POST /event/puzzle/deliver with delivered receiver token
+    Given there have some booths
+      | token                                | name   | event_id |
+      | 1024914b-ee65-4728-b687-8341f5affa89 | COSCUP | SITCON   |
+    And there have some attendees
+      | token                                | event_id   | display_name |
+      | f185f505-d8c0-43ce-9e7b-bb9e8909072d | COSCUP2023 | Aotoki       |
+    And there have some puzzle activity events
+      | id                                   | type                | aggregate_id                         | version | payload                                     | occurred_at         |
+      | b44845bd-8bd2-428d-ad65-f6a619bf8a96 | AttendeeInitialized | f185f505-d8c0-43ce-9e7b-bb9e8909072d | 0       | { "displayName": "Aotoki" }                 | 2023-09-10 20:4:00  |
+      | f41c7a07-d2f4-469a-ae16-4df251eddbf6 | PuzzleCollected     | f185f505-d8c0-43ce-9e7b-bb9e8909072d | 1       | { "pieceName": "=", "giverName": "COSCUP" } | 2023-09-10 20:50:00 |
+    When I make a POST request to "/event/puzzle/deliver?token=1024914b-ee65-4728-b687-8341f5affa89":
+      """
+      {
+        "receiver": "f185f505-d8c0-43ce-9e7b-bb9e8909072d"
+      }
+      """
+    Then the response json should be:
+      """
+      {
+        "message": "Already take from this deliverer"
+      }
+      """
+    And the response status should be 400

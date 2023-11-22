@@ -38,6 +38,10 @@ export class PuzzleDelivery {
         throw new StatusError(400, 'invalid token')
       }
 
+      if (e instanceof Command.PuzzledAlreadyDeliveredError) {
+        throw new StatusError(400, 'Already take from this deliverer')
+      }
+
       throw e
     }
   }

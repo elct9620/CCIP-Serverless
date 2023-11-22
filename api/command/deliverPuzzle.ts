@@ -16,6 +16,7 @@ export type DeliverPuzzleOutput = {
 
 export class PuzzleReceiverNotFoundError extends Error {}
 export class PuzzleDelivererNotFoundError extends Error {}
+export class PuzzledAlreadyDeliveredError extends Error {}
 
 export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, DeliverPuzzleOutput> {
   private readonly attendees: Repository<Attendee>
@@ -50,6 +51,10 @@ export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, Deliver
 
     if (status.isNew()) {
       status.changeDisplayName(attendee.displayName)
+    }
+
+    if (status.isDeliveredBy(booth.name)) {
+      throw new PuzzledAlreadyDeliveredError()
     }
 
     await this.statuses.save(status)
