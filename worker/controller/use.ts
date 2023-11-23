@@ -4,7 +4,8 @@ import * as schema from '@api/schema'
 import { RunAttendeeScenario } from '@api/command'
 import { AttendeeInfo } from '@api/query'
 import { datetimeToUnix } from '@api/utils'
-import { get } from '@worker/router'
+import { Get } from '@worker/router'
+import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
 
 export type UseRequest = {
   attendeeInfo: AttendeeInfo
@@ -31,9 +32,18 @@ function formatScenario(scenario: Record<string, any>) {
   return result
 }
 
-export class UseController {
-  @get('/use/:scenarioId')
-  async use({ attendeeInfo, runAttendeeScenario, scenarioId, query }: UseRequest) {
+@Get('/use/:scenarioId')
+export class ApplyScenario extends OpenAPIRoute {
+  static schema: OpenAPIRouteSchema = {
+    description: 'Use scenario',
+    tags: ['Event'],
+    parameters: {
+      token: schema.OptionalTokenQuery,
+      scenarioId: schema.ScenarioIdPath,
+    },
+  }
+
+  async handle({ attendeeInfo, runAttendeeScenario, scenarioId, query }: UseRequest) {
     if (!query.token) {
       throw new StatusError(400, 'token required')
     }
