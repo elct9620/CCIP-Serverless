@@ -1,10 +1,11 @@
 import { IRequest, StatusError } from 'itty-router'
+import { Bool, OpenAPIRoute, OpenAPIRouteSchema, Query } from '@cloudflare/itty-router-openapi'
 import { json } from '@worker/utils'
 import * as schema from '@api/schema'
 import { InitializeAttendeeCommand } from '@api/command'
 import { AttendeeInfo, GetAttendeeScenario } from '@api/query'
 import { datetimeToUnix } from '@api/utils'
-import { get } from '@worker/router'
+import { Get } from '@worker/router'
 
 export type StatusRequest = {
   attendeeInfo: AttendeeInfo
@@ -31,9 +32,18 @@ function formatScenario(scenario: Record<string, any>) {
   return result
 }
 
-export class StatusController {
-  @get('/status')
-  async status({
+@Get('/status')
+export class GetStatus extends OpenAPIRoute {
+  static schema: OpenAPIRouteSchema = {
+    description: 'Get attendee status',
+    tags: ['Attendee'],
+    parameters: {
+      StaffQuery: Query(Bool, { description: 'is query by staff', required: false }),
+      token: schema.OptionalTokenQuery,
+    },
+  }
+
+  async handle({
     attendeeInfo,
     initializeAttendeeCommand,
     getAttendeeScenario,

@@ -22,7 +22,6 @@ const router = OpenAPIRouter({
 router.all('*', withParams).all('*', withCommands).all('*', withQueries).all('*', withTestability)
 
 const _Controllers = [
-  Controller.StatusController,
   Controller.LandingController,
   Controller.UseController,
   Controller.PuzzleStatus,
