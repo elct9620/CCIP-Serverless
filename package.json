@@ -8,7 +8,7 @@
     "dev": "vite",
     "preview": "yarn build && wrangler pages dev dist",
     "build": "vue-tsc && yarn build:ui && yarn build:worker",
-    "build:worker": "esbuild worker/index.ts --bundle --platform=neutral --outfile=dist/_worker.js",
+    "build:worker": "esbuild worker/index.ts --bundle --platform=neutral --main-fields=main --outfile=dist/_worker.js",
     "build:ui": "vite build",
     "unit:test": "vitest run --no-threads",
     "unit:test:ui": "vitest --ui --no-threads",
