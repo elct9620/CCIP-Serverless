@@ -1,10 +1,11 @@
 import { IRequest } from 'itty-router'
+import { OpenAPIRoute, OpenAPIRouteSchema, Query, Str } from '@cloudflare/itty-router-openapi'
 import { json } from '@worker/utils'
 import * as schema from '@api/schema'
 import * as Command from '@api/command'
 import { ListAnnouncementsByToken } from '@api/query'
 import { datetimeToUnix } from '@api/utils'
-import { get, post } from '@worker/router'
+import { Get, Post } from '@worker/router'
 
 export type AnnouncementRequest = {
   listAnnouncementsByToken: ListAnnouncementsByToken
@@ -41,17 +42,32 @@ const toFormattedAnnouncement = (data: schema.Announcement): AnnouncementData =>
   uri: data.uri,
 })
 
-export class AnnouncementController {
-  @get('/announcement')
-  async listAnnouncements(request: AnnouncementRequest) {
+@Get('/announcement')
+export class ListAnnouncement extends OpenAPIRoute {
+  static schema: OpenAPIRouteSchema = {
+    summary: 'List announcements',
+    tags: ['Announcement'],
+    parameters: {
+      token: Query(Str, { required: false }),
+    },
+  }
+
+  async handle(request: AnnouncementRequest) {
     const results = await request.listAnnouncementsByToken.execute({
       token: String(request.query.token),
     })
     return json<AnnouncementResponse>(results.map(toFormattedAnnouncement))
   }
+}
 
-  @post('/announcement')
-  async createAnnouncement(request: AnnouncementRequest) {
+@Post('/announcement')
+export class CreateAnnouncement extends OpenAPIRoute {
+  static schema: OpenAPIRouteSchema = {
+    summary: 'Create an announcement',
+    tags: ['Announcement'],
+  }
+
+  async handle(request: AnnouncementRequest) {
     const params = await request.json<schema.CreateAnnouncementPayload>()
     await request.createAnnouncementCommand.execute(toCreateAnnouncementParams(params))
     return json({ status: 'OK' })

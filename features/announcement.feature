@@ -16,8 +16,7 @@ Feature: Announcement
       | 04058f51-09ad-4008-b767-e72086c37561 | 2023-08-30 00:00:00 GMT+0 | { "en-US": "hello world 2", "zh-TW": "世界你好 2" } | https://testability.opass.app/announcements/2 | ["audience", "staff"] |
       | a163302b-32d9-4e80-a0b3-7b8ee8b1e932 | 2023-08-31 01:00:00 GMT+0 | { "en-US": "hello staff", "zh-TW": "工作人員你好" } | https://testability.opass.app/announcements/3 | ["staff"]             |
     When I make a GET request to "/announcement?token=f185f505-d8c0-43ce-9e7b-bb9e8909072d"
-    Then the response status should be 200
-    And the response json should be:
+    Then the response json should be:
       """
       [
         {
@@ -34,6 +33,7 @@ Feature: Announcement
         }
       ]
       """
+    And the response status should be 200
   Scenario: GET /announcement with nonexistent token returns announcements for audiences, ordered by time announced in descending order
     Given there are some announcements
       | id                                   | announced_at              | message                                             | uri                                           | roles                 |
@@ -94,16 +94,15 @@ Feature: Announcement
         "role": ["audience"]
       }
       """
-    Then the response status should be 200
-    And the response json should be:
+    Then the response json should be:
       """
       {
         "status": "OK"
       }
       """
+    And the response status should be 200
     When I make a GET request to "/announcement"
-    Then the response status should be 200
-    And the response json should be:
+    Then the response json should be:
       """
       [
         {
@@ -114,3 +113,4 @@ Feature: Announcement
         }
       ]
       """
+    And the response status should be 200

@@ -1,15 +1,36 @@
 import { RouteHandler, IRequest } from 'itty-router'
-import { OpenAPIRouterType } from '@cloudflare/itty-router-openapi'
+import { OpenAPIRouterType, OpenAPIRoute } from '@cloudflare/itty-router-openapi'
 import { json, error } from '@worker/utils'
 
-type AppRequest = IRequest & any
+type AppRequest = IRequest & any // eslint-disable-line @typescript-eslint/no-explicit-any
+type OpenAPIRouteConstructor = new (...args: any[]) => OpenAPIRoute
 export interface Route {
   method?: string
   path: string
-  handler: RouteHandler<AppRequest>
+  handler: RouteHandler<AppRequest> | OpenAPIRouteConstructor
 }
 
 const routes: Route[] = []
+
+export function Get<T extends OpenAPIRouteConstructor>(path: string) {
+  return function (handler: T) {
+    routes.push({
+      method: 'get',
+      path,
+      handler,
+    })
+  }
+}
+
+export function Post<T extends OpenAPIRouteConstructor>(path: string) {
+  return function (handler: T) {
+    routes.push({
+      method: 'post',
+      path,
+      handler,
+    })
+  }
+}
 
 export function get(path: string) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -43,7 +64,10 @@ export const setup = (router: OpenAPIRouterType) => {
   router.all('*', () => error(404))
 
   return {
-    fetch: (request: Request, ...args: any[]) =>
+    fetch: (
+      request: Request,
+      ...args: any[] // eslint-disable-line @typescript-eslint/no-explicit-any
+    ) =>
       router
         .handle(request, ...args)
         .then(json)
