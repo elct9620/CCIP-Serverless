@@ -1,8 +1,9 @@
 import { IRequest, StatusError } from 'itty-router'
 import * as schema from '@api/schema'
 import { ListBooth, GetBoothByToken } from '@api/query'
-import { get } from '@worker/router'
+import { Get } from '@worker/router'
 import { json } from '@worker/utils'
+import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
 
 type DelivererListRequest = IRequest & {
   listBooth: ListBooth
@@ -12,16 +13,34 @@ type GetDelvierRequest = IRequest & {
   getBoothByToken: GetBoothByToken
 }
 
-export class PuzzleDeliverer {
-  @get('/event/puzzle/deliverers')
-  async getDeliverers({ query, listBooth }: DelivererListRequest) {
+@Get('/event/puzzle/deliverers')
+export class ListPuzzleDelivers extends OpenAPIRoute {
+  static schema: OpenAPIRouteSchema = {
+    description: 'Get list of puzzle deliverers',
+    tags: ['Puzzle'],
+    parameters: {
+      event_id: schema.EventIdQuery,
+    },
+  }
+
+  async handle({ query, listBooth }: DelivererListRequest) {
     const booths = await listBooth.execute({ eventId: query.event_id as string })
 
     return json<schema.BoothList>(booths.map(({ name }) => name))
   }
+}
 
-  @get('/event/puzzle/deliverer')
-  async getDeliverer({ query, getBoothByToken }: GetDelvierRequest) {
+@Get('/event/puzzle/deliverer')
+export class GetPuzzleDeliverer extends OpenAPIRoute {
+  static schema: OpenAPIRouteSchema = {
+    description: 'Check deliver name',
+    tags: ['Puzzle'],
+    parameters: {
+      token: schema.OptionalTokenQuery,
+    },
+  }
+
+  async handle({ query, getBoothByToken }: GetDelvierRequest) {
     if (!query.token) {
       throw new StatusError(400, 'token required')
     }
