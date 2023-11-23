@@ -2,16 +2,25 @@ import { IRequest, StatusError } from 'itty-router'
 import * as schema from '@api/schema'
 import { GetPuzzleStatus } from '@api/query'
 import { datetimeToUnix } from '@api/utils'
-import { get } from '@worker/router'
+import { Get } from '@worker/router'
 import { json } from '@worker/utils'
+import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
 
 export type PuzzleStatusRequest = {
   getPuzzleStatus: GetPuzzleStatus
 } & IRequest
 
-export class PuzzleStatus {
-  @get('/event/puzzle')
-  async getStatus({ getPuzzleStatus, query }: PuzzleStatusRequest) {
+@Get('/event/puzzle')
+export class GetAttendeePuzzleStatus extends OpenAPIRoute {
+  static schema: OpenAPIRouteSchema = {
+    description: 'Get attendee puzzle status',
+    tags: ['Puzzle'],
+    parameters: {
+      token: schema.OptionalTokenQuery,
+    },
+  }
+
+  async handle({ getPuzzleStatus, query }: PuzzleStatusRequest) {
     if (!query.token) {
       throw new StatusError(400, 'token is required')
     }
