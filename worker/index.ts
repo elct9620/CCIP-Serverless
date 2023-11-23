@@ -2,7 +2,7 @@ import { withParams } from 'itty-router'
 import { OpenAPIRouter } from '@cloudflare/itty-router-openapi'
 import { withCommands, withTestability, withQueries } from '@worker/middlewares'
 import { setup } from '@worker/router'
-import * as Controller from '@worker/controller'
+import '@worker/controller'
 
 const router = OpenAPIRouter({
   schema: {
@@ -20,9 +20,5 @@ const router = OpenAPIRouter({
 })
 
 router.all('*', withParams).all('*', withCommands).all('*', withQueries).all('*', withTestability)
-
-const _Controllers = [Controller.PuzzleDashboard]
-
-_Controllers.forEach((Controller: new () => object) => new Controller())
 
 export default setup(router)

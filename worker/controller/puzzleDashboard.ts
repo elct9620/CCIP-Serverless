@@ -1,16 +1,25 @@
 import { IRequest } from 'itty-router'
 import { json } from '@worker/utils'
 import * as schema from '@api/schema'
-import { get } from '@worker/router'
+import { Get } from '@worker/router'
 import { GetPuzzleStats } from '@api/query'
+import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
 
 export type PuzzleStatsRequest = {
   getPuzzleStats: GetPuzzleStats
 } & IRequest
 
-export class PuzzleDashboard {
-  @get('/event/puzzle/dashboard')
-  async getStats({ getPuzzleStats, query }: PuzzleStatsRequest) {
+@Get('/event/puzzle/dashboard')
+export class DisplayPuzzleStats extends OpenAPIRoute {
+  static schema: OpenAPIRouteSchema = {
+    description: 'Get puzzle stats',
+    tags: ['Puzzle'],
+    parameters: {
+      event_id: schema.EventIdQuery,
+    },
+  }
+
+  async handle({ getPuzzleStats, query }: PuzzleStatsRequest) {
     const stats = await getPuzzleStats.execute({ eventId: query.event_id as string })
 
     return json<schema.PuzzleStats>([
