@@ -1,18 +1,34 @@
 import { IRequest, StatusError } from 'itty-router'
 import * as Command from '@api/command'
 import * as schema from '@api/schema'
-import { post } from '@worker/router'
+import { Post } from '@worker/router'
 import { json } from '@worker/utils'
+import { OpenAPIRoute, OpenAPIRouteSchema, Str } from '@cloudflare/itty-router-openapi'
 
 export type PuzzleDeliveryRequest = {
   deliverPuzzle: Command.DeliverPuzzleCommand
 } & IRequest
 
-export class PuzzleDelivery {
-  @post('/event/puzzle/deliver')
-  async deliver(request: PuzzleDeliveryRequest) {
+type Data = {
+  body: unknown
+}
+
+@Post('/event/puzzle/deliver')
+export class DeliverPuzzleToUser extends OpenAPIRoute {
+  static schema: OpenAPIRouteSchema = {
+    description: 'Deliver puzzle to attendee',
+    tags: ['Puzzle'],
+    requestBody: {
+      receiver: new Str({ description: 'Attendee public token', required: false }),
+    },
+    parameters: {
+      token: schema.OptionalTokenQuery,
+    },
+  }
+
+  async handle(request: PuzzleDeliveryRequest, env: unknown, context: unknown, data: Data) {
     const delivererTooken = request.query.token
-    const body = await request.json()
+    const { body } = data
     const receiverToken = isDeliverPuzzleForm(body) ? body.receiver : null
 
     if (!delivererTooken || !receiverToken) {
