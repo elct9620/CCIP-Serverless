@@ -1,4 +1,4 @@
-import { RouterType, RouteHandler, IRequest } from 'itty-router'
+import { RouteHandler, IRequest } from 'itty-router'
 import { OpenAPIRouterType } from '@cloudflare/itty-router-openapi'
 import { json, error } from '@worker/utils'
 
