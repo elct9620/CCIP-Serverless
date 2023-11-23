@@ -15,6 +15,13 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
+"@asteasolutions/zod-to-openapi@^5.3.1":
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/@asteasolutions/zod-to-openapi/-/zod-to-openapi-5.5.0.tgz#f3be8f1e97ece0fcef2e6ff5e9230da8138d20a6"
+  integrity sha512-d5HwrvM6dOKr3XdeF+DmashGvfEc+1oiEfbscugsiwSTrFtuMa7ETpW9sTNnVgn+hJaz+PRxPQUYD7q9/5dUig==
+  dependencies:
+    openapi3-ts "^4.1.2"
+
 "@babel/code-frame@^7.12.13":
   version "7.22.10"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.22.10.tgz#1c20e612b768fefa75f6e90d6ecb86329247f0a3"
@@ -53,6 +60,16 @@
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
+
+"@cloudflare/itty-router-openapi@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@cloudflare/itty-router-openapi/-/itty-router-openapi-1.0.5.tgz#7bd58cf84633b29a87b2358628d800e2fca85e8a"
+  integrity sha512-PQa49dapBtOUxxxW0xWEW0+M8a4RKgoU50K/6OmGsinTMnZ59wfMfzTlzjFDycX/sz1Z3lxTSBYx0LjdHKu3Og==
+  dependencies:
+    "@asteasolutions/zod-to-openapi" "^5.3.1"
+    itty-router "^4.0.22"
+    openapi3-ts "^4.1.2"
+    zod "^3.21.4"
 
 "@cloudflare/kv-asset-handler@^0.2.0":
   version "0.2.0"
@@ -2282,6 +2299,11 @@ itty-router@^4.0.17:
   resolved "https://registry.yarnpkg.com/itty-router/-/itty-router-4.0.17.tgz#5d9853107552ef165251f28568936c70a2fb87fb"
   integrity sha512-Fu/GO3MFX6Hwd+QF1/BFjoFpPQKh2Bu4DtBdse5kECcUwldNBrZqgwq0IariLrP67iADGlzkHIlOWwJ8F4SJ4A==
 
+itty-router@^4.0.22:
+  version "4.0.23"
+  resolved "https://registry.yarnpkg.com/itty-router/-/itty-router-4.0.23.tgz#44bb79134567773d3356e9972913e8fd6ed8a7a0"
+  integrity sha512-tP1NI8PVK43vWlBnIPqj47ni5FDSczFviA4wgBznscndo8lEvBA+pO3DD1rNbIQPcZhprr775iUTunyGvQMcBw==
+
 jest-diff@^29.6.2:
   version "29.6.2"
   resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-29.6.2.tgz#c36001e5543e82a0805051d3ceac32e6825c1c46"
@@ -2654,6 +2676,13 @@ once@^1.3.0, once@^1.3.1, once@^1.4.0:
   integrity sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==
   dependencies:
     wrappy "1"
+
+openapi3-ts@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/openapi3-ts/-/openapi3-ts-4.1.2.tgz#f15cd4794e3a7c9b388fd45dfbefc78501f7043e"
+  integrity sha512-B7gOkwsYMZO7BZXwJzXCuVagym2xhqsrilVvV0dnq2Di4+iLUXKVX9gOK23ZqaAHZOwABXN0QTdW8QnkUTX6DA==
+  dependencies:
+    yaml "^2.2.2"
 
 optionator@^0.9.3:
   version "0.9.3"
@@ -3572,7 +3601,7 @@ yup@^0.32.11:
     property-expr "^2.0.4"
     toposort "^2.0.2"
 
-zod@^3.20.6:
+zod@^3.20.6, zod@^3.21.4:
   version "3.22.4"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.22.4.tgz#f31c3a9386f61b1f228af56faa9255e845cf3fff"
   integrity sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==

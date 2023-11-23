@@ -36,6 +36,7 @@
     "wrangler": "3.8.0"
   },
   "dependencies": {
+    "@cloudflare/itty-router-openapi": "^1.0.5",
     "itty-router": "^4.0.17",
     "vue": "^3.3.4"
   }
