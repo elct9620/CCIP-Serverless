@@ -1,4 +1,5 @@
 import { RouterType, RouteHandler, IRequest } from 'itty-router'
+import { OpenAPIRouterType } from '@cloudflare/itty-router-openapi'
 import { json, error } from '@worker/utils'
 
 type AppRequest = IRequest & any
@@ -30,7 +31,7 @@ export function post(path: string) {
   }
 }
 
-export const setup = (router: RouterType) => {
+export const setup = (router: OpenAPIRouterType) => {
   routes.forEach(({ method, path, handler }) => {
     if (method) {
       router[method](path, handler)
