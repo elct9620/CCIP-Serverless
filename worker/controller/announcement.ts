@@ -1,5 +1,5 @@
 import { IRequest } from 'itty-router'
-import { OpenAPIRoute, OpenAPIRouteSchema, Query, Str } from '@cloudflare/itty-router-openapi'
+import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
 import { json } from '@worker/utils'
 import * as schema from '@api/schema'
 import * as Command from '@api/command'
@@ -48,7 +48,7 @@ export class ListAnnouncement extends OpenAPIRoute {
     summary: 'List announcements',
     tags: ['Announcement'],
     parameters: {
-      token: Query(Str, { required: false }),
+      token: schema.OptionalTokenQuery,
     },
   }
 
