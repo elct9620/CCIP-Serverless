@@ -16,7 +16,7 @@ type Data = {
 @Post('/event/puzzle/deliver')
 export class DeliverPuzzleToUser extends OpenAPIRoute {
   static schema: OpenAPIRouteSchema = {
-    description: 'Deliver puzzle to attendee',
+    summary: 'Deliver puzzle to attendee',
     tags: ['Puzzle'],
     requestBody: {
       receiver: new Str({ description: 'Attendee public token', required: false }),

@@ -12,7 +12,7 @@ export type PuzzleStatsRequest = {
 @Get('/event/puzzle/dashboard')
 export class DisplayPuzzleStats extends OpenAPIRoute {
   static schema: OpenAPIRouteSchema = {
-    description: 'Get puzzle stats',
+    summary: 'Get puzzle stats',
     tags: ['Puzzle'],
     parameters: {
       event_id: schema.EventIdQuery,

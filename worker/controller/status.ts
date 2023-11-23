@@ -35,7 +35,7 @@ function formatScenario(scenario: Record<string, any>) {
 @Get('/status')
 export class GetStatus extends OpenAPIRoute {
   static schema: OpenAPIRouteSchema = {
-    description: 'Get attendee status',
+    summary: 'Get attendee status',
     tags: ['Attendee'],
     parameters: {
       StaffQuery: Query(Bool, { description: 'is query by staff', required: false }),

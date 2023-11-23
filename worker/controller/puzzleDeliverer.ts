@@ -16,7 +16,7 @@ type GetDelvierRequest = IRequest & {
 @Get('/event/puzzle/deliverers')
 export class ListPuzzleDelivers extends OpenAPIRoute {
   static schema: OpenAPIRouteSchema = {
-    description: 'Get list of puzzle deliverers',
+    summary: 'Get list of puzzle deliverers',
     tags: ['Puzzle'],
     parameters: {
       event_id: schema.EventIdQuery,
@@ -33,7 +33,7 @@ export class ListPuzzleDelivers extends OpenAPIRoute {
 @Get('/event/puzzle/deliverer')
 export class GetPuzzleDeliverer extends OpenAPIRoute {
   static schema: OpenAPIRouteSchema = {
-    description: 'Check deliver name',
+    summary: 'Check deliver name',
     tags: ['Puzzle'],
     parameters: {
       token: schema.OptionalTokenQuery,

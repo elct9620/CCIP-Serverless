@@ -35,7 +35,7 @@ function formatScenario(scenario: Record<string, any>) {
 @Get('/use/:scenarioId')
 export class ApplyScenario extends OpenAPIRoute {
   static schema: OpenAPIRouteSchema = {
-    description: 'Use scenario',
+    summary: 'Use scenario',
     tags: ['Event'],
     parameters: {
       token: schema.OptionalTokenQuery,
