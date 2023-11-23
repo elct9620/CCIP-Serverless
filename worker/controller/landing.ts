@@ -17,7 +17,7 @@ export class Landing extends OpenAPIRoute {
     summary: 'Get attendee display name',
     tags: ['Attendee'],
     parameters: {
-      token: schema.OptionalTokenQuery,
+      token: schema.OptionalAttendeeTokenQuery,
     },
   }
 

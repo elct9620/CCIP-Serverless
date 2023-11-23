@@ -19,10 +19,10 @@ export class DeliverPuzzleToUser extends OpenAPIRoute {
     summary: 'Deliver puzzle to attendee',
     tags: ['Puzzle'],
     requestBody: {
-      receiver: new Str({ description: 'Attendee public token', required: false }),
+      receiver: new Str({ description: 'the attendee public token', required: false }),
     },
     parameters: {
-      token: schema.OptionalTokenQuery,
+      token: schema.OptionalDelivererTokenQuery,
     },
   }
 

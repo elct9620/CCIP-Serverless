@@ -48,7 +48,7 @@ export class ListAnnouncement extends OpenAPIRoute {
     summary: 'List announcements',
     tags: ['Announcement'],
     parameters: {
-      token: schema.OptionalTokenQuery,
+      token: schema.OptionalAttendeeTokenQuery,
     },
   }
 

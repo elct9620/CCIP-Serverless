@@ -38,7 +38,7 @@ export class ApplyScenario extends OpenAPIRoute {
     summary: 'Use scenario',
     tags: ['Event'],
     parameters: {
-      token: schema.OptionalTokenQuery,
+      token: schema.OptionalAttendeeTokenQuery,
       scenarioId: schema.ScenarioIdPath,
     },
   }

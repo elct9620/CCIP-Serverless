@@ -36,7 +36,7 @@ export class GetPuzzleDeliverer extends OpenAPIRoute {
     summary: 'Check deliver name',
     tags: ['Puzzle'],
     parameters: {
-      token: schema.OptionalTokenQuery,
+      token: schema.OptionalDelivererTokenQuery,
     },
   }
 

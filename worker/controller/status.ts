@@ -39,7 +39,7 @@ export class GetStatus extends OpenAPIRoute {
     tags: ['Attendee'],
     parameters: {
       StaffQuery: Query(Bool, { description: 'is query by staff', required: false }),
-      token: schema.OptionalTokenQuery,
+      token: schema.OptionalAttendeeTokenQuery,
     },
   }
 

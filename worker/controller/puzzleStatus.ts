@@ -16,7 +16,7 @@ export class GetAttendeePuzzleStatus extends OpenAPIRoute {
     summary: 'Get attendee puzzle status',
     tags: ['Puzzle'],
     parameters: {
-      token: schema.OptionalTokenQuery,
+      token: schema.OptionalPublicTokenQuery,
     },
   }
 
