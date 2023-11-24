@@ -18,6 +18,15 @@ export class GetAttendeePuzzleStatus extends OpenAPIRoute {
     parameters: {
       token: schema.OptionalPublicTokenQuery,
     },
+    responses: {
+      '200': {
+        description: 'Returns attendee puzzle status',
+        schema: schema.puzzleStatusSchema,
+      },
+      '400': {
+        description: 'Missing or invalid token',
+      },
+    },
   }
 
   async handle({ getPuzzleStatus, query }: PuzzleStatusRequest) {
