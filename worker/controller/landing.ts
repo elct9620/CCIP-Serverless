@@ -4,12 +4,14 @@ import * as schema from '@api/schema'
 import { AttendeeInfo } from '@api/query'
 import { Get } from '@worker/router'
 import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
+import { z } from 'zod'
 
 export type LandingRequest = {
   attendeeInfo: AttendeeInfo
 } & IRequest
 
-export type LandingResponse = schema.BasicAttendeeInfo
+export type LandingResponse = z.infer<typeof landingResponseSchema>
+const landingResponseSchema = schema.basicAttendeeInfoSchema
 
 @Get('/landing')
 export class Landing extends OpenAPIRoute {
@@ -18,6 +20,15 @@ export class Landing extends OpenAPIRoute {
     tags: ['Attendee'],
     parameters: {
       token: schema.OptionalAttendeeTokenQuery,
+    },
+    responses: {
+      '200': {
+        description: 'Returns attendee display name',
+        schema: landingResponseSchema,
+      },
+      '400': {
+        description: 'Missing or invalid token',
+      },
     },
   }
 
