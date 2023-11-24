@@ -24,6 +24,15 @@ export class DeliverPuzzleToUser extends OpenAPIRoute {
     parameters: {
       token: schema.OptionalDelivererTokenQuery,
     },
+    responses: {
+      '200': {
+        description: 'Delivered a puzzle to the attendee',
+        schema: schema.puzzleDeliveredResponseSchema,
+      },
+      '400': {
+        description: 'Invalid token or receiver public token, or already take from this deliverer',
+      },
+    },
   }
 
   async handle(request: PuzzleDeliveryRequest, env: unknown, context: unknown, data: Data) {
