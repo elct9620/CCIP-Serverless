@@ -17,6 +17,12 @@ export class DisplayPuzzleStats extends OpenAPIRoute {
     parameters: {
       event_id: schema.EventIdQuery,
     },
+    responses: {
+      '200': {
+        description: 'Returns puzzle stats',
+        schema: schema.puzzleStatsSchema,
+      },
+    },
   }
 
   async handle({ getPuzzleStats, query }: PuzzleStatsRequest) {
