@@ -41,6 +41,15 @@ export class ApplyScenario extends OpenAPIRoute {
       token: schema.OptionalAttendeeTokenQuery,
       scenarioId: schema.ScenarioIdPath,
     },
+    responses: {
+      '200': {
+        description: 'Used the scenario',
+        schema: schema.statusSchema,
+      },
+      '400': {
+        description: 'Missing or invalid token',
+      },
+    },
   }
 
   async handle({ attendeeInfo, runAttendeeScenario, scenarioId, query }: UseRequest) {
