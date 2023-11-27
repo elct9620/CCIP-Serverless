@@ -33,7 +33,8 @@
     "vite": "^4.4.9",
     "vitest": "^0.x",
     "vue-tsc": "^1.8.8",
-    "wrangler": "3.8.0"
+    "wrangler": "3.8.0",
+    "zod": "^3.22.4"
   },
   "dependencies": {
     "@cloudflare/itty-router-openapi": "^1.0.5",

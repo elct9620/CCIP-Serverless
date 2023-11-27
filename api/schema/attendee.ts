@@ -1,5 +1,9 @@
-export type AttendeeMetadata = Record<string, any>
+import { z } from 'zod'
 
-export type BasicAttendeeInfo = {
-  nickname: string
-}
+export type AttendeeMetadata = z.infer<typeof attendeeMetadataSchema>
+export const attendeeMetadataSchema = z.record(z.any())
+
+export type BasicAttendeeInfo = z.infer<typeof basicAttendeeInfoSchema>
+export const basicAttendeeInfoSchema = z.object({
+  nickname: z.string()
+})
