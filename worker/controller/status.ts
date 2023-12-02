@@ -41,6 +41,15 @@ export class GetStatus extends OpenAPIRoute {
       StaffQuery: Query(Bool, { description: 'is query by staff', required: false }),
       token: schema.OptionalAttendeeTokenQuery,
     },
+    responses: {
+      '200': {
+        description: 'Returns attendee status',
+        schema: schema.statusSchema,
+      },
+      '400': {
+        description: 'Missing or invalid token',
+      },
+    },
   }
 
   async handle({

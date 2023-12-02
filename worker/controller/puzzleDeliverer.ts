@@ -21,6 +21,12 @@ export class ListPuzzleDelivers extends OpenAPIRoute {
     parameters: {
       event_id: schema.EventIdQuery,
     },
+    responses: {
+      '200': {
+        description: 'Returns list of puzzle deliverers',
+        schema: schema.boothListSchema,
+      },
+    },
   }
 
   async handle({ query, listBooth }: DelivererListRequest) {
@@ -37,6 +43,15 @@ export class GetPuzzleDeliverer extends OpenAPIRoute {
     tags: ['Puzzle'],
     parameters: {
       token: schema.OptionalDelivererTokenQuery,
+    },
+    responses: {
+      '200': {
+        description: 'Returns the slug',
+        schema: schema.boothStaffSchema,
+      },
+      '400': {
+        description: 'Missing or invalid token',
+      },
     },
   }
 
