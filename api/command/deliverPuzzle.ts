@@ -1,7 +1,7 @@
 import { Repository, Projection, Command } from '@/core'
 import { Attendee } from '@/attendee'
 import { Booth } from '@/event'
-import { Status } from '@/puzzle'
+import { Status, Config } from '@/puzzle'
 import { FindBoothByTokenInput } from '@api/projection'
 
 export type DeliverPuzzleInput = {
@@ -22,15 +22,18 @@ export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, Deliver
   private readonly attendees: Repository<Attendee>
   private readonly booths: Projection<FindBoothByTokenInput, Booth>
   private readonly statuses: Repository<Status>
+  private readonly config: Repository<Config>
 
   constructor(
     attendees: Repository<Attendee>,
     statuses: Repository<Status>,
-    booths: Projection<FindBoothByTokenInput, Booth>
+    booths: Projection<FindBoothByTokenInput, Booth>,
+    config: Repository<Config>
   ) {
     this.attendees = attendees
     this.statuses = statuses
     this.booths = booths
+    this.config = config
   }
 
   async execute(input: DeliverPuzzleInput): Promise<DeliverPuzzleOutput> {
@@ -57,6 +60,13 @@ export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, Deliver
       throw new PuzzledAlreadyDeliveredError()
     }
 
+    const config = await this.config.findById(booth.name)
+    if (!config) {
+      throw new PuzzleDelivererNotFoundError()
+    }
+
+    const piece = pickUpPiece(status, config)
+    status.collectPiece(piece, booth.name)
     await this.statuses.save(status)
 
     return {
@@ -64,4 +74,8 @@ export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, Deliver
       attendeeName: status.displayName,
     }
   }
+}
+
+function pickUpPiece(status: Status, config: Config) {
+  return Object.keys(config.pieces)[0]
 }
