@@ -3,10 +3,18 @@ Feature: Puzzle Delivery
     Given there have some booths
       | token                                | name   | event_id |
       | 1024914b-ee65-4728-b687-8341f5affa89 | COSCUP | SITCON   |
+    And event "SITCON" have a puzzle config
+    """
+    {
+      "pieces": {
+        "=": 1
+      }
+    }
+    """
     And there have some attendees
       | token                                | event_id   | display_name |
       | f185f505-d8c0-43ce-9e7b-bb9e8909072d | COSCUP2023 | Aotoki       |
-    When I make a POST request to "/event/puzzle/deliver?token=1024914b-ee65-4728-b687-8341f5affa89":
+    When I make a POST request to "/event/puzzle/deliver?token=1024914b-ee65-4728-b687-8341f5affa89&event_id=SITCON":
       """
       {
         "receiver": "f185f505-d8c0-43ce-9e7b-bb9e8909072d"
@@ -24,7 +32,7 @@ Feature: Puzzle Delivery
     Given there have some attendees
       | token                                | event_id   | display_name |
       | f185f505-d8c0-43ce-9e7b-bb9e8909072d | COSCUP2023 | Aotoki       |
-    When I make a POST request to "/event/puzzle/deliver?token=d9d09032-cdae-4da2-9f41-680ca64f2d21":
+    When I make a POST request to "/event/puzzle/deliver?token=d9d09032-cdae-4da2-9f41-680ca64f2d21&event_id=SITCON":
       """
       {
         "receiver": "f185f505-d8c0-43ce-9e7b-bb9e8909072d"
@@ -38,7 +46,7 @@ Feature: Puzzle Delivery
       }
       """
   Scenario: POST /event/puzzle/deliver without booth token in querystring
-    When I make a POST request to "/event/puzzle/deliver":
+    When I make a POST request to "/event/puzzle/deliver?event_id=SITCON":
       """
       {
         "receiver": "1cf41a53-4aea-452b-a204-6b0b52eee380"
@@ -52,7 +60,7 @@ Feature: Puzzle Delivery
       }
       """
   Scenario: POST /event/puzzle/deliver without receiver token
-    When I make a POST request to "/event/puzzle/deliver?token=f185f505-d8c0-43ce-9e7b-bb9e8909072d":
+    When I make a POST request to "/event/puzzle/deliver?token=f185f505-d8c0-43ce-9e7b-bb9e8909072d&event_id=SITCON":
       """
       {}
       """
@@ -68,7 +76,7 @@ Feature: Puzzle Delivery
     Given there have some booths
       | token                                | name   | event_id |
       | 1024914b-ee65-4728-b687-8341f5affa89 | COSCUP | SITCON   |
-    When I make a POST request to "/event/puzzle/deliver?token=1024914b-ee65-4728-b687-8341f5affa89":
+    When I make a POST request to "/event/puzzle/deliver?token=1024914b-ee65-4728-b687-8341f5affa89&event_id=SITCON":
       """
       {
         "receiver": "1cf41a53-4aea-452b-a204-6b0b52eee380"
@@ -93,7 +101,7 @@ Feature: Puzzle Delivery
       | id                                   | type                | aggregate_id                         | version | payload                                     | occurred_at         |
       | b44845bd-8bd2-428d-ad65-f6a619bf8a96 | AttendeeInitialized | f185f505-d8c0-43ce-9e7b-bb9e8909072d | 0       | { "displayName": "Aotoki" }                 | 2023-09-10 20:4:00  |
       | f41c7a07-d2f4-469a-ae16-4df251eddbf6 | PuzzleCollected     | f185f505-d8c0-43ce-9e7b-bb9e8909072d | 1       | { "pieceName": "=", "giverName": "COSCUP" } | 2023-09-10 20:50:00 |
-    When I make a POST request to "/event/puzzle/deliver?token=1024914b-ee65-4728-b687-8341f5affa89":
+    When I make a POST request to "/event/puzzle/deliver?token=1024914b-ee65-4728-b687-8341f5affa89&event_id=SITCON":
       """
       {
         "receiver": "f185f505-d8c0-43ce-9e7b-bb9e8909072d"

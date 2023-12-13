@@ -6,6 +6,7 @@ import { FindBoothByTokenInput } from '@api/projection'
 
 export type DeliverPuzzleInput = {
   token: string
+  eventId: string
   delivererToken: string
 }
 
@@ -60,7 +61,7 @@ export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, Deliver
       throw new PuzzledAlreadyDeliveredError()
     }
 
-    const config = await this.config.findById(booth.name)
+    const config = await this.config.findById(input.eventId)
     if (!config) {
       throw new PuzzleDelivererNotFoundError()
     }

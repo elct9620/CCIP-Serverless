@@ -22,6 +22,7 @@ export class DeliverPuzzleToUser extends OpenAPIRoute {
       receiver: new Str({ description: 'the attendee public token', required: false }),
     },
     parameters: {
+      event_id: schema.EventIdQuery,
       token: schema.OptionalDelivererTokenQuery,
     },
     responses: {
@@ -36,18 +37,20 @@ export class DeliverPuzzleToUser extends OpenAPIRoute {
   }
 
   async handle(request: PuzzleDeliveryRequest, env: unknown, context: unknown, data: Data) {
-    const delivererTooken = request.query.token
+    const delivererToken = request.query.token
+    const eventId = request.query.event_id as string
     const { body } = data
     const receiverToken = isDeliverPuzzleForm(body) ? body.receiver : null
 
-    if (!delivererTooken || !receiverToken) {
+    if (!delivererToken || !receiverToken) {
       throw new StatusError(400, 'token and receiver required')
     }
 
     try {
       const result = await request.deliverPuzzle.execute({
         token: receiverToken,
-        delivererToken: String(delivererTooken),
+        eventId,
+        delivererToken: String(delivererToken),
       })
 
       return json<schema.PuzzleDeliveredResponse>({

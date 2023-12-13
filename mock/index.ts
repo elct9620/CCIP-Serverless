@@ -19,6 +19,7 @@ router
   .post<IRequest, CF>('/booths', Api.createBoothHandler)
   .post<IRequest, CF>('/puzzle/activity_events', Api.createPuzzleActivityEventHandler)
   .post<IRequest, CF>('/puzzle/stat_events', Api.createPuzzleStatEventHandler)
+  .post<IRequest, CF>('/puzzle/configs', Api.createPuzzleConfigHandler)
   .all('*', () => error(404))
 
 export default {

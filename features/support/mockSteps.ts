@@ -64,6 +64,20 @@ Given(
   }
 )
 
+Given(
+  'event {string} have a puzzle config',
+  async function (this: WorkerWorld, eventId: string, body: string) {
+    await createMockData(
+      this.mock,
+      '/puzzle/configs',
+      JSON.stringify({
+        event_id: eventId,
+        ...JSON.parse(body),
+      })
+    )
+  }
+)
+
 Given('there have some booths', async function (this: WorkerWorld, dataTable: DataTable) {
   await createMockData(this.mock, '/booths', JSON.stringify(dataTable.hashes()))
 })

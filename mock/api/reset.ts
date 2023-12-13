@@ -12,6 +12,7 @@ export async function resetHandler(req: IRequest, { DB }: Env) {
     DB.prepare(`DELETE FROM rulesets`),
     DB.prepare(`DELETE FROM puzzle_activity_events`),
     DB.prepare(`DELETE FROM puzzle_stat_events`),
+    DB.prepare(`DELETE FROM puzzle_configs`),
     DB.prepare(`DELETE FROM booths`),
   ])
 
