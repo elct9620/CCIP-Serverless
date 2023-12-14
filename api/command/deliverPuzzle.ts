@@ -78,5 +78,20 @@ export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, Deliver
 }
 
 function pickUpPiece(status: Status, config: Config) {
-  return Object.keys(config.pieces)[0]
+  const pieceNames = Object.keys(config.pieces)
+  const totalPieces = pieceNames.length
+
+  let pickedPiece = pieceNames[0]
+  for (const idx in config.pieces) {
+    pickedPiece = pieceNames[Math.floor(Math.random() * pieceNames.length)]
+    const isLast = totalPieces - 1 === Number(idx)
+    const isFirstReedem = false // NOTE: total === 0
+    const isLowerDistribution = false // NOTE: currency / total < config.pieces[pickedPiece]
+
+    if (isLast || isFirstReedem || isLowerDistribution) {
+      return pickedPiece
+    }
+  }
+
+  return pickedPiece
 }
