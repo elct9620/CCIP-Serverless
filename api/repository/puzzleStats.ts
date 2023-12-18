@@ -38,7 +38,28 @@ export class D1PuzzleStatsRepository implements Repository<Stats> {
     return new Stats(id, events)
   }
 
-  async save(_stats: Stats): Promise<void> {
+  async save(stats: Stats): Promise<void> {
+    const stmt = this.db.prepare(
+      `INSERT INTO puzzle_stat_events (id, type, aggregate_id, version, payload, occurred_at) VALUES (?, ?, ?, ?, ?, ?)`
+    )
+
+    const pendingEventSize = stats.domainEvents.length
+    const versionStart = stats.version - pendingEventSize + 1
+    const events = stats.domainEvents.map((event, idx) => ({
+      id: event.id,
+      type: event.constructor.name,
+      aggregateId: event.aggregateId,
+      version: versionStart + idx,
+      payload: JSON.stringify(event),
+      occurredAt: event.occurredAt.toISOString(),
+    }))
+
+    await this.db.batch(
+      events.map(({ id, type, aggregateId, version, payload, occurredAt }) =>
+        stmt.bind(id, type, aggregateId, version, payload, occurredAt)
+      )
+    )
+
     return
   }
 
