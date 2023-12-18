@@ -13,6 +13,7 @@ export const withCommands = (request: IRequest, env: Env) => {
   const attendeeRepository = new Repository.D1AttendeeRepository(env.DB)
   const puzzleConfigRepository = new Repository.D1PuzzleConfigRepository(env.DB)
   const puzzleStatusRepository = new Repository.D1PuzzleStatusRepository(env.DB)
+  const puzzleStatsRepository = new Repository.D1PuzzleStatsRepository(env.DB)
   const getBoothByToken = new Projection.D1FindBoothByToken(env.DB)
   const getRulesetByEvent = new Projection.D1RulesetProjection(env.DB)
 
@@ -23,7 +24,8 @@ export const withCommands = (request: IRequest, env: Env) => {
     attendeeRepository,
     puzzleStatusRepository,
     getBoothByToken,
-    puzzleConfigRepository
+    puzzleConfigRepository,
+    puzzleStatsRepository
   )
 
   Object.assign(request, {

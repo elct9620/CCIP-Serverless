@@ -50,6 +50,15 @@ export class Stats extends AggregateRoot<string, StatEvent> {
     return this.puzzles.reduce((acc, puzzle: PuzzleStat) => acc + puzzle.valid, 0)
   }
 
+  distributionOf(name: string): number {
+    const puzzle = this._puzzles.get(name)
+    if (puzzle === undefined) {
+      return 0
+    }
+
+    return puzzle.delivered / this.totalDelivered
+  }
+
   deliverPuzzle(name: string): void {
     this.apply(new PuzzleStatIncremented(crypto.randomUUID(), this.id, getCurrentTime(), name))
   }

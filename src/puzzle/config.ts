@@ -13,6 +13,10 @@ export class Config implements Entity<string> {
     return { ...this._pieces }
   }
 
+  distributionOf(name: string): number {
+    return this._pieces[name] || 0
+  }
+
   addPiece(name: string, ratio: number): void {
     this._pieces[name] = ratio
   }

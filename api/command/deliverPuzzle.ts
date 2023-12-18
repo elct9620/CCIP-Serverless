@@ -1,7 +1,7 @@
 import { Repository, Projection, Command } from '@/core'
 import { Attendee } from '@/attendee'
 import { Booth } from '@/event'
-import { Status, Config } from '@/puzzle'
+import { Status, Config, Stats } from '@/puzzle'
 import { FindBoothByTokenInput } from '@api/projection'
 
 export type DeliverPuzzleInput = {
@@ -18,23 +18,28 @@ export type DeliverPuzzleOutput = {
 export class PuzzleReceiverNotFoundError extends Error {}
 export class PuzzleDelivererNotFoundError extends Error {}
 export class PuzzledAlreadyDeliveredError extends Error {}
+export class PuzzleConfigNotFoundError extends Error {}
+export class PuzzleStatsNotFoundError extends Error {}
 
 export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, DeliverPuzzleOutput> {
   private readonly attendees: Repository<Attendee>
   private readonly booths: Projection<FindBoothByTokenInput, Booth>
   private readonly statuses: Repository<Status>
   private readonly config: Repository<Config>
+  private readonly stats: Repository<Stats>
 
   constructor(
     attendees: Repository<Attendee>,
     statuses: Repository<Status>,
     booths: Projection<FindBoothByTokenInput, Booth>,
-    config: Repository<Config>
+    config: Repository<Config>,
+    stats: Repository<Stats>
   ) {
     this.attendees = attendees
     this.statuses = statuses
     this.booths = booths
     this.config = config
+    this.stats = stats
   }
 
   async execute(input: DeliverPuzzleInput): Promise<DeliverPuzzleOutput> {
@@ -63,12 +68,20 @@ export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, Deliver
 
     const config = await this.config.findById(input.eventId)
     if (!config) {
-      throw new PuzzleDelivererNotFoundError()
+      throw new PuzzleConfigNotFoundError()
     }
 
-    const piece = pickUpPiece(status, config)
+    const stats = await this.stats.findById(input.eventId)
+    if (!stats) {
+      throw new PuzzleStatsNotFoundError()
+    }
+
+    const piece = pickUpPiece(config, stats)
     status.collectPiece(piece, booth.name)
+    stats.deliverPuzzle(piece)
+
     await this.statuses.save(status)
+    await this.stats.save(stats)
 
     return {
       success: true,
@@ -77,7 +90,7 @@ export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, Deliver
   }
 }
 
-function pickUpPiece(status: Status, config: Config) {
+function pickUpPiece(config: Config, stats: Stats) {
   const pieceNames = Object.keys(config.pieces)
   const totalPieces = pieceNames.length
 
@@ -85,8 +98,9 @@ function pickUpPiece(status: Status, config: Config) {
   for (const idx in config.pieces) {
     pickedPiece = pieceNames[Math.floor(Math.random() * pieceNames.length)]
     const isLast = totalPieces - 1 === Number(idx)
-    const isFirstReedem = false // NOTE: total === 0
-    const isLowerDistribution = false // NOTE: currency / total < config.pieces[pickedPiece]
+    const isFirstReedem = stats.totalDelivered === 0
+    const isLowerDistribution =
+      stats.distributionOf(pickedPiece) < config.distributionOf(pickedPiece)
 
     if (isLast || isFirstReedem || isLowerDistribution) {
       return pickedPiece
