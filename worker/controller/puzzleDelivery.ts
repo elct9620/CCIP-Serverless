@@ -70,6 +70,10 @@ export class DeliverPuzzleToUser extends OpenAPIRoute {
         throw new StatusError(400, 'Already take from this deliverer')
       }
 
+      if (e instanceof Command.PuzzleAttendeeNotInEventError) {
+        throw new StatusError(400, 'Attendee not in event')
+      }
+
       throw e
     }
   }

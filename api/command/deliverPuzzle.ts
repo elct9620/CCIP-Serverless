@@ -18,6 +18,7 @@ export type DeliverPuzzleOutput = {
 export class PuzzleReceiverNotFoundError extends Error {}
 export class PuzzleDelivererNotFoundError extends Error {}
 export class PuzzledAlreadyDeliveredError extends Error {}
+export class PuzzleAttendeeNotInEventError extends Error {}
 export class PuzzleConfigNotFoundError extends Error {}
 export class PuzzleStatsNotFoundError extends Error {}
 
@@ -51,6 +52,10 @@ export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, Deliver
     const attendee = await this.attendees.findById(input.token)
     if (!attendee) {
       throw new PuzzleReceiverNotFoundError()
+    }
+
+    if (attendee.eventId !== input.eventId) {
+      throw new PuzzleAttendeeNotInEventError()
     }
 
     const status = await this.statuses.findById(input.token)

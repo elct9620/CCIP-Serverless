@@ -12,8 +12,8 @@ Feature: Puzzle Delivery
     }
     """
     And there have some attendees
-      | token                                | event_id   | display_name |
-      | f185f505-d8c0-43ce-9e7b-bb9e8909072d | COSCUP2023 | Aotoki       |
+      | token                                | event_id | display_name |
+      | f185f505-d8c0-43ce-9e7b-bb9e8909072d | SITCON   | Aotoki       |
     When I make a POST request to "/event/puzzle/deliver?token=1024914b-ee65-4728-b687-8341f5affa89&event_id=SITCON":
       """
       {
@@ -41,8 +41,8 @@ Feature: Puzzle Delivery
     }
     """
     And there have some attendees
-      | token                                | event_id   | display_name |
-      | f185f505-d8c0-43ce-9e7b-bb9e8909072d | COSCUP2023 | Aotoki       |
+      | token                                | event_id | display_name |
+      | f185f505-d8c0-43ce-9e7b-bb9e8909072d | SITCON   | Aotoki       |
     When I make a POST request to "/event/puzzle/deliver?token=1024914b-ee65-4728-b687-8341f5affa89&event_id=SITCON":
       """
       {
@@ -62,10 +62,30 @@ Feature: Puzzle Delivery
 			]
       """
     And the response status should be 200
+  Scenario: POST /event/puzzle/deliver with attendee not in event
+    Given there have some booths
+      | token                                | name   | event_id |
+      | 1024914b-ee65-4728-b687-8341f5affa89 | COSCUP | SITCON   |
+    And there have some attendees
+      | token                                | event_id | display_name |
+      | f185f505-d8c0-43ce-9e7b-bb9e8909072d | COSCUP   | Aotoki       |
+    When I make a POST request to "/event/puzzle/deliver?token=1024914b-ee65-4728-b687-8341f5affa89&event_id=SITCON":
+      """
+      {
+        "receiver": "f185f505-d8c0-43ce-9e7b-bb9e8909072d"
+      }
+      """
+    Then the response json should be:
+      """
+      {
+        "message": "Attendee not in event"
+      }
+      """
+    And the response status should be 400
   Scenario: POST /event/puzzle/deliver with unpermitted booth token
     Given there have some attendees
-      | token                                | event_id   | display_name |
-      | f185f505-d8c0-43ce-9e7b-bb9e8909072d | COSCUP2023 | Aotoki       |
+      | token                                | event_id | display_name |
+      | f185f505-d8c0-43ce-9e7b-bb9e8909072d | SITCON   | Aotoki       |
     When I make a POST request to "/event/puzzle/deliver?token=d9d09032-cdae-4da2-9f41-680ca64f2d21&event_id=SITCON":
       """
       {
@@ -129,8 +149,8 @@ Feature: Puzzle Delivery
       | token                                | name   | event_id |
       | 1024914b-ee65-4728-b687-8341f5affa89 | COSCUP | SITCON   |
     And there have some attendees
-      | token                                | event_id   | display_name |
-      | f185f505-d8c0-43ce-9e7b-bb9e8909072d | COSCUP2023 | Aotoki       |
+      | token                                | event_id | display_name |
+      | f185f505-d8c0-43ce-9e7b-bb9e8909072d | SITCON   | Aotoki       |
     And there have some puzzle activity events
       | id                                   | type                | aggregate_id                         | version | payload                                     | occurred_at         |
       | b44845bd-8bd2-428d-ad65-f6a619bf8a96 | AttendeeInitialized | f185f505-d8c0-43ce-9e7b-bb9e8909072d | 0       | { "displayName": "Aotoki" }                 | 2023-09-10 20:4:00  |
