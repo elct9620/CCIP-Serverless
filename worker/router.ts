@@ -30,6 +30,16 @@ export function Post<T extends OpenAPIRouteConstructor>(path: string) {
   }
 }
 
+export function Put<T extends OpenAPIRouteConstructor>(path: string) {
+  return function (handler: T) {
+    routes.push({
+      method: 'put',
+      path,
+      handler,
+    })
+  }
+}
+
 export const setup = (router: OpenAPIRouterType) => {
   routes.forEach(({ method, path, handler }) => {
     if (method) {

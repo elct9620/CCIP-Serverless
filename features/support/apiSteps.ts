@@ -20,6 +20,17 @@ When(
   }
 )
 
+When(
+  'I make a PUT request to {string}:',
+  async function (this: WorkerWorld, path: string, payload: string) {
+    this.apiResponse = await this.api.fetch(`https://ccip.opass.app${path}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: payload,
+    })
+  }
+)
+
 Then('the response status should be {int}', async function (statusCode) {
   expect(this.apiResponse?.status).toEqual(statusCode)
 })

@@ -29,3 +29,7 @@ export const puzzleItemStatSchema = z.object({
 
 export type PuzzleStats = z.infer<typeof puzzleStatsSchema>
 export const puzzleStatsSchema = z.array(puzzleItemStatSchema)
+
+export const puzzleRevokeResponseSchema = z.object({
+  status: z.string().default('OK'),
+})
