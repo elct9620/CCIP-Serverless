@@ -20,10 +20,12 @@ BeforeAll(async () => {
       MOCK_DATE: '2023-08-27 00:00:00 GMT+8',
     },
     experimental: { disableExperimentalWarning: true },
+    ip: '127.0.0.1',
   })
   mockWorker = await unstable_dev('mock/index.ts', {
     env: 'test',
     experimental: { disableExperimentalWarning: true },
+    ip: '127.0.0.1',
   })
 })
 

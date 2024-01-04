@@ -113,6 +113,7 @@ export default function WorkerProxy(proxyConfig: ProxyConfig): Plugin {
           disableExperimentalWarning: true,
           testMode: false,
         },
+        ip: '127.0.0.1',
       })
 
       server.middlewares.use(async (r, w, next) => {
