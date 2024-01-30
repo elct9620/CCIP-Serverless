@@ -53,15 +53,16 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
+      # NOTE: v3 required sudo to run apt-get and not allow to append with pipe
       - name: retrieve D1 database
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@2.0.0
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
-          command: "d1 list --json | jq -r '.[] | select(.name == \"ccip-${{ env.NAME_SUFFIX }}\") | .uuid' | awk '{print \"d1_id=\"$1}' >> $GITHUB_ENV"
+          command: d1 list --json | jq -r '.[] | select(.name == "ccip-${{ env.NAME_SUFFIX }}") | .uuid' | awk '{print "d1_id="$1}' >> $GITHUB_ENV
           apiToken: ${{ secrets.CF_API_TOKEN }}
           preCommands: |
             echo "*** pre commands ***"
-            sudo apt-get update && sudo apt-get -y install jq
+            apt-get update && apt-get -y install jq
             echo "******"
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
@@ -81,7 +82,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
       - name: retrieve Terraform state KV namespace
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@2.0.0
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           command: kv:namespace list | jq -r '.[] | select( .title == "ccip-terraform-${{ env.NAME_SUFFIX }}-state" ) | .id' | awk '{print "tfstate_kv="$1}' >> $GITHUB_ENV
@@ -121,7 +122,7 @@ jobs:
           TF_VAR_d1_id: ${{ env.d1_id }}
 
       - name: retrieve Terraform state KV namespace
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@2.0.0
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           command: kv:namespace list | jq -r '.[] | select( .title == "ccip-terraform-${{ env.NAME_SUFFIX }}-state" ) | .id' | awk '{print "tfstate_kv="$1}' >> $GITHUB_ENV
