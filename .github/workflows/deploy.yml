@@ -44,7 +44,7 @@ jobs:
           cache: 'yarn'
 
       - name: Create D1 database
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@2.0.0
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           command: d1 create ccip-${{ env.NAME_SUFFIX }}
@@ -68,7 +68,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
       - name: migrate D1 database
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@2.0.0
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           command: d1 migrations apply ccip-${{ env.NAME_SUFFIX }}
@@ -136,7 +136,7 @@ jobs:
         if: ${{ env.tfstate_kv == '' }}
 
       - name: store Terraform state
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@2.0.0
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           command: kv:key put --namespace-id=${{ env.tfstate_kv }} terraform.tfstate --path=./tf/terraform.tfstate
@@ -145,7 +145,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
       - name: Publish
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@2.0.0
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           apiToken: ${{ secrets.CF_API_TOKEN }}
