@@ -61,7 +61,7 @@ jobs:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           preCommands: |
             echo "*** pre commands ***"
-            sudo apt-get update && apt-get -y install jq
+            sudo apt-get update && sudo apt-get -y install jq
             echo "******"
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
