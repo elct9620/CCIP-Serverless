@@ -44,7 +44,7 @@ jobs:
           cache: 'yarn'
 
       - name: Create D1 database
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           command: d1 create ccip-${{ env.NAME_SUFFIX }}
@@ -54,7 +54,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
       - name: retrieve D1 database
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           command: d1 list --json | jq -r '.[] | select(.name == "ccip-${{ env.NAME_SUFFIX }}") | .uuid' | awk '{print "d1_id="$1}' >> $GITHUB_ENV
@@ -67,7 +67,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
       - name: migrate D1 database
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           command: d1 migrations apply ccip-${{ env.NAME_SUFFIX }}
@@ -81,7 +81,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
       - name: retrieve Terraform state KV namespace
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           command: kv:namespace list | jq -r '.[] | select( .title == "ccip-terraform-${{ env.NAME_SUFFIX }}-state" ) | .id' | awk '{print "tfstate_kv="$1}' >> $GITHUB_ENV
@@ -98,7 +98,7 @@ jobs:
         working-directory: ./tf
 
       - name: download Terraform state
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           command: kv:key get --namespace-id=${{ env.tfstate_kv }} terraform.tfstate > ./tf/terraform.tfstate
@@ -121,7 +121,7 @@ jobs:
           TF_VAR_d1_id: ${{ env.d1_id }}
 
       - name: retrieve Terraform state KV namespace
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           command: kv:namespace list | jq -r '.[] | select( .title == "ccip-terraform-${{ env.NAME_SUFFIX }}-state" ) | .id' | awk '{print "tfstate_kv="$1}' >> $GITHUB_ENV
@@ -135,7 +135,7 @@ jobs:
         if: ${{ env.tfstate_kv == '' }}
 
       - name: store Terraform state
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           command: kv:key put --namespace-id=${{ env.tfstate_kv }} terraform.tfstate --path=./tf/terraform.tfstate
@@ -144,7 +144,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
       - name: Publish
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           apiToken: ${{ secrets.CF_API_TOKEN }}
