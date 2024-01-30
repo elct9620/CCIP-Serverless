@@ -57,7 +57,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
-          command: "d1 list --json | jq -r '.[] | select(.name == \"ccip-${{ env.NAME_SUFFIX }}\") | .uuid' | awk '{print "d1_id="$1}' >> $GITHUB_ENV"
+          command: "d1 list --json | jq -r '.[] | select(.name == \"ccip-${{ env.NAME_SUFFIX }}\") | .uuid' | awk '{print \"d1_id=\"$1}' >> $GITHUB_ENV"
           apiToken: ${{ secrets.CF_API_TOKEN }}
           preCommands: |
             echo "*** pre commands ***"
