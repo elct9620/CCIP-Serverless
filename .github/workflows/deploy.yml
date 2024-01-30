@@ -99,7 +99,7 @@ jobs:
         working-directory: ./tf
 
       - name: download Terraform state
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@2.0.0
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           command: kv:key get --namespace-id=${{ env.tfstate_kv }} terraform.tfstate > ./tf/terraform.tfstate
