@@ -27,11 +27,13 @@ export const withCommands = (request: IRequest, env: Env) => {
     puzzleConfigRepository,
     puzzleStatsRepository
   )
+  const revokePuzzle = new Command.RevokePuzzleCommand()
 
   Object.assign(request, {
     createAnnouncementCommand,
     runAttendeeScenario,
     initializeAttendeeCommand,
     deliverPuzzle,
+    revokePuzzle,
   })
 }
