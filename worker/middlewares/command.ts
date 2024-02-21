@@ -27,7 +27,10 @@ export const withCommands = (request: IRequest, env: Env) => {
     puzzleConfigRepository,
     puzzleStatsRepository
   )
-  const revokePuzzle = new Command.RevokePuzzleCommand()
+  const revokePuzzle = new Command.RevokePuzzleCommand(
+    puzzleStatusRepository,
+    puzzleStatsRepository
+  )
 
   Object.assign(request, {
     createAnnouncementCommand,

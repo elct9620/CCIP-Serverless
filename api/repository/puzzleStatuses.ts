@@ -1,7 +1,7 @@
 import { type D1Database } from '@cloudflare/workers-types'
 import { type Class } from '@/core/utils'
 import { Repository } from '@/core'
-import { Status, ActivityEvent, AttendeeInitialized, PuzzleCollected } from '@/puzzle'
+import { Status, ActivityEvent, AttendeeInitialized, PuzzleCollected, Revoked } from '@/puzzle'
 
 type EventSchema = {
   id: string
@@ -15,6 +15,7 @@ type EventSchema = {
 const eventConstructors: Record<string, Class<ActivityEvent>> = {
   AttendeeInitialized: AttendeeInitialized,
   PuzzleCollected: PuzzleCollected,
+  Revoked: Revoked,
 }
 
 export class D1PuzzleStatusRepository implements Repository<Status> {

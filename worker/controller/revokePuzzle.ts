@@ -16,6 +16,7 @@ export class RevokePuzzle extends OpenAPIRoute {
     tags: ['Puzzle'],
     requestBody: {},
     parameters: {
+      event_id: schema.EventIdQuery,
       token: schema.OptionalAttendeeTokenQuery,
     },
     responses: {
@@ -27,11 +28,13 @@ export class RevokePuzzle extends OpenAPIRoute {
   }
 
   async handle(request: RevokePuzzleRequest, _env: unknown, _context: unknown) {
-    const input: Command.RevokePuzzleInput = {
-      attendeeToken: request.query.token as string,
-    }
+    const token = request.query.token as string
+    const eventId = request.query.event_id as string
 
-    const output = await request.revokePuzzle.execute(input)
+    const output = await request.revokePuzzle.execute({
+      token,
+      eventId,
+    })
 
     if (!output.success) {
       throw new StatusError(400, 'Unable to revoke puzzle')

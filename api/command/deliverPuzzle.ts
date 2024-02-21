@@ -3,6 +3,14 @@ import { Attendee } from '@/attendee'
 import { Booth } from '@/event'
 import { Status, Config, Stats } from '@/puzzle'
 import { FindBoothByTokenInput } from '@api/projection'
+import {
+  PuzzleReceiverNotFoundError,
+  PuzzleDelivererNotFoundError,
+  PuzzledAlreadyDeliveredError,
+  PuzzleAttendeeNotInEventError,
+  PuzzleConfigNotFoundError,
+  PuzzleStatsNotFoundError,
+} from './errors'
 
 export type DeliverPuzzleInput = {
   token: string
@@ -14,13 +22,6 @@ export type DeliverPuzzleOutput = {
   success: boolean
   attendeeName: string
 }
-
-export class PuzzleReceiverNotFoundError extends Error {}
-export class PuzzleDelivererNotFoundError extends Error {}
-export class PuzzledAlreadyDeliveredError extends Error {}
-export class PuzzleAttendeeNotInEventError extends Error {}
-export class PuzzleConfigNotFoundError extends Error {}
-export class PuzzleStatsNotFoundError extends Error {}
 
 export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, DeliverPuzzleOutput> {
   private readonly attendees: Repository<Attendee>
