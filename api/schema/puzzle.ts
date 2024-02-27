@@ -33,3 +33,7 @@ export const puzzleStatsSchema = z.array(puzzleItemStatSchema)
 export const puzzleRevokeResponseSchema = z.object({
   status: z.string().default('OK'),
 })
+
+export const puzzleCouponRedeemResponseSchema = z.object({
+  status: z.string().default('OK'),
+})
