@@ -31,6 +31,7 @@ export const withCommands = (request: IRequest, env: Env) => {
     puzzleStatusRepository,
     puzzleStatsRepository
   )
+  const useCoupon = new Command.UseCouponCommand()
 
   Object.assign(request, {
     createAnnouncementCommand,
@@ -38,5 +39,6 @@ export const withCommands = (request: IRequest, env: Env) => {
     initializeAttendeeCommand,
     deliverPuzzle,
     revokePuzzle,
+    useCoupon,
   })
 }
