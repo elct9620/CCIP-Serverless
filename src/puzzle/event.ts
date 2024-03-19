@@ -33,6 +33,7 @@ export class PuzzleCollected extends ActivityEvent {
 }
 
 export class Revoked extends ActivityEvent {}
+export class Redeemed extends ActivityEvent {}
 
 export abstract class StatEvent implements DomainEvent {
   public readonly id: string

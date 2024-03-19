@@ -1,14 +1,31 @@
-import { Command } from '@/core'
+import { Repository, Command } from '@/core'
+import { Status } from '@/puzzle'
+import { PuzzleReceiverNotFoundError } from './errors'
 
 export type UseCouponInput = {
-  token: string
-  eventId: string
+  publicToken: string
 }
 
 export class UseCouponCommand implements Command<UseCouponInput, boolean> {
-  constructor() {}
+  private readonly statuses: Repository<Status>
 
-  public async execute(_input: UseCouponInput): Promise<boolean> {
+  constructor(status: Repository<Status>) {
+    this.statuses = status
+  }
+
+  public async execute({ publicToken }: UseCouponInput): Promise<boolean> {
+    const status = await this.statuses.findById(publicToken)
+    if (!status) {
+      throw new PuzzleReceiverNotFoundError()
+    }
+
+    if (status.isNew()) {
+      return false
+    }
+
+    status.redeem()
+    await this.statuses.save(status)
+
     return true
   }
 }

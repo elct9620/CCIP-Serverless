@@ -16,7 +16,6 @@ export class UseCoupon extends OpenAPIRoute {
     tags: ['Puzzle'],
     requestBody: {},
     parameters: {
-      event_id: schema.EventIdQuery,
       token: schema.OptionalAttendeeTokenQuery,
     },
     responses: {
@@ -28,10 +27,8 @@ export class UseCoupon extends OpenAPIRoute {
   }
 
   async handle(request: UseCouponRequest, _env: unknown, _context: unknown) {
-    const token = request.query.token as string
-    const eventId = request.query.event_id as string
-
-    const success = await request.useCoupon.execute({ token, eventId })
+    const publicToken = request.query.token as string
+    const success = await request.useCoupon.execute({ publicToken })
 
     if (!success) {
       throw new StatusError(400, 'Failed to redeem coupon')

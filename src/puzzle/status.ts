@@ -1,5 +1,5 @@
 import { AggregateRoot, Replayable, getCurrentTime } from '@/core'
-import { ActivityEvent, AttendeeInitialized, PuzzleCollected, Revoked } from './event'
+import { ActivityEvent, AttendeeInitialized, PuzzleCollected, Revoked, Redeemed } from './event'
 import { Piece } from './piece'
 
 @Replayable
@@ -46,6 +46,10 @@ export class Status extends AggregateRoot<string, ActivityEvent> {
     this.apply(new Revoked(crypto.randomUUID(), this.id, getCurrentTime()))
   }
 
+  redeem(): void {
+    this.apply(new Redeemed(crypto.randomUUID(), this.id, getCurrentTime()))
+  }
+
   collectPiece(name: string, giverName: string): void {
     this.apply(new PuzzleCollected(crypto.randomUUID(), this.id, getCurrentTime(), name, giverName))
   }
@@ -71,5 +75,9 @@ export class Status extends AggregateRoot<string, ActivityEvent> {
     if (!this._completedAt) {
       this._completedAt = this._revokedAt
     }
+  }
+
+  private _onRedeemed(event: Redeemed) {
+    this._redeemedAt = new Date(event.occurredAt)
   }
 }
