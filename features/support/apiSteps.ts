@@ -21,6 +21,19 @@ When(
 )
 
 When(
+  'I make a POST request to {string} with file:',
+  async function (this: WorkerWorld, path: string, content: string) {
+    const formData = new FormData()
+    formData.append('file', content)
+    this.apiResponse = await this.api.fetch(`https://ccip.opass.app${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formData,
+    })
+  }
+)
+
+When(
   'I make a PUT request to {string}:',
   async function (this: WorkerWorld, path: string, payload: string) {
     this.apiResponse = await this.api.fetch(`https://ccip.opass.app${path}`, {

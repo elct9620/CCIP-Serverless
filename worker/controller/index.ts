@@ -1,4 +1,5 @@
 export * from './announcement'
+export * from './attendee'
 export * from './landing'
 export * from './status'
 export * from './use'
