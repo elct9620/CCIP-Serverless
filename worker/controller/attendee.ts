@@ -4,7 +4,7 @@ import { IRequest, status } from 'itty-router'
 
 export type AttendeeRequest = IRequest
 
-@Post('/attendees')
+@Post('/admin/attendees')
 export class CreateAttendees extends OpenAPIRoute {
   static schema: OpenAPIRouteSchema = {
     summary: 'Creates attendees',
