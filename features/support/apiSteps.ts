@@ -1,6 +1,7 @@
 import { Then, When } from '@cucumber/cucumber'
 import { WorkerWorld } from './world'
 import { expect } from 'expect'
+import { readFileSync } from 'node:fs'
 
 const nestedAttribute = (obj: any, path: string) =>
   path.split('.').reduce((prev, curr) => prev?.[curr], obj)
@@ -16,6 +17,20 @@ When(
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: payload,
+    })
+  }
+)
+
+When(
+  'I make a POST request to {string} with file {string}',
+  async function (this: WorkerWorld, path: string, filePath: string) {
+    const formData = new FormData()
+    const file = readFileSync(`${__dirname}/data/${filePath}`, 'utf8')
+    formData.append('file', file)
+    this.apiResponse = await this.api.fetch(`https://ccip.opass.app${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formData,
     })
   }
 )
