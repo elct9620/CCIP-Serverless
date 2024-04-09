@@ -10,7 +10,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
-    "types": ["@cloudflare/workers-types"],
+    "emitDecoratorMetadata": true,
+    "types": ["@cloudflare/workers-types", "reflect-metadata"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],

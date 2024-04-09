@@ -38,7 +38,10 @@
   },
   "dependencies": {
     "@cloudflare/itty-router-openapi": "^1.0.5",
+    "inversify": "^6.0.2",
+    "inversify-inject-decorators": "^3.1.0",
     "itty-router": "^4.0.17",
+    "reflect-metadata": "^0.2.2",
     "vue": "^3.3.4"
   }
 }
