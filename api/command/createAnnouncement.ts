@@ -1,3 +1,4 @@
+import { inject, injectable } from 'tsyringe'
 import { Command, Repository, getCurrentTime } from '@/core'
 import { Announcement, LocalizedText } from '@/announcement'
 
@@ -7,12 +8,12 @@ export type CreateAnnouncementInput = {
   roles: string[]
 }
 
+@injectable()
 export class CreateAnnouncement implements Command<CreateAnnouncementInput, void> {
-  private readonly announcementRepository: Repository<Announcement>
-
-  constructor(announcementRepository: Repository<Announcement>) {
-    this.announcementRepository = announcementRepository
-  }
+  constructor(
+    @inject('IAnnouncementRepository')
+    private readonly announcementRepository: Repository<Announcement>
+  ) {}
 
   public async execute(input: CreateAnnouncementInput): Promise<void> {
     const announcementId = crypto.randomUUID()

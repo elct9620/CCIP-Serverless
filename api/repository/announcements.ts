@@ -1,13 +1,11 @@
+import { inject, injectable } from 'tsyringe'
 import { type D1Database } from '@cloudflare/workers-types'
 import { Repository } from '@/core'
 import { Announcement } from '@/announcement'
 
+@injectable()
 export class D1AnnouncementRepository implements Repository<Announcement> {
-  private readonly db: D1Database
-
-  constructor(db: D1Database) {
-    this.db = db
-  }
+  constructor(@inject('database') private readonly db: D1Database) {}
 
   async save(announcement: Announcement): Promise<void> {
     const { id, announcedAt, message, uri, roles } = announcement

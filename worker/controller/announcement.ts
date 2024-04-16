@@ -1,5 +1,6 @@
 import { IRequest } from 'itty-router'
 import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
+import { container } from 'tsyringe'
 import { json } from '@worker/utils'
 import * as schema from '@api/schema'
 import * as Command from '@api/command'
@@ -84,8 +85,10 @@ export class CreateAnnouncement extends OpenAPIRoute {
   }
 
   async handle(request: AnnouncementRequest) {
+    const command = container.resolve(Command.CreateAnnouncement)
     const params = await request.json<schema.CreateAnnouncementPayload>()
-    await request.createAnnouncementCommand.execute(toCreateAnnouncementParams(params))
+    await command.execute(toCreateAnnouncementParams(params))
+
     return json({ status: 'OK' })
   }
 }

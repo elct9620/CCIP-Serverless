@@ -7,6 +7,8 @@ import { container } from 'tsyringe'
 import { Env } from '@worker/environment'
 import '@worker/controller'
 
+import * as Repository from '@api/repository'
+
 const router = OpenAPIRouter({
   schema: {
     info: {
@@ -29,6 +31,11 @@ router
     }
 
     container.register('database', { useValue: env.DB })
+
+    // NOTE: Move this to a separate file
+    container.register('IAnnouncementRepository', {
+      useClass: Repository.D1AnnouncementRepository,
+    })
   })
   .all('*', withParams)
   .all('*', withCommands)
