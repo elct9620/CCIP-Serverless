@@ -9,7 +9,7 @@ export const withCommands = (request: IRequest, env: Env) => {
     throw new Error('DB is not available')
   }
 
-  const announcementRepository = new Repository.D1AnnouncementRepository()
+  const announcementRepository = new Repository.D1AnnouncementRepository(env.DB)
   const attendeeRepository = new Repository.D1AttendeeRepository(env.DB)
   const puzzleConfigRepository = new Repository.D1PuzzleConfigRepository(env.DB)
   const puzzleStatusRepository = new Repository.D1PuzzleStatusRepository(env.DB)

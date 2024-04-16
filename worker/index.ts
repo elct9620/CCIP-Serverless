@@ -1,6 +1,6 @@
 import { withParams } from 'itty-router'
 import { OpenAPIRouter } from '@cloudflare/itty-router-openapi'
-import { withCommands, withTestability, withQueries, withInversify } from '@worker/middlewares'
+import { withCommands, withTestability, withQueries } from '@worker/middlewares'
 import { setup } from '@worker/router'
 import '@worker/controller'
 
@@ -19,11 +19,6 @@ const router = OpenAPIRouter({
   },
 })
 
-router
-  .all('*', withParams)
-  .all('*', withInversify)
-  .all('*', withCommands)
-  .all('*', withQueries)
-  .all('*', withTestability)
+router.all('*', withParams).all('*', withCommands).all('*', withQueries).all('*', withTestability)
 
 export default setup(router)

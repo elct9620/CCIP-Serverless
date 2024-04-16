@@ -1,14 +1,12 @@
 import { type D1Database } from '@cloudflare/workers-types'
 import { Repository } from '@/core'
 import { Announcement } from '@/announcement'
-import container from '@/container'
-import { database } from './database'
 
 export class D1AnnouncementRepository implements Repository<Announcement> {
   private readonly db: D1Database
 
-  constructor() {
-    this.db = container.get(database)
+  constructor(db: D1Database) {
+    this.db = db
   }
 
   async save(announcement: Announcement): Promise<void> {
