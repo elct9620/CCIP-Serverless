@@ -1,3 +1,4 @@
+import { inject, injectable } from 'tsyringe'
 import { Projection, Query, Repository } from '@/core'
 import { Announcement, LocalizedText } from '@/announcement'
 import { Attendee, AttendeeRole } from '@/attendee'
@@ -16,17 +17,14 @@ export type ListAnnouncementsOutput = {
 
 const defaultQueryRole = AttendeeRole.Audience
 
+@injectable()
 export class ListAnnouncementsByToken implements Query<GetAttendeeInput, ListAnnouncementsOutput> {
-  private readonly announcements: Projection<ListAnnouncementsInput, Announcement[]>
-  private readonly attendees: Repository<Attendee>
-
   constructor(
-    announcements: Projection<ListAnnouncementsInput, Announcement[]>,
-    attendees: Repository<Attendee>
-  ) {
-    this.announcements = announcements
-    this.attendees = attendees
-  }
+    @inject('IAnnouncementProjection')
+    private readonly announcements: Projection<ListAnnouncementsInput, Announcement[]>,
+    @inject('IAttendeeRepository')
+    private readonly attendees: Repository<Attendee>
+  ) {}
 
   public async execute({ token }: GetAttendeeInput): Promise<ListAnnouncementsOutput> {
     const attendee = await this.attendees.findById(token)

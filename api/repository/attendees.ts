@@ -1,3 +1,4 @@
+import { inject, injectable } from 'tsyringe'
 import { type D1Database } from '@cloudflare/workers-types'
 import { Repository } from '@/core'
 import { Attendee, AttendeeRole } from '../../src/attendee'
@@ -11,12 +12,9 @@ type AttendeeSchema = {
   metadata?: string
 }
 
+@injectable()
 export class D1AttendeeRepository implements Repository<Attendee> {
-  private readonly db: D1Database
-
-  constructor(db: D1Database) {
-    this.db = db
-  }
+  constructor(@inject('database') private readonly db: D1Database) {}
 
   async findById(token: string): Promise<Attendee | null> {
     const stmt = this.db.prepare('SELECT * FROM attendees WHERE token = ?')

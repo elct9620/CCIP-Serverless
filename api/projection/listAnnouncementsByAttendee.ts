@@ -1,3 +1,4 @@
+import { inject, injectable } from 'tsyringe'
 import { type D1Database } from '@cloudflare/workers-types'
 import { Projection } from '@/core'
 import { Announcement, LocalizedText } from '@/announcement'
@@ -14,14 +15,11 @@ export type ListAnnouncementsInput = {
   role: string
 }
 
+@injectable()
 export class D1ListAnnouncementsByAttendee
   implements Projection<ListAnnouncementsInput, Announcement[]>
 {
-  private readonly db: D1Database
-
-  constructor(db: D1Database) {
-    this.db = db
-  }
+  constructor(@inject('database') private readonly db: D1Database) {}
 
   async query({ role }: ListAnnouncementsInput): Promise<Announcement[] | null> {
     if (!role) {

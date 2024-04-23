@@ -8,6 +8,7 @@ import { Env } from '@worker/environment'
 import '@worker/controller'
 
 import * as Repository from '@api/repository'
+import * as Projection from '@api/projection'
 
 const router = OpenAPIRouter({
   schema: {
@@ -35,6 +36,14 @@ router
     // NOTE: Move this to a separate file
     container.register('IAnnouncementRepository', {
       useClass: Repository.D1AnnouncementRepository,
+    })
+
+    container.register('IAttendeeRepository', {
+      useClass: Repository.D1AttendeeRepository,
+    })
+
+    container.register('IAnnouncementProjection', {
+      useClass: Projection.D1ListAnnouncementsByAttendee,
     })
   })
   .all('*', withParams)

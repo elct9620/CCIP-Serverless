@@ -10,8 +10,6 @@ import { Get, Post } from '@worker/router'
 import { z } from 'zod'
 
 export type AnnouncementRequest = {
-  listAnnouncementsByToken: ListAnnouncementsByToken
-  createAnnouncementCommand: Command.CreateAnnouncement
   query: Record<string, string | undefined>
 } & IRequest
 
@@ -64,7 +62,8 @@ export class ListAnnouncement extends OpenAPIRoute {
   }
 
   async handle(request: AnnouncementRequest) {
-    const results = await request.listAnnouncementsByToken.execute({
+    const query = container.resolve(ListAnnouncementsByToken)
+    const results = await query.execute({
       token: String(request.query.token),
     })
     return json<AnnouncementResponse>(results.map(toFormattedAnnouncement))
