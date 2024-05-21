@@ -1,3 +1,4 @@
+import { inject, injectable } from 'tsyringe'
 import { Repository, Query } from '@/core'
 import { Attendee } from '@/attendee'
 
@@ -22,12 +23,12 @@ export type AttendeeInfoOutput = {
   metadata: Record<string, any>
 } | null
 
+@injectable()
 export class AttendeeInfo implements Query<AttendeeInfoInput, AttendeeInfoOutput> {
-  private readonly attendees: Repository<Attendee>
-
-  constructor(attendees: Repository<Attendee>) {
-    this.attendees = attendees
-  }
+  constructor(
+    @inject('IAttendeeRepository')
+    private readonly attendees: Repository<Attendee>
+  ) {}
 
   public async execute(input: AttendeeInfoInput): Promise<AttendeeInfoOutput> {
     const attendee = await this.attendees.findById(input.token)

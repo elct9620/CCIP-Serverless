@@ -1,5 +1,6 @@
 import { IRequest, StatusError } from 'itty-router'
 import { json } from '@worker/utils'
+import { container } from 'tsyringe'
 import * as schema from '@api/schema'
 import { AttendeeInfo } from '@api/query'
 import { Get } from '@worker/router'
@@ -7,7 +8,7 @@ import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openap
 import { z } from 'zod'
 
 export type LandingRequest = {
-  attendeeInfo: AttendeeInfo
+  query: Record<string, string | undefined>
 } & IRequest
 
 export type LandingResponse = z.infer<typeof landingResponseSchema>
@@ -32,12 +33,13 @@ export class Landing extends OpenAPIRoute {
     },
   }
 
-  async handle({ attendeeInfo, query }: LandingRequest) {
-    if (!query.token) {
+  async handle(request: LandingRequest) {
+    if (!request.query.token) {
       throw new StatusError(400, 'token required')
     }
 
-    const info = await attendeeInfo.execute({ token: query.token as string })
+    const query = container.resolve(AttendeeInfo)
+    const info = await query.execute({ token: request.query.token as string })
     if (!info) {
       throw new StatusError(400, 'invalid token')
     }
