@@ -1,3 +1,4 @@
+import { inject, injectable } from 'tsyringe'
 import { Query, Repository } from '@/core'
 import { Stats } from '@/puzzle'
 
@@ -23,12 +24,12 @@ const emptyStats: GetPuzzleStatsOutput = {
   totalValid: 0,
 }
 
+@injectable()
 export class GetPuzzleStats implements Query<GetPuzzleStatsInput, GetPuzzleStatsOutput> {
-  private readonly stats: Repository<Stats>
-
-  constructor(stats: Repository<Stats>) {
-    this.stats = stats
-  }
+  constructor(
+    @inject('IPuzzleStatsRepository')
+    private readonly stats: Repository<Stats>
+  ) {}
 
   async execute({ eventId }: GetPuzzleStatsInput): Promise<GetPuzzleStatsOutput> {
     const stats = await this.stats.findById(eventId)

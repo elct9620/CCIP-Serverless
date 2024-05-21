@@ -42,6 +42,10 @@ router
       useClass: Repository.D1AttendeeRepository,
     })
 
+    container.register('IPuzzleStatsRepository', {
+      useClass: Repository.D1PuzzleStatsRepository,
+    })
+
     container.register('IAnnouncementProjection', {
       useClass: Projection.D1ListAnnouncementsByAttendee,
     })
