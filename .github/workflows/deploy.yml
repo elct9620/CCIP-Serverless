@@ -154,7 +154,7 @@ jobs:
             yarn
             yarn build
             echo "******"
-          command: pages publish --project-name=ccip-${{ env.NAME_SUFFIX }} dist
+          command: pages deploy --project-name=ccip-${{ env.NAME_SUFFIX }} dist
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           COMMIT_HASH: ${{ github.sha }}
