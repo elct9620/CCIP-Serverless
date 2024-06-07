@@ -144,6 +144,9 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
+      - name: Cleanup .wrangler
+        run: rm -rf .wrangler
+
       - name: Publish
         uses: cloudflare/wrangler-action@v3
         with:
