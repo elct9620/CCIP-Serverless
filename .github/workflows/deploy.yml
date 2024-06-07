@@ -149,12 +149,10 @@ jobs:
         with:
           wranglerVersion: ${{ env.wranglerVersion }}
           apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
           preCommands: |
             echo "*** pre commands ***"
             yarn
             yarn build
             echo "******"
-          command: pages deploy --project-name=ccip-${{ env.NAME_SUFFIX }} dist
-        env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          COMMIT_HASH: ${{ github.sha }}
+          command: pages deploy --project-name=ccip-${{ env.NAME_SUFFIX }} --commit-hash=${{ github.sha }} dist
