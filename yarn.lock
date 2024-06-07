@@ -15,10 +15,10 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@asteasolutions/zod-to-openapi@^5.3.1":
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/@asteasolutions/zod-to-openapi/-/zod-to-openapi-5.5.0.tgz#f3be8f1e97ece0fcef2e6ff5e9230da8138d20a6"
-  integrity sha512-d5HwrvM6dOKr3XdeF+DmashGvfEc+1oiEfbscugsiwSTrFtuMa7ETpW9sTNnVgn+hJaz+PRxPQUYD7q9/5dUig==
+"@asteasolutions/zod-to-openapi@^6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@asteasolutions/zod-to-openapi/-/zod-to-openapi-6.4.0.tgz#3081e7f56febdb7c58fcee4dd5cfb3cbcb01742c"
+  integrity sha512-8cxfF7AHHx2PqnN4Cd8/O8CBu/nVYJP9DpnfVLW3BFb66VJDnqI/CczZnkqMc3SNh6J9GiX7JbJ5T4BSP4HZ2Q==
   dependencies:
     openapi3-ts "^4.1.2"
 
@@ -61,13 +61,14 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cloudflare/itty-router-openapi@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@cloudflare/itty-router-openapi/-/itty-router-openapi-1.0.5.tgz#7bd58cf84633b29a87b2358628d800e2fca85e8a"
-  integrity sha512-PQa49dapBtOUxxxW0xWEW0+M8a4RKgoU50K/6OmGsinTMnZ59wfMfzTlzjFDycX/sz1Z3lxTSBYx0LjdHKu3Og==
+"@cloudflare/itty-router-openapi@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@cloudflare/itty-router-openapi/-/itty-router-openapi-1.1.1.tgz#0bcaef5726d09435340fcb8446111ed4d2b1d368"
+  integrity sha512-iJKV7vIaJctMykyiNC89W+ZR3cQ5q8tQL1rVejtkXSj+/AuJYX0l7NrrM3D3u+SijbvsNsNMjFsoCGIzG7tpmQ==
   dependencies:
-    "@asteasolutions/zod-to-openapi" "^5.3.1"
-    itty-router "^4.0.22"
+    "@asteasolutions/zod-to-openapi" "^6.4.0"
+    itty-router "4.0.26"
+    js-yaml "^4.1.0"
     openapi3-ts "^4.1.2"
     zod "^3.21.4"
 
@@ -2222,15 +2223,10 @@ istanbul-reports@^3.1.5:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
-itty-router@^4.0.17:
-  version "4.0.17"
-  resolved "https://registry.yarnpkg.com/itty-router/-/itty-router-4.0.17.tgz#5d9853107552ef165251f28568936c70a2fb87fb"
-  integrity sha512-Fu/GO3MFX6Hwd+QF1/BFjoFpPQKh2Bu4DtBdse5kECcUwldNBrZqgwq0IariLrP67iADGlzkHIlOWwJ8F4SJ4A==
-
-itty-router@^4.0.22:
-  version "4.0.23"
-  resolved "https://registry.yarnpkg.com/itty-router/-/itty-router-4.0.23.tgz#44bb79134567773d3356e9972913e8fd6ed8a7a0"
-  integrity sha512-tP1NI8PVK43vWlBnIPqj47ni5FDSczFviA4wgBznscndo8lEvBA+pO3DD1rNbIQPcZhprr775iUTunyGvQMcBw==
+itty-router@4.0.26, itty-router@^4.0.17:
+  version "4.0.26"
+  resolved "https://registry.yarnpkg.com/itty-router/-/itty-router-4.0.26.tgz#8fd29b7070d9faf0857ca5bd097f80e304ea7fcd"
+  integrity sha512-GBcmhxQRvIQ7fuzXPlvfeQcN6O7VGhctzdG9WHIcEcaRYH4FvDpMxuSWRIAxQrIM+nxtfxK0/bR78ATvb4LC5Q==
 
 jest-diff@^29.7.0:
   version "29.7.0"
