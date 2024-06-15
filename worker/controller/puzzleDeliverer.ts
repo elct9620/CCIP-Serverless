@@ -11,7 +11,7 @@ type DelivererListRequest = IRequest & {
 }
 
 type GetDelvierRequest = IRequest & {
-  getBoothByToken: GetBoothByToken
+  query: Record<string, string | undefined>
 }
 
 @Get('/event/puzzle/deliverers')
@@ -57,12 +57,13 @@ export class GetPuzzleDeliverer extends OpenAPIRoute {
     },
   }
 
-  async handle({ query, getBoothByToken }: GetDelvierRequest) {
-    if (!query.token) {
+  async handle(request: GetDelvierRequest) {
+    if (!request.query.token) {
       throw new StatusError(400, 'token required')
     }
 
-    const ownedBooth = await getBoothByToken.execute({ token: query.token as string })
+    const query = container.resolve(GetBoothByToken)
+    const ownedBooth = await query.execute({ token: request.query.token as string })
 
     if (!ownedBooth) {
       throw new StatusError(400, 'invalid deliverer token')

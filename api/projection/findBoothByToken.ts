@@ -1,3 +1,4 @@
+import { injectable, inject } from 'tsyringe'
 import { type D1Database } from '@cloudflare/workers-types'
 import { Projection } from '@/core'
 import { Booth } from '@/event'
@@ -12,12 +13,12 @@ type BoothSchema = {
   name: string
 }
 
+@injectable()
 export class D1FindBoothByToken implements Projection<FindBoothByTokenInput, Booth> {
-  private readonly db: D1Database
-
-  constructor(db: D1Database) {
-    this.db = db
-  }
+  constructor(
+    @inject('database')
+    private readonly db: D1Database
+  ) {}
 
   async query({ token }: FindBoothByTokenInput): Promise<Booth | null> {
     const stmt = this.db.prepare('SELECT * FROM booths WHERE token = ?')

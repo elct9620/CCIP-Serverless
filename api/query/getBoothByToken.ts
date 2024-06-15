@@ -1,3 +1,4 @@
+import { injectable, inject } from 'tsyringe'
 import { Query, Projection } from '@/core'
 import { Booth } from '@/event'
 import { FindBoothByTokenInput } from '@api/projection'
@@ -10,12 +11,12 @@ type GetBoothOutput = {
   name: string
 }
 
+@injectable()
 export class GetBoothByToken implements Query<GetBoothInput, GetBoothOutput> {
-  private readonly findBoothByToken: Projection<FindBoothByTokenInput, Booth>
-
-  constructor(findBoothByToken: Projection<FindBoothByTokenInput, Booth>) {
-    this.findBoothByToken = findBoothByToken
-  }
+  constructor(
+    @inject('IFindBoothByTokenProjection')
+    private readonly findBoothByToken: Projection<FindBoothByTokenInput, Booth>
+  ) {}
 
   async execute({ token }: GetBoothInput): Promise<GetBoothOutput | null> {
     const booth = await this.findBoothByToken.query({ token })

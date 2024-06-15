@@ -53,6 +53,10 @@ router
     container.register('IBoothProjection', {
       useClass: Projection.D1AllBoothProjection,
     })
+
+    container.register('IFindBoothByTokenProjection', {
+      useClass: Projection.D1FindBoothByToken,
+    })
   })
   .all('*', withParams)
   .all('*', withCommands)
