@@ -49,6 +49,10 @@ router
     container.register('IAnnouncementProjection', {
       useClass: Projection.D1ListAnnouncementsByAttendee,
     })
+
+    container.register('IBoothProjection', {
+      useClass: Projection.D1AllBoothProjection,
+    })
   })
   .all('*', withParams)
   .all('*', withCommands)

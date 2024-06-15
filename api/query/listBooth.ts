@@ -1,3 +1,4 @@
+import { injectable, inject } from 'tsyringe'
 import { Booth } from '@/event'
 import { Query, Projection } from '@/core'
 import { ListBoothInput } from '@api/projection'
@@ -10,12 +11,12 @@ type BoothInfo = {
   name: string
 }
 
+@injectable()
 export class ListBooth implements Query<QueryBoothInput, BoothInfo[]> {
-  private readonly booths: Projection<ListBoothInput, Booth[]>
-
-  constructor(booths: Projection<ListBoothInput, Booth[]>) {
-    this.booths = booths
-  }
+  constructor(
+    @inject('IBoothProjection')
+    private readonly booths: Projection<ListBoothInput, Booth[]>
+  ) {}
 
   async execute({ eventId }: QueryBoothInput): Promise<BoothInfo[]> {
     const booths = (await this.booths.query({ eventId })) ?? []

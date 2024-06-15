@@ -4,9 +4,10 @@ import { ListBooth, GetBoothByToken } from '@api/query'
 import { Get } from '@worker/router'
 import { json } from '@worker/utils'
 import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
+import { container } from 'tsyringe'
 
 type DelivererListRequest = IRequest & {
-  listBooth: ListBooth
+  query: Record<string, string | undefined>
 }
 
 type GetDelvierRequest = IRequest & {
@@ -29,8 +30,9 @@ export class ListPuzzleDelivers extends OpenAPIRoute {
     },
   }
 
-  async handle({ query, listBooth }: DelivererListRequest) {
-    const booths = await listBooth.execute({ eventId: query.event_id as string })
+  async handle(request: DelivererListRequest) {
+    const query = container.resolve(ListBooth)
+    const booths = await query.execute({ eventId: request.query.event_id as string })
 
     return json<schema.BoothList>(booths.map(({ name }) => name))
   }
