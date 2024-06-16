@@ -1,12 +1,19 @@
+import { container } from 'tsyringe'
 import { IRequest, StatusError } from 'itty-router'
-import * as Command from '@api/command'
+import {
+  DeliverPuzzleCommand,
+  PuzzleReceiverNotFoundError,
+  PuzzleDelivererNotFoundError,
+  PuzzleAlreadyDeliveredError,
+  PuzzleAttendeeNotInEventError,
+} from '@api/command'
 import * as schema from '@api/schema'
 import { Post } from '@worker/router'
 import { json } from '@worker/utils'
 import { OpenAPIRoute, OpenAPIRouteSchema, Str } from '@cloudflare/itty-router-openapi'
 
 export type PuzzleDeliveryRequest = {
-  deliverPuzzle: Command.DeliverPuzzleCommand
+  query: Record<string, string | undefined>
 } & IRequest
 
 type Data = {
@@ -47,7 +54,8 @@ export class DeliverPuzzleToUser extends OpenAPIRoute {
     }
 
     try {
-      const result = await request.deliverPuzzle.execute({
+      const command = container.resolve(DeliverPuzzleCommand)
+      const result = await command.execute({
         token: receiverToken,
         eventId,
         delivererToken: String(delivererToken),
@@ -58,19 +66,19 @@ export class DeliverPuzzleToUser extends OpenAPIRoute {
         user_id: result.attendeeName,
       })
     } catch (e: unknown) {
-      if (e instanceof Command.PuzzleReceiverNotFoundError) {
+      if (e instanceof PuzzleReceiverNotFoundError) {
         throw new StatusError(404, 'invalid receiver token')
       }
 
-      if (e instanceof Command.PuzzleDelivererNotFoundError) {
+      if (e instanceof PuzzleDelivererNotFoundError) {
         throw new StatusError(400, 'invalid token')
       }
 
-      if (e instanceof Command.PuzzledAlreadyDeliveredError) {
+      if (e instanceof PuzzleAlreadyDeliveredError) {
         throw new StatusError(400, 'Already take from this deliverer')
       }
 
-      if (e instanceof Command.PuzzleAttendeeNotInEventError) {
+      if (e instanceof PuzzleAttendeeNotInEventError) {
         throw new StatusError(400, 'Attendee not in event')
       }
 

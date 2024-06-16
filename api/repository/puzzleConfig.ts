@@ -1,3 +1,4 @@
+import { injectable, inject } from 'tsyringe'
 import { type D1Database } from '@cloudflare/workers-types'
 import { Repository } from '@/core'
 import { Config } from '@/puzzle'
@@ -7,12 +8,12 @@ type PuzzleConfigSchema = {
   pieces: string
 }
 
+@injectable()
 export class D1PuzzleConfigRepository implements Repository<Config> {
-  private readonly db: D1Database
-
-  constructor(db: D1Database) {
-    this.db = db
-  }
+  constructor(
+    @inject('database')
+    private readonly db: D1Database
+  ) {}
 
   async findById(eventId: string): Promise<Config | null> {
     const stmt = await this.db

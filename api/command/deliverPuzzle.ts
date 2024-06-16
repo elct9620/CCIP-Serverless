@@ -1,3 +1,4 @@
+import { injectable, inject } from 'tsyringe'
 import { Repository, Projection, Command } from '@/core'
 import { Attendee } from '@/attendee'
 import { Booth } from '@/event'
@@ -6,7 +7,7 @@ import { FindBoothByTokenInput } from '@api/projection'
 import {
   PuzzleReceiverNotFoundError,
   PuzzleDelivererNotFoundError,
-  PuzzledAlreadyDeliveredError,
+  PuzzleAlreadyDeliveredError,
   PuzzleAttendeeNotInEventError,
   PuzzleConfigNotFoundError,
   PuzzleStatsNotFoundError,
@@ -23,26 +24,20 @@ export type DeliverPuzzleOutput = {
   attendeeName: string
 }
 
+@injectable()
 export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, DeliverPuzzleOutput> {
-  private readonly attendees: Repository<Attendee>
-  private readonly booths: Projection<FindBoothByTokenInput, Booth>
-  private readonly statuses: Repository<Status>
-  private readonly config: Repository<Config>
-  private readonly stats: Repository<Stats>
-
   constructor(
-    attendees: Repository<Attendee>,
-    statuses: Repository<Status>,
-    booths: Projection<FindBoothByTokenInput, Booth>,
-    config: Repository<Config>,
-    stats: Repository<Stats>
-  ) {
-    this.attendees = attendees
-    this.statuses = statuses
-    this.booths = booths
-    this.config = config
-    this.stats = stats
-  }
+    @inject('IAttendeeRepository')
+    private readonly attendees: Repository<Attendee>,
+    @inject('IPuzzleStatusRepository')
+    private readonly statuses: Repository<Status>,
+    @inject('IFindBoothByTokenProjection')
+    private readonly booths: Projection<FindBoothByTokenInput, Booth>,
+    @inject('IPuzzleConfigRepository')
+    private readonly config: Repository<Config>,
+    @inject('IPuzzleStatsRepository')
+    private readonly stats: Repository<Stats>
+  ) {}
 
   async execute(input: DeliverPuzzleInput): Promise<DeliverPuzzleOutput> {
     const booth = await this.booths.query({ token: input.delivererToken })
@@ -69,7 +64,7 @@ export class DeliverPuzzleCommand implements Command<DeliverPuzzleInput, Deliver
     }
 
     if (status.isDeliveredBy(booth.name)) {
-      throw new PuzzledAlreadyDeliveredError()
+      throw new PuzzleAlreadyDeliveredError()
     }
 
     const config = await this.config.findById(input.eventId)

@@ -1,3 +1,4 @@
+import { injectable, inject } from 'tsyringe'
 import { type D1Database } from '@cloudflare/workers-types'
 import { type Class } from '@/core/utils'
 import { Repository } from '@/core'
@@ -26,12 +27,12 @@ const eventConstructors: Record<string, Class<ActivityEvent>> = {
   Redeemed: Redeemed,
 }
 
+@injectable()
 export class D1PuzzleStatusRepository implements Repository<Status> {
-  private readonly db: D1Database
-
-  constructor(db: D1Database) {
-    this.db = db
-  }
+  constructor(
+    @inject('database')
+    private readonly db: D1Database
+  ) {}
 
   async findById(token: string): Promise<Status | null> {
     const { results } = await this.db
