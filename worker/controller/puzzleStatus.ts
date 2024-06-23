@@ -1,3 +1,4 @@
+import { container } from 'tsyringe'
 import { IRequest, StatusError } from 'itty-router'
 import * as schema from '@api/schema'
 import { GetPuzzleStatus } from '@api/query'
@@ -6,9 +7,7 @@ import { Get } from '@worker/router'
 import { json } from '@worker/utils'
 import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
 
-export type PuzzleStatusRequest = {
-  getPuzzleStatus: GetPuzzleStatus
-} & IRequest
+export type PuzzleStatusRequest = IRequest
 
 @Get('/event/puzzle')
 export class GetAttendeePuzzleStatus extends OpenAPIRoute {
@@ -29,12 +28,14 @@ export class GetAttendeePuzzleStatus extends OpenAPIRoute {
     },
   }
 
-  async handle({ getPuzzleStatus, query }: PuzzleStatusRequest) {
-    if (!query.token) {
+  async handle(request: PuzzleStatusRequest) {
+    if (!request.query.token) {
       throw new StatusError(400, 'token is required')
     }
 
-    const status = await getPuzzleStatus.execute({ publicToken: query.token as string })
+    const status = await container
+      .resolve(GetPuzzleStatus)
+      .execute({ publicToken: request.query.token as string })
     if (status === null) {
       throw new StatusError(404, 'Invalid token, please try again after checkin.')
     }

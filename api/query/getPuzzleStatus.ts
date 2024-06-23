@@ -1,3 +1,4 @@
+import { injectable, inject } from 'tsyringe'
 import { Repository, Query } from '@/core'
 import { Status } from '@/puzzle'
 
@@ -19,12 +20,9 @@ export type GetStatusOutput = {
   redeemAt: Date | null
 }
 
+@injectable()
 export class GetPuzzleStatus implements Query<GetStatusInput, GetStatusOutput> {
-  private readonly statuses: Repository<Status>
-
-  constructor(statuses: Repository<Status>) {
-    this.statuses = statuses
-  }
+  constructor(@inject('IPuzzleStatusRepository') private readonly statuses: Repository<Status>) {}
 
   async execute({ publicToken }: GetStatusInput): Promise<GetStatusOutput | null> {
     const status = await this.statuses.findById(publicToken)
