@@ -22,7 +22,7 @@
     "@vitest/coverage-v8": "^1.6.0",
     "@vitest/ui": "^1.6.0",
     "esbuild": "^0.21.5",
-    "eslint": "^9.5.0",
+    "eslint": "^9.6.0",
     "eslint-plugin-vue": "^9.26.0",
     "expect": "^29.7.0",
     "picocolors": "^1.0.0",
