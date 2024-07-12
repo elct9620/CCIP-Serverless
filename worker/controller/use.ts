@@ -1,11 +1,12 @@
 import { IRequest, StatusError } from 'itty-router'
+import { z } from 'zod'
 import { json } from '@worker/utils'
 import * as schema from '@api/schema'
 import { RunAttendeeScenario } from '@api/command'
 import { AttendeeInfo } from '@api/query'
 import { datetimeToUnix } from '@api/utils'
 import { Get } from '@worker/router'
-import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
+import { OpenAPIRoute } from 'chanfana'
 
 export type UseRequest = {
   attendeeInfo: AttendeeInfo
@@ -34,17 +35,25 @@ function formatScenario(scenario: Record<string, any>) {
 
 @Get('/use/:scenarioId')
 export class ApplyScenario extends OpenAPIRoute {
-  static schema: OpenAPIRouteSchema = {
+  schema = {
     summary: 'Use scenario',
     tags: ['Event'],
-    parameters: {
-      token: schema.OptionalAttendeeTokenQuery,
-      scenarioId: schema.ScenarioIdPath,
+    request: {
+      params: z.object({
+        scenarioId: schema.ScenarioIdPath,
+      }),
+      query: z.object({
+        token: schema.OptionalAttendeeTokenQuery,
+      }),
     },
     responses: {
       '200': {
         description: 'Used the scenario',
-        schema: schema.statusSchema,
+        content: {
+          'application/json': {
+            schema: schema.statusSchema,
+          },
+        },
       },
       '400': {
         description: 'Missing or invalid token',

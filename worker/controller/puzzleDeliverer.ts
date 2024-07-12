@@ -1,10 +1,11 @@
 import { IRequest, StatusError } from 'itty-router'
-import * as schema from '@api/schema'
-import { ListBooth, GetBoothByToken } from '@api/query'
 import { Get } from '@worker/router'
 import { json } from '@worker/utils'
-import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
+import { OpenAPIRoute } from 'chanfana'
+import { z } from 'zod'
 import { container } from 'tsyringe'
+import { ListBooth, GetBoothByToken } from '@api/query'
+import * as schema from '@api/schema'
 
 type DelivererListRequest = IRequest & {
   query: Record<string, string | undefined>
@@ -16,16 +17,22 @@ type GetDelvierRequest = IRequest & {
 
 @Get('/event/puzzle/deliverers')
 export class ListPuzzleDelivers extends OpenAPIRoute {
-  static schema: OpenAPIRouteSchema = {
+  schema = {
     summary: 'Get list of puzzle deliverers',
     tags: ['Puzzle'],
-    parameters: {
-      event_id: schema.EventIdQuery,
+    request: {
+      params: z.object({
+        event_id: schema.EventIdQuery,
+      }),
     },
     responses: {
       '200': {
         description: 'Returns list of puzzle deliverers',
-        schema: schema.boothListSchema,
+        content: {
+          'application/json': {
+            schema: schema.boothListSchema,
+          },
+        },
       },
     },
   }
@@ -40,16 +47,22 @@ export class ListPuzzleDelivers extends OpenAPIRoute {
 
 @Get('/event/puzzle/deliverer')
 export class GetPuzzleDeliverer extends OpenAPIRoute {
-  static schema: OpenAPIRouteSchema = {
+  schema = {
     summary: 'Check deliver name',
     tags: ['Puzzle'],
-    parameters: {
-      token: schema.OptionalDelivererTokenQuery,
+    request: {
+      query: z.object({
+        token: schema.OptionalDelivererTokenQuery,
+      }),
     },
     responses: {
       '200': {
         description: 'Returns the slug',
-        schema: schema.boothStaffSchema,
+        content: {
+          'application/json': {
+            schema: schema.boothStaffSchema,
+          },
+        },
       },
       '400': {
         description: 'Missing or invalid token',

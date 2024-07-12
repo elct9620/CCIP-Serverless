@@ -1,5 +1,6 @@
 import { IRequest, StatusError } from 'itty-router'
-import { Bool, OpenAPIRoute, OpenAPIRouteSchema, Query } from '@cloudflare/itty-router-openapi'
+import { OpenAPIRoute } from 'chanfana'
+import { z } from 'zod'
 import { json } from '@worker/utils'
 import * as schema from '@api/schema'
 import { InitializeAttendeeCommand } from '@api/command'
@@ -34,17 +35,23 @@ function formatScenario(scenario: Record<string, any>) {
 
 @Get('/status')
 export class GetStatus extends OpenAPIRoute {
-  static schema: OpenAPIRouteSchema = {
+  schema = {
     summary: 'Get attendee status',
     tags: ['Attendee'],
-    parameters: {
-      StaffQuery: Query(Bool, { description: 'is query by staff', required: false }),
-      token: schema.OptionalAttendeeTokenQuery,
+    request: {
+      query: z.object({
+        StaffQuery: z.string({ description: 'is query by staff' }).optional(),
+        token: schema.OptionalAttendeeTokenQuery,
+      }),
     },
     responses: {
       '200': {
         description: 'Returns attendee status',
-        schema: schema.statusSchema,
+        content: {
+          'application/json': {
+            schema: schema.statusSchema,
+          },
+        },
       },
       '400': {
         description: 'Missing or invalid token',

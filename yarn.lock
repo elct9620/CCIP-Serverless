@@ -15,10 +15,10 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@asteasolutions/zod-to-openapi@^6.4.0":
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/@asteasolutions/zod-to-openapi/-/zod-to-openapi-6.4.0.tgz#3081e7f56febdb7c58fcee4dd5cfb3cbcb01742c"
-  integrity sha512-8cxfF7AHHx2PqnN4Cd8/O8CBu/nVYJP9DpnfVLW3BFb66VJDnqI/CczZnkqMc3SNh6J9GiX7JbJ5T4BSP4HZ2Q==
+"@asteasolutions/zod-to-openapi@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@asteasolutions/zod-to-openapi/-/zod-to-openapi-7.1.1.tgz#27784396d9f854db975a3b784095efef25258422"
+  integrity sha512-lF0d1gAc0lYLO9/BAGivwTwE2Sh9h6CHuDcbk5KnGBfIuAsAkDC+Fdat4dkQY3CS/zUWKHRmFEma0B7X132Ymw==
   dependencies:
     openapi3-ts "^4.1.2"
 
@@ -90,17 +90,6 @@
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
-
-"@cloudflare/itty-router-openapi@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@cloudflare/itty-router-openapi/-/itty-router-openapi-1.1.1.tgz#0bcaef5726d09435340fcb8446111ed4d2b1d368"
-  integrity sha512-iJKV7vIaJctMykyiNC89W+ZR3cQ5q8tQL1rVejtkXSj+/AuJYX0l7NrrM3D3u+SijbvsNsNMjFsoCGIzG7tpmQ==
-  dependencies:
-    "@asteasolutions/zod-to-openapi" "^6.4.0"
-    itty-router "4.0.26"
-    js-yaml "^4.1.0"
-    openapi3-ts "^4.1.2"
-    zod "^3.21.4"
 
 "@cloudflare/kv-asset-handler@0.3.4":
   version "0.3.4"
@@ -1471,6 +1460,16 @@ chalk@^4.0.0, chalk@^4.1.2:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+chanfana@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/chanfana/-/chanfana-2.0.2.tgz#a0c905bbdb58be5e01d065f5a7bcc9dca3345950"
+  integrity sha512-HuYjj+tIXHvKJ8FobeWOcshg35kYK15uqNQdZy22pF2DMyySW5DlnYK8jcAyoLQiCwPplQdKZonFLfP/sCFMBg==
+  dependencies:
+    "@asteasolutions/zod-to-openapi" "^7.1.1"
+    js-yaml "^4.1.0"
+    openapi3-ts "^4.3.2"
+    zod "^3.23.8"
+
 check-error@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/check-error/-/check-error-1.0.3.tgz#a6502e4312a7ee969f646e83bb3ddd56281bd694"
@@ -2498,10 +2497,10 @@ istanbul-reports@^3.1.6:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
-itty-router@4.0.26, itty-router@^4.0.17:
-  version "4.0.26"
-  resolved "https://registry.yarnpkg.com/itty-router/-/itty-router-4.0.26.tgz#8fd29b7070d9faf0857ca5bd097f80e304ea7fcd"
-  integrity sha512-GBcmhxQRvIQ7fuzXPlvfeQcN6O7VGhctzdG9WHIcEcaRYH4FvDpMxuSWRIAxQrIM+nxtfxK0/bR78ATvb4LC5Q==
+itty-router@^5.0.17:
+  version "5.0.17"
+  resolved "https://registry.yarnpkg.com/itty-router/-/itty-router-5.0.17.tgz#e5a015756bfc420ea20f09da80935a7feb8c4ef8"
+  integrity sha512-ZHnPI0OOyTTLuNp2FdciejYaK4Wl3ZV3O0yEm8njOGggh/k/ek3BL7X2I5YsCOfc5vLhIJgj3Z4pUtLs6k9Ucg==
 
 jackspeak@^3.1.2:
   version "3.4.0"
@@ -2933,12 +2932,12 @@ onetime@^6.0.0:
   dependencies:
     mimic-fn "^4.0.0"
 
-openapi3-ts@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/openapi3-ts/-/openapi3-ts-4.1.2.tgz#f15cd4794e3a7c9b388fd45dfbefc78501f7043e"
-  integrity sha512-B7gOkwsYMZO7BZXwJzXCuVagym2xhqsrilVvV0dnq2Di4+iLUXKVX9gOK23ZqaAHZOwABXN0QTdW8QnkUTX6DA==
+openapi3-ts@^4.1.2, openapi3-ts@^4.3.2:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/openapi3-ts/-/openapi3-ts-4.3.3.tgz#de43a2f2fab912939495c169b92d81fe78a4ec10"
+  integrity sha512-LKkzBGJcZ6wdvkKGMoSvpK+0cbN5Xc3XuYkJskO+vjEQWJgs1kgtyUk0pjf8KwPuysv323Er62F5P17XQl96Qg==
   dependencies:
-    yaml "^2.2.2"
+    yaml "^2.4.5"
 
 optionator@^0.9.3:
   version "0.9.3"
@@ -3991,6 +3990,11 @@ yaml@^2.2.2:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.3.1.tgz#02fe0975d23cd441242aa7204e09fc28ac2ac33b"
   integrity sha512-2eHWfjaoXgTBC2jNM1LRef62VQa0umtvRiDSk6HSzW7RvS5YtkabJrwYLLEKWBc8a5U2PTSCs+dJjUTJdlHsWQ==
 
+yaml@^2.4.5:
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.4.5.tgz#60630b206dd6d84df97003d33fc1ddf6296cca5e"
+  integrity sha512-aBx2bnqDzVOyNKfsysjA2ms5ZlnjSAW2eG3/L5G/CSujfjLJTJsEw1bGw8kCf04KodQWk1pxlGnZ56CRxiawmg==
+
 yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
@@ -4020,12 +4024,7 @@ yup@1.2.0:
     toposort "^2.0.2"
     type-fest "^2.19.0"
 
-zod@^3.21.4:
-  version "3.22.4"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-3.22.4.tgz#f31c3a9386f61b1f228af56faa9255e845cf3fff"
-  integrity sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==
-
-zod@^3.22.3, zod@^3.22.4:
+zod@^3.22.3, zod@^3.22.4, zod@^3.23.8:
   version "3.23.8"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.23.8.tgz#e37b957b5d52079769fb8097099b592f0ef4067d"
   integrity sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==

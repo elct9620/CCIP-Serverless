@@ -1,4 +1,4 @@
-import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
+import { OpenAPIRoute } from 'chanfana'
 import { Post } from '@worker/router'
 import { IRequest, status } from 'itty-router'
 
@@ -6,7 +6,7 @@ export type AttendeeRequest = IRequest
 
 @Post('/admin/attendees')
 export class CreateAttendees extends OpenAPIRoute {
-  static schema: OpenAPIRouteSchema = {
+  schema = {
     summary: 'Creates attendees',
     tags: ['Attendee'],
     responses: {

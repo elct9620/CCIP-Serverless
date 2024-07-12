@@ -1,16 +1,19 @@
-import { Query, Str } from '@cloudflare/itty-router-openapi'
+import { z } from 'zod'
 
-export const OptionalAttendeeTokenQuery = Query(Str, {
-  description: 'the attendee token',
-  required: false,
-})
+export const OptionalAttendeeTokenQuery = z
+  .string({
+    description: 'the attendee token',
+  })
+  .optional()
 
-export const OptionalDelivererTokenQuery = Query(Str, {
-  description: 'the deliverer token',
-  required: false,
-})
+export const OptionalDelivererTokenQuery = z
+  .string({
+    description: 'the deliverer token',
+  })
+  .optional()
 
-export const OptionalPublicTokenQuery = Query(Str, {
-  description: 'the attendee public token',
-  required: false,
-})
+export const OptionalPublicTokenQuery = z
+  .string({
+    description: 'the attendee public token',
+  })
+  .optional()

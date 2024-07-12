@@ -10,32 +10,41 @@ import {
 import * as schema from '@api/schema'
 import { Post } from '@worker/router'
 import { json } from '@worker/utils'
-import { OpenAPIRoute, OpenAPIRouteSchema, Str } from '@cloudflare/itty-router-openapi'
+import { OpenAPIRoute } from 'chanfana'
+import { z } from 'zod'
 
 export type PuzzleDeliveryRequest = {
   query: Record<string, string | undefined>
 } & IRequest
 
-type Data = {
-  body: unknown
-}
-
 @Post('/event/puzzle/deliver')
 export class DeliverPuzzleToUser extends OpenAPIRoute {
-  static schema: OpenAPIRouteSchema = {
+  schema = {
     summary: 'Deliver puzzle to attendee',
     tags: ['Puzzle'],
-    requestBody: {
-      receiver: new Str({ description: 'the attendee public token', required: false }),
-    },
-    parameters: {
-      event_id: schema.EventIdQuery,
-      token: schema.OptionalDelivererTokenQuery,
+    request: {
+      body: {
+        content: {
+          'application/json': {
+            schema: z.object({
+              receiver: z.string({ description: 'the attendee public token' }).optional(),
+            }),
+          },
+        },
+      },
+      query: z.object({
+        event_id: schema.EventIdQuery,
+        token: schema.OptionalDelivererTokenQuery,
+      }),
     },
     responses: {
       '200': {
         description: 'Delivered a puzzle to the attendee',
-        schema: schema.puzzleDeliveredResponseSchema,
+        content: {
+          'application/json': {
+            schema: schema.puzzleDeliveredResponseSchema,
+          },
+        },
       },
       '400': {
         description: 'Invalid token or receiver public token, or already take from this deliverer',
@@ -43,11 +52,11 @@ export class DeliverPuzzleToUser extends OpenAPIRoute {
     },
   }
 
-  async handle(request: PuzzleDeliveryRequest, env: unknown, context: unknown, data: Data) {
-    const delivererToken = request.query.token
-    const eventId = request.query.event_id as string
-    const { body } = data
-    const receiverToken = isDeliverPuzzleForm(body) ? body.receiver : null
+  async handle() {
+    const { body, query } = await this.getValidatedData<typeof this.schema>()
+    const delivererToken = query.token
+    const eventId = query.event_id
+    const receiverToken = body.receiver
 
     if (!delivererToken || !receiverToken) {
       throw new StatusError(400, 'token and receiver required')
@@ -86,6 +95,3 @@ export class DeliverPuzzleToUser extends OpenAPIRoute {
     }
   }
 }
-
-const isDeliverPuzzleForm = (value: unknown): value is schema.DeliverPuzzlePayload =>
-  typeof (value as Record<string, unknown>)?.receiver === 'string'

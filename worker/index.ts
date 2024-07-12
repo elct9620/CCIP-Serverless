@@ -1,16 +1,22 @@
 import 'reflect-metadata'
-import { withParams, IRequest } from 'itty-router'
-import { OpenAPIRouter } from '@cloudflare/itty-router-openapi'
+import { Router, withParams, IRequest } from 'itty-router'
+import { fromIttyRouter } from 'chanfana'
 import { withCommands, withTestability, withQueries } from '@worker/middlewares'
 import { setup } from '@worker/router'
 import { container } from 'tsyringe'
 import { Env } from '@worker/environment'
 import '@worker/controller'
+import { json, error } from '@worker/utils'
 
 import * as Repository from '@api/repository'
 import * as Projection from '@api/projection'
 
-const router = OpenAPIRouter({
+const router = Router({
+  before: [withParams],
+  catch: error,
+  finally: [json],
+})
+const openapi = fromIttyRouter(router, {
   schema: {
     info: {
       title: 'CCIP Serverless',
@@ -25,7 +31,8 @@ const router = OpenAPIRouter({
   },
 })
 
-router
+// NOTE: Migrate to use Router before hooks
+openapi
   .all('*', (_request: IRequest, env: Env) => {
     if (!env.DB) {
       throw new Error('DB is not available')
@@ -66,9 +73,8 @@ router
       useClass: Projection.D1FindBoothByToken,
     })
   })
-  .all('*', withParams)
   .all('*', withCommands)
   .all('*', withQueries)
   .all('*', withTestability)
 
-export default setup(router)
+export default setup(openapi)

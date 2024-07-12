@@ -212,10 +212,10 @@ Feature: Useable Scenario
       }
       """
     When I make a GET request to "/use/checkin?token=f185f505-d8c0-43ce-9e7b-bb9e8909072d"
-    Then the response status should be 400
-    And the response json should be:
+    Then the response json should be:
       """
       {
         "message": "has been used"
       }
       """
+    And the response status should be 400

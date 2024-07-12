@@ -1,9 +1,8 @@
 import { localizedTextSchema } from './localized'
 import { attendeeMetadataSchema } from './attendee'
-import { Path, Str } from '@cloudflare/itty-router-openapi'
 import { z } from 'zod'
 
-export const ScenarioIdPath = Path(Str, { description: 'scenarion name to apply' })
+export const ScenarioIdPath = z.string({ description: 'scenario name to apply' })
 
 export type Scenario = z.infer<typeof scenarioSchema>
 export const scenarioSchema = z.object({

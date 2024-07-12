@@ -1,3 +1,3 @@
-import { Query, Str } from '@cloudflare/itty-router-openapi'
+import { z } from 'zod'
 
-export const EventIdQuery = Query(Str, { description: 'event id' })
+export const EventIdQuery = z.string({ description: 'event id' })

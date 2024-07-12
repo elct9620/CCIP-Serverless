@@ -1,5 +1,6 @@
 import { IRequest } from 'itty-router'
-import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
+import { OpenAPIRoute } from 'chanfana'
+import { z } from 'zod'
 import { container } from 'tsyringe'
 import { json } from '@worker/utils'
 import * as schema from '@api/schema'
@@ -7,7 +8,6 @@ import * as Command from '@api/command'
 import { ListAnnouncementsByToken } from '@api/query'
 import { datetimeToUnix } from '@api/utils'
 import { Get, Post } from '@worker/router'
-import { z } from 'zod'
 
 export type AnnouncementRequest = {
   query: Record<string, string | undefined>
@@ -47,16 +47,22 @@ const toFormattedAnnouncement = (data: schema.Announcement): AnnouncementData =>
 
 @Get('/announcement')
 export class ListAnnouncement extends OpenAPIRoute {
-  static schema: OpenAPIRouteSchema = {
+  schema = {
     summary: 'List announcements',
     tags: ['Announcement'],
-    parameters: {
-      token: schema.OptionalAttendeeTokenQuery,
+    request: {
+      query: z.object({
+        token: schema.OptionalAttendeeTokenQuery,
+      }),
     },
     responses: {
       '200': {
         description: 'Returns list of announcements',
-        schema: announcementResponseSchema,
+        content: {
+          'application/json': {
+            schema: announcementResponseSchema,
+          },
+        },
       },
     },
   }
@@ -72,13 +78,19 @@ export class ListAnnouncement extends OpenAPIRoute {
 
 @Post('/announcement')
 export class CreateAnnouncement extends OpenAPIRoute {
-  static schema: OpenAPIRouteSchema = {
+  schema = {
     summary: 'Create an announcement',
     tags: ['Announcement'],
     responses: {
       '200': {
         description: 'Created an announcement',
-        schema: { status: 'OK' },
+        content: {
+          'application/json': {
+            schema: z.object({
+              status: z.literal('OK'),
+            }),
+          },
+        },
       },
     },
   }

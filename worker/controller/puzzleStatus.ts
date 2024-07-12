@@ -5,22 +5,29 @@ import { GetPuzzleStatus } from '@api/query'
 import { datetimeToUnix } from '@api/utils'
 import { Get } from '@worker/router'
 import { json } from '@worker/utils'
-import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
+import { OpenAPIRoute } from 'chanfana'
+import { z } from 'zod'
 
 export type PuzzleStatusRequest = IRequest
 
 @Get('/event/puzzle')
 export class GetAttendeePuzzleStatus extends OpenAPIRoute {
-  static schema: OpenAPIRouteSchema = {
+  schema = {
     summary: 'Get attendee puzzle status',
     tags: ['Puzzle'],
-    parameters: {
-      token: schema.OptionalPublicTokenQuery,
+    request: {
+      query: z.object({
+        token: schema.OptionalPublicTokenQuery,
+      }),
     },
     responses: {
       '200': {
         description: 'Returns attendee puzzle status',
-        schema: schema.puzzleStatusSchema,
+        content: {
+          'application/json': {
+            schema: schema.puzzleStatusSchema,
+          },
+        },
       },
       '400': {
         description: 'Missing or invalid token',

@@ -1,5 +1,6 @@
 import { IRequest, StatusError } from 'itty-router'
-import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
+import { OpenAPIRoute } from 'chanfana'
+import { z } from 'zod'
 import * as Command from '@api/command'
 import { Put } from '@worker/router'
 import { json } from '@worker/utils'
@@ -11,18 +12,25 @@ export type RevokePuzzleRequest = {
 
 @Put('/event/puzzle/revoke')
 export class RevokePuzzle extends OpenAPIRoute {
-  static schema: OpenAPIRouteSchema = {
+  schema = {
     summary: "Revoke attendee's puzzle",
     tags: ['Puzzle'],
-    requestBody: {},
-    parameters: {
-      event_id: schema.EventIdQuery,
-      token: schema.OptionalAttendeeTokenQuery,
+    request: {
+      params: z.object({
+        event_id: schema.EventIdQuery,
+      }),
+      query: z.object({
+        token: schema.OptionalAttendeeTokenQuery,
+      }),
     },
     responses: {
       '200': {
         description: 'Result of puzzle revocation',
-        schema: schema.puzzleRevokeResponseSchema,
+        content: {
+          'application/json': {
+            schema: schema.puzzleRevokeResponseSchema,
+          },
+        },
       },
     },
   }

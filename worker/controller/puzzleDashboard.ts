@@ -1,23 +1,30 @@
 import { IRequest } from 'itty-router'
 import { json } from '@worker/utils'
 import { container } from 'tsyringe'
+import { z } from 'zod'
 import * as schema from '@api/schema'
 import { Get } from '@worker/router'
 import { GetPuzzleStats } from '@api/query'
-import { OpenAPIRoute, OpenAPIRouteSchema } from '@cloudflare/itty-router-openapi'
+import { OpenAPIRoute } from 'chanfana'
 
 @Get('/event/puzzle/dashboard')
 export class DisplayPuzzleStats extends OpenAPIRoute {
-  static schema: OpenAPIRouteSchema = {
+  schema = {
     summary: 'Get puzzle stats',
     tags: ['Puzzle'],
-    parameters: {
-      event_id: schema.EventIdQuery,
+    request: {
+      params: z.object({
+        event_id: schema.EventIdQuery,
+      }),
     },
     responses: {
       '200': {
         description: 'Returns puzzle stats',
-        schema: schema.puzzleStatsSchema,
+        content: {
+          'application/json': {
+            schema: schema.puzzleStatsSchema,
+          },
+        },
       },
     },
   }
