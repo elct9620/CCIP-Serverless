@@ -1,5 +1,6 @@
 import { OpenAPIRouterType, OpenAPIRoute } from 'chanfana'
 import { IttyRouterType } from 'itty-router'
+import { error } from '@worker/utils'
 
 type OpenAPIRouteConstructor = new (...args: any[]) => OpenAPIRoute // eslint-disable-line @typescript-eslint/no-explicit-any
 export interface Route {
