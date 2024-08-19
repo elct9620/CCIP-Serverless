@@ -33,7 +33,7 @@
     "vite": "^5.3.5",
     "vitest": "^2.0.5",
     "vue-tsc": "^2.0.29",
-    "wrangler": "^3.70.0",
+    "wrangler": "^3.72.0",
     "zod": "^3.22.4"
   },
   "dependencies": {
