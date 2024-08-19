@@ -30,7 +30,7 @@
     "tsm": "^2.3.0",
     "typescript": "^5.5.4",
     "typescript-eslint": "^7.16.1",
-    "vite": "^5.3.5",
+    "vite": "^5.4.1",
     "vitest": "^2.0.5",
     "vue-tsc": "^2.0.29",
     "wrangler": "^3.70.0",
