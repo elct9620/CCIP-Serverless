@@ -85,7 +85,7 @@ export class Attendee implements Entity<string> {
 
     try {
       return new Date(this.getMetadata(`_scenario_${scenarioId}`) as string)
-    } catch (e) {
+    } catch (_e) {
       return null
     }
   }

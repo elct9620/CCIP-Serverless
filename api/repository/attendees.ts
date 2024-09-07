@@ -27,7 +27,7 @@ export class D1AttendeeRepository implements Repository<Attendee> {
     let metadata: Record<string, any>
     try {
       metadata = result.metadata ? JSON.parse(result.metadata) : {}
-    } catch (e) {
+    } catch (_e) {
       metadata = {}
     }
 

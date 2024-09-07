@@ -53,7 +53,7 @@ export async function hideScenarios(attendee: Attendee, ruleset: Ruleset) {
 
     try {
       await executeCondition(attendee, condition)
-    } catch (e: unknown) {
+    } catch (_e: unknown) {
       scenario.hide()
     }
   }

@@ -54,7 +54,7 @@ export class D1RulesetProjection implements Projection<GetRulesetInput, Ruleset>
     let scenarios: Record<string, ScenarioSchema>
     try {
       scenarios = JSON.parse(result.scenarios)
-    } catch (e) {
+    } catch (_e) {
       scenarios = {}
     }
 
