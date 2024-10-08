@@ -153,9 +153,9 @@
     zod "^3.22.3"
 
 "@cloudflare/workers-types@^4.x":
-  version "4.20240919.0"
-  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-4.20240919.0.tgz#3da4d581d8b06f23e6302311b97975eaf8b39e4b"
-  integrity sha512-DZwTpZVAV+fKTLxo6ntC2zMNRL/UJwvtMKUt/U7ZyJdR+t0qcBUZGx8jLi9gOFWYxkzO3s7slajwkR2hQRPXYQ==
+  version "4.20241004.0"
+  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-4.20241004.0.tgz#d27f1fde602f0a990ce5a4ac32e0843d15c2fb08"
+  integrity sha512-3LrPvtecs4umknOF1bTPNLHUG/ZjeSE6PYBQ/tbO7lwaVhjZTaTugiaCny2byrZupBlVNuubQVktcAgMfw0C1A==
 
 "@colors/colors@1.5.0":
   version "1.5.0"
