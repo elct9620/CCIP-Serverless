@@ -15,10 +15,10 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@asteasolutions/zod-to-openapi@^7.1.1":
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/@asteasolutions/zod-to-openapi/-/zod-to-openapi-7.1.1.tgz#27784396d9f854db975a3b784095efef25258422"
-  integrity sha512-lF0d1gAc0lYLO9/BAGivwTwE2Sh9h6CHuDcbk5KnGBfIuAsAkDC+Fdat4dkQY3CS/zUWKHRmFEma0B7X132Ymw==
+"@asteasolutions/zod-to-openapi@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@asteasolutions/zod-to-openapi/-/zod-to-openapi-7.2.0.tgz#19bf1f8bbd380a2ca95d6b1818f7437703da69b1"
+  integrity sha512-Va+Fq1QzKkSgmiYINSp3cASFhMsbdRH/kmCk2feijhC+yNjGoC056CRqihrVFhR8MY8HOZHdlYm2Ns2lmszCiw==
   dependencies:
     openapi3-ts "^4.1.2"
 
@@ -1550,14 +1550,14 @@ chalk@^4.0.0, chalk@^4.1.2:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-chanfana@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/chanfana/-/chanfana-2.1.0.tgz#802a9f665134fce4d7eea7fdc3f0f1d9ecabac03"
-  integrity sha512-/PWIOZU85kyRE/HqEzL/H46ZxVMk9KeA6dcykVKai7SHG3OsRmJk154QYoDo3u05BPWJk//SqSif8Xhvd8RkQA==
+chanfana@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/chanfana/-/chanfana-2.2.0.tgz#577857628483c13c689789d5a1e1dff36505f8ec"
+  integrity sha512-HLaV7WB64JChp+orMLRV3rK64jyXKasC70jHW5C+rBHxaVyolMNro1cklCHrYVAjz/SkyrPj3vNxrpxJTllQ2Q==
   dependencies:
-    "@asteasolutions/zod-to-openapi" "^7.1.1"
+    "@asteasolutions/zod-to-openapi" "^7.2.0"
     js-yaml "^4.1.0"
-    openapi3-ts "^4.3.2"
+    openapi3-ts "^4.4.0"
     zod "^3.23.8"
 
 check-error@^2.1.1:
@@ -2915,12 +2915,12 @@ onetime@^6.0.0:
   dependencies:
     mimic-fn "^4.0.0"
 
-openapi3-ts@^4.1.2, openapi3-ts@^4.3.2:
-  version "4.3.3"
-  resolved "https://registry.yarnpkg.com/openapi3-ts/-/openapi3-ts-4.3.3.tgz#de43a2f2fab912939495c169b92d81fe78a4ec10"
-  integrity sha512-LKkzBGJcZ6wdvkKGMoSvpK+0cbN5Xc3XuYkJskO+vjEQWJgs1kgtyUk0pjf8KwPuysv323Er62F5P17XQl96Qg==
+openapi3-ts@^4.1.2, openapi3-ts@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/openapi3-ts/-/openapi3-ts-4.4.0.tgz#eff29958e601deec24459ea811989a4fb59d4116"
+  integrity sha512-9asTNB9IkKEzWMcHmVZE7Ts3kC9G7AFHfs8i7caD8HbI76gEjdkId4z/AkP83xdZsH7PLAnnbl47qZkXuxpArw==
   dependencies:
-    yaml "^2.4.5"
+    yaml "^2.5.0"
 
 optionator@^0.9.3:
   version "0.9.3"
@@ -3926,10 +3926,15 @@ yallist@^4.0.0:
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
-yaml@^2.2.2, yaml@^2.4.5:
+yaml@^2.2.2:
   version "2.4.5"
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.4.5.tgz#60630b206dd6d84df97003d33fc1ddf6296cca5e"
   integrity sha512-aBx2bnqDzVOyNKfsysjA2ms5ZlnjSAW2eG3/L5G/CSujfjLJTJsEw1bGw8kCf04KodQWk1pxlGnZ56CRxiawmg==
+
+yaml@^2.5.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.6.0.tgz#14059ad9d0b1680d0f04d3a60fe00f3a857303c3"
+  integrity sha512-a6ae//JvKDEra2kdi1qzCyrJW/WZCgFi8ydDV+eXExl95t+5R+ijnqHJbz9tmMh8FUjx3iv2fCQ4dclAQlO2UQ==
 
 yocto-queue@^0.1.0:
   version "0.1.0"

@@ -37,7 +37,7 @@
     "zod": "^3.22.4"
   },
   "dependencies": {
-    "chanfana": "^2.1.0",
+    "chanfana": "^2.2.0",
     "itty-router": "^5.0.18",
     "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.8.0",
