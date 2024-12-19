@@ -10,7 +10,7 @@ on:
 concurrency: deploy
 
 env:
-  wranglerVersion: 3.22.2
+  wranglerVersion: 3.98.0
 
 jobs:
   deploy:
