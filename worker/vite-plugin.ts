@@ -1,5 +1,5 @@
 import { Plugin, ResolvedConfig } from 'vite'
-import { unstable_dev, UnstableDevWorker } from 'wrangler'
+import { unstable_dev, Unstable_DevWorker } from 'wrangler'
 import colors from 'picocolors'
 
 function isRoutingRuleMatch(pathname: string, routingRule: string): boolean {
@@ -69,8 +69,8 @@ const toArrayBuffer = (buf: Buffer): ArrayBuffer => {
   return ab
 }
 
-const proxyTo = async (worker: UnstableDevWorker, req: ProxyRequest): Promise<ProxyResponse> => {
-  const res = await worker.fetch(new URL(`http://vite.localhost${req.pathname}`), {
+const proxyTo = async (worker: Unstable_DevWorker, req: ProxyRequest): Promise<ProxyResponse> => {
+  const res = await worker.fetch(`http://vite.localhost${req.pathname}`, {
     method: req.method,
     headers: req.headers,
     body: req.body ? toArrayBuffer(req.body) : null,
@@ -91,7 +91,7 @@ type ProxyConfig = {
 }
 
 export default function WorkerProxy(proxyConfig: ProxyConfig): Plugin {
-  let worker: UnstableDevWorker | null = null
+  let worker: Unstable_DevWorker | null = null
   let config: ResolvedConfig | null = null
 
   if (!proxyConfig) {
