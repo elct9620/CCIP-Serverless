@@ -1593,10 +1593,10 @@ chalk@^4.0.0, chalk@^4.1.2:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-chanfana@^2.5.2:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/chanfana/-/chanfana-2.5.2.tgz#bcdacf5aa4753311d36cfea1c8c5f877244ba90c"
-  integrity sha512-x+4QWt1RtnkgSls4bul83mnOoSaZmmgHUGZ1CEfEpphq7IIQQ/TY1aJVTbTelHCiZdcTBfhDESr2n8Z9IK4ZMg==
+chanfana@^2.5.4:
+  version "2.5.4"
+  resolved "https://registry.yarnpkg.com/chanfana/-/chanfana-2.5.4.tgz#4f2373fd52f1af5ad534320fc65187162b1f32a8"
+  integrity sha512-rJPKWpeEKKgPE+7WrJt4PzwV4B7G4NzqH080wJJTVisSQh5sr1lYt7KrWcua1GLjO94y19vHdanBtzubX0WBKA==
   dependencies:
     "@asteasolutions/zod-to-openapi" "^7.2.0"
     js-yaml "^4.1.0"
